@@ -1,4 +1,4 @@
-# LESLIE GUTIERREZ
+# Leslie Gutiérrez
 
-## GITHUB 
-https://github.com/LessCGO/isdi-parttime-202309
+## Github 
+[link](https://github.com/LessCGO/isdi-parttime-202309)
