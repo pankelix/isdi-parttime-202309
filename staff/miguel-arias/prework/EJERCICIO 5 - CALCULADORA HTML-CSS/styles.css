@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #DDE3E6;
+}
+
+body {
+    margin: 180px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 320px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.calculation-display {
+    height: 150px;
+    width: 320px;
+    text-align: right;
+    font-size: 35px;
+    color: white;
+    background-color: #738B9B;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+}
+
+.calculation-row {
+    margin: 0;
+    padding: 0;
+
+}
+
+.display,
+.secondDisplay {
+    list-style: none;
+    min-height: 60px;
+    padding: 10px 20px;
+    overflow: hidden;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+}
+
+.keyboard-row {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    font-size: 25px;
+}
+
+.red-background {
+    background-color: #e33f3f;
+}
+
+.AC {
+    color: white;
+    padding: inherit;
+    border-top: 1px white solid;
+    border-right: 1px white solid;
+    border-left: none;
+    border-bottom: none;
+    font-size: 30px;
+    height: 80px;
+    width: 80px;
+    text-transform: uppercase;
+}
+
+.key {
+    background-color: #E4E9eC;
+    color: #4a5f6d;
+    padding: inherit;
+    border-top: 1px white solid;
+    border-right: 1px white solid;
+    border-left: none;
+    border-bottom: none;
+    font-size: inherit;
+    height: 80px;
+    width: 80px;
+    text-transform: uppercase;
+}
+
+.basic {
+    background-color: white;
+    color: #4a5f6d;
+    padding: inherit;
+    border: none;
+    font-size: inherit;
+    height: 80px;
+    width: 80px;
+    border: 1px solid #E4E9eC;
+    text-transform: uppercase;
+}
+
+.equal {
+    background-color: #FC6464;
+    color: white;
+    padding: inherit;
+    border: none;
+    font-size: inherit;
+    height: 80px;
+    width: 80px;
+}
+
+.key:active,
+.key-basic:active,
+.key-equal:active {
+    background-color: yellow;
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The famous game of Pasapalabra in HTML and CSS">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <title>Pasapalabra</title>
+</head>
+
+<body>
+    <section class="left-side">
+        <h1 class="title">PASAPALABRA</h1>
+        <ul class="rosco">
+            <li class="letter a position">A</li>
+            <li class="letter b position">B</li>
+            <li class="letter c position">C</li>
+            <li class="letter d position">D</li>
+            <li class="letter e position">E</li>
+            <li class="letter f position">F</li>
+            <li class="letter g position">G</li>
+            <li class="letter h position">H</li>
+            <li class="letter i position">I</li>
+            <li class="letter j position">J</li>
+            <li class="letter l position">L</li>
+            <li class="letter m position">M</li>
+            <li class="letter n position">N</li>
+            <li class="letter ñ position">Ñ</li>
+            <li class="letter o position">O</li>
+            <li class="letter p position">P</li>
+            <li class="letter q position">Q</li>
+            <li class="letter r position">R</li>
+            <li class="letter s position">S</li>
+            <li class="letter t position">T</li>
+            <li class="letter u position">U</li>
+            <li class="letter v position">V</li>
+            <li class="letter x position">X</li>
+            <li class="letter y position">Y</li>
+            <li class="letter z position">Z</li>
+            <li class="timer">150</li>
+        </ul>
+    </section>
+    <section class="right-side">
+        <section class="instructions">
+            <h2>BIENVENIDO AL JUEGO DE PASAPALABRA</h2>
+            <p>Las instrucciones son sencillas, tendrás que
+                adivinar una palabra que empieza o contiene
+                cada una de las letras del abecedario.</p>
+            <p>Tienes un tiempo máximo de 150 segundos para
+                completarlas todas.</p>
+            <p>Si en un momento dado no te sabes una respuesta,
+                pulsa en el botón de PASAPALABRA, la pregunta
+                quedará en Standby hasta que des la vuelta al
+                rosco.</p>
+            <p>Por favor, introduce las palabras obviando las
+                tildes y las mayúsculas.</p>
+            <button class="play">Jugar</button>
+        </section>
+        <section class="question-board hidden">
+            <h3 class="question-text"></h3>
+            <section class="question-buttons">
+                <input class="question-input" type="text" placeholder="Escribe tu respuesta" />
+                <button class="send">ENVIAR</button>
+                <button class="pasapalabra">PASAPALABRA</button>
+            </section>
+        </section>
+        <section class="endgame-screen hidden">
+            <h3 class="congratulations"></h3>
+            <ul class="ranking-names">
+                <li class="ranking-1"></li>
+                <li class="ranking-2"></li>
+                <li class="ranking-3"></li>
+                <li class="ranking-4"></li>
+                <li class="ranking-5"></li>
+            </ul>
+            <section class="ranking">
+                <input class="player-input" type="text" placeholder="Escribe tu nombre" />
+                <button class="save-points">Guardar puntos</button>
+                <button class="new-game">Jugar otra vez</button>
+            </section>
+        </section>
+    </section>
+    <script src="main.js"></script>
+</body>
+
+</html>
