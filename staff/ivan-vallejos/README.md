@@ -6,4 +6,4 @@
 
 Para consultar cualquier trabajo realizado por un servidor acuda mis repositorios.
 
-- https://github.com/Ivanisho
+[Para acceder al Link](https://github.com/b00tc4mp/isdi-parttime-202309)
