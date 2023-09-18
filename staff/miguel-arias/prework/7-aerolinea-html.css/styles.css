@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+}
+
+html {}
+
+body {
+    background-image: url('background.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.top {
+    border: solid red 1px;
+    padding: 200px;
+}
+
+.mid {
+    border: solid red 1px;
+    padding: 200px;
+}
