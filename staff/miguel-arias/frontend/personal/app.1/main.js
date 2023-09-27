@@ -72,7 +72,6 @@ loginForm.onsubmit = function (event) {
         document.getElementById("home").style.display = "block"
         document.getElementById("login").style.display = "none"
         document.getElementById("home").querySelector("h2").innerText = `Welcome back, ${name}.`
-        //como coño saco el name?
         emailInput.value = ""
         passwordInput.value = ""
     } else {
