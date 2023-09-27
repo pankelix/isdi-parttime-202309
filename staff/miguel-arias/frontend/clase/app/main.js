@@ -63,7 +63,7 @@ loginForm.onsubmit = function (event) {
 
     var email = emailInput.value
 
-    findUserByEmail(email)
+    var foundUser = findUserByEmail(email)
 
     if (!foundUser) {
         alert('User not found')

@@ -1,3 +1,5 @@
+//storage
+
 var users = [
     {
         name: 'Wendy Darling',
@@ -46,7 +48,7 @@ function findUserByEmail(email) {
             foundUser = user
             return foundUser
         }
-
-        return foundUser
     }
+
+    return foundUser
 }
