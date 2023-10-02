@@ -2,7 +2,7 @@ function registerUser(name, email, password) {
     validateText(name, 'name')
     validateText(email, 'email')
     validateText(password, 'password')
-    
+
     var user = findUserByEmail(email)
 
     if (user)
@@ -12,8 +12,8 @@ function registerUser(name, email, password) {
 }
 
 function authenticateUser(email, password) {
-   validateText(email, 'email')
-   validateText(password, 'password')
+    validateText(email, 'email')
+    validateText(password, 'password')
 
     var user = findUserByEmail(email)
 

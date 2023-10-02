@@ -1,3 +1,5 @@
+//storage
+
 var users = [
     {
         name: 'Wendy Darling',
@@ -11,6 +13,19 @@ var users = [
     },
 ]
 
+// register
+
+function userExistsByEmail(email) {
+    for (var i=0; i < users.length; i++) {
+        var user = users[i]
+
+        if (user.email === email)
+        return true
+    }
+
+    return false
+}
+
 function createUser(name, email, password) {
     var user = {}
 
@@ -21,14 +36,19 @@ function createUser(name, email, password) {
     users.push(user)
 }
 
-function findUserByEmail(email) { 
-    for (var i = 0; i < users.length; i++) {
+// login
+
+function findUserByEmail(email) {
+    var foundUser = null
+    
+    for (var i = 0; i < users.length && !foundUser; i++) {
         var user = users[i]
 
         if (user.email === email) {
-            return user
+            foundUser = user
+            return foundUser
         }
     }
 
-    return null
+    return foundUser
 }

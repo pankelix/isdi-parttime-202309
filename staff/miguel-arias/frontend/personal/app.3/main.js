@@ -171,17 +171,8 @@ var changePasswordButton = document.getElementById('change-password-btn')
 changePasswordButton.onclick = function (event) {
     event.preventDefault()
 
-    var passwordInput = profileForm.querySelector('#password')
-    var password = passwordInput.value
-    var confirmPasswordInput = profileForm.querySelector('#confirm-password')
-    var confirmPassword = confirmPasswordInput.value
-
     var user = retrieveUser(userLogged[0].email)
 
-    changePassword(user, password, confirmPassword)
-
-    alert('Password has been changed')
-    passwordInput.value = ''
-    confirmPasswordInput.value = ''
+    changePassword(user)
 }
 

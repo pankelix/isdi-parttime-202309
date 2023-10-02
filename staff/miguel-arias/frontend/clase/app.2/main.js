@@ -26,18 +26,20 @@ registerForm.onsubmit = function (event) {
     var email = emailInput.value
     var password = passwordInput.value
 
-    try {
-        registerUser(name, email, password)
+    var userRegistered = registerUser(name, email, password)
 
-        nameInput.value = ''
-        emailInput.value = ''
-        passwordInput.value = ''
+    if (!userRegistered) {
+        alert('User already exists')
 
-        registerView.style.display = 'none'
-        loginView.style.display = 'block'
-    } catch (error) {
-        alert(error.message)
+        return
     }
+
+    nameInput.value = ''
+    emailInput.value = ''
+    passwordInput.value = ''
+
+    registerView.style.display = 'none'
+    loginView.style.display = 'block'
 }
 
 // login
@@ -56,33 +58,39 @@ var loginForm = loginView.querySelector('form')
 
 loginForm.onsubmit = function (event) {
     event.preventDefault()
-
+    
     var emailInput = loginForm.querySelector('#email')
     var passwordInput = loginForm.querySelector('#password')
 
     var email = emailInput.value
     var password = passwordInput.value
 
-    try {
-        authenticateUser(email, password)
+    var foundUser = findUserByEmail(email)
 
-        emailInput.value = ''
-        passwordInput.value = ''
+    if (!foundUser) {
+        alert('Wrong credentials')
 
-        var homeTitle = homeView.querySelector('h1')
-
-        homeTitle.innerText = 'Hello, ' + user.name + '!'
-
-        loginView.style.display = 'none'
-        homeView.style.display = 'block'
-    } catch (error) {
-        alert(error.message)
+        return
     }
+
+    if (foundUser.password !== password) {
+        alert('Wrong credentials')
+
+        return
+    }
+
+    emailInput.value = ''
+    passwordInput.value = ''
+
+    var homeTitle = homeView.querySelector('h1')
+
+    homeTitle.innerText = 'Hello, ' + foundUser.name + '!'
+
+    loginView.style.display = 'none'
+    homeView.style.display = 'block'
 }
 
 // home
 
 var homeView = document.getElementById('home')
 homeView.style.display = 'none'
-
-// TODO show user name logged in when entering in Home (Hello, >name<!)

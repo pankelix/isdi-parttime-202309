@@ -2,7 +2,7 @@ function registerUser(name, email, password) {
     validateText(name, 'name')
     validateText(email, 'email')
     validateText(password, 'password')
-    
+
     var user = findUserByEmail(email)
 
     if (user)
@@ -12,8 +12,8 @@ function registerUser(name, email, password) {
 }
 
 function authenticateUser(email, password) {
-   validateText(email, 'email')
-   validateText(password, 'password')
+    validateText(email, 'email')
+    validateText(password, 'password')
 
     var user = findUserByEmail(email)
 
@@ -30,4 +30,13 @@ function retrieveUser(email) {
         throw new Error('user not found')
 
     return user
+}
+
+function checkPassword(password, confirmPassword) {
+    if (password !== confirmPassword) {
+        alert('Please type the same password.')
+        profileForm.querySelector('#password').value = ''
+        profileForm.querySelector('#confirm-password').value = ''
+        return
+    }
 }
