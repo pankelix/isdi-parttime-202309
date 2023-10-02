@@ -32,11 +32,13 @@ function retrieveUser(email) {
     return user
 }
 
-function checkPassword(password, confirmPassword) {
-    if (password !== confirmPassword) {
-        alert('Please type the same password.')
-        profileForm.querySelector('#password').value = ''
-        profileForm.querySelector('#confirm-password').value = ''
-        return
-    }
+function changeUserPassword(email, password, confirmPassword) {
+    validateText(email, 'email')
+    validateText(password, 'password')
+    validateText(confirmPassword, 'confirm password')
+    validatePasswordsMatch(password, confirmPassword)
+    var user = findUserByEmail(email)
+    //TODO pedir contraseña antigua y validarla
+    
+    user.password = password
 }

@@ -42,6 +42,8 @@ function findUserByEmail(email) {
     return null
 }
 
+//cambiar a logic y main
+
 function logOutUser() {
     userLogged.splice(0, 1)
 }
@@ -54,10 +56,5 @@ function changeName(user, name) {
 function changeEmail(user, email) {
     document.getElementById('profile-email').innerText = 'Your email: ' + email
     user.email = email
-}
-
-function changePassword(user, password, confirmPassword) {
-    checkPassword(password, confirmPassword)
-    
-    user.password = password
+    // TODO pedir contraseña y validarla
 }
