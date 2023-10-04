@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,52 +8,83 @@
 </head>
 
 <body>
-    <div id="register">
+    <div id="register-view">
         <h1>Register</h1>
 
         <form>
-            <label for="name">Name</label>
-            <input id="name" type="text">
+            <label for="name-input">Name</label>
+            <input id="name-input" type="text">
 
-            <label for="email">E-mail</label>
-            <input id="email" type="email">
+            <label for="email-input">E-mail</label>
+            <input id="email-input" type="email">
 
-            <label for="password">Password</label>
-            <input type="password" id="password">
+            <label for="password-input">Password</label>
+            <input id="password-input" type="password">
 
             <button>Register</button>
         </form>
+
         <a href="">Login</a>
     </div>
 
-    <div id="login">
+    <div id="login-view">
         <h1>Login</h1>
-        <form>
-            <label for="email">E-mail</label>
-            <input id="email" type="email">
 
-            <label for="password">Password</label>
-            <input type="password" id="password">
-            
+        <form>
+            <label for="email-input">E-mail</label>
+            <input id="email-input" type="email">
+
+            <label for="password-input">Password</label>
+            <input id="password-input" type="password">
+
             <button>Login</button>
         </form>
+
         <a href="">Register</a>
     </div>
 
-    <div id="home">
+    <div id="home-view">
         <h1>Hello, Home!</h1>
-        <!-- TODO implement logout <button>Logout</button> (onclick) -->
 
-        <!-- TODO implement change email panel (form) -->
+        <button id="logout-button">Logout</button>
 
-        <!-- TODO implement change password panel (form) -->
+        <form id="change-email-form">
+            <label for="new-email-input">New e-mail</label>
+            <input id="new-email-input" type="email">
+
+            <label for="new-email-confirm-input">Confirm new e-mail</label>
+            <input id="ew-email-confirm-input" type="email">
+
+            <label for="password-input">Password</label>
+            <input id="password-input" type="password">
+
+            <button>Update e-mail</button>
+        </form>
+
+        <form id="change-password-form">
+            <label for="password-input">Current password</label>
+            <input id="password-input" type="password">
+
+            <label for="new-password-input">New password</label>
+            <input id="new-password-input" type="password">
+
+            <label for="new-password-confirm-input">Confirm</label>
+            <input id="new-password-confirm-input" type="password">
+
+            <button>Update password</button>
+        </form>
+
     </div>
 
-    <script src="validators.js"></script>
-
     <script src="data.js"></script>
+
+    <script src="validators.js"></script>
     <script src="logic.js"></script>
+
     <script src="main.js"></script>
+    <script src="views/login.js"></script>
+    <script src="views/register.js"></script>
+    <script src="views/home.js"></script>
 </body>
 
 </html>

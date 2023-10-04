@@ -2,17 +2,13 @@ var users = [
     {
         name: 'Wendy Darling',
         email: 'wendy@darling.com',
-        password: '123123123',
-    },
+        password: '123123123'
+    }, 
     {
         name: 'Peter Pan',
         email: 'peter@pan.com',
-        password: '123123123',
+        password: '123123123'
     },
-]
-
-var userLogged = [
-//hacerlo de manera que solo coja el email
 ]
 
 function createUser(name, email, password) {
@@ -25,7 +21,7 @@ function createUser(name, email, password) {
     users.push(user)
 }
 
-function findUserByEmail(email) {
+function findUserByEmail(email) { 
     for (var i = 0; i < users.length; i++) {
         var user = users[i]
 
@@ -33,5 +29,6 @@ function findUserByEmail(email) {
             return user
         }
     }
+
     return null
 }

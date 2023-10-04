@@ -128,7 +128,7 @@ homeButton.onclick = function (event) {
     homeView.style.display = 'block'
 }
 
-//change name
+//cambiar name
 var profileForm = profileView.querySelector('form')
 
 var changeNameButton = document.getElementById('change-name-btn')
@@ -141,16 +141,12 @@ changeNameButton.onclick = function (event) {
 
     var user = retrieveUser(userLogged[0].email)
 
-    try {
-        nameInput.value = ''
-        changeName(user, name)
+    changeName(user, name)
 
-    } catch (error) {
-        alert (error.message)
-    }
+    nameInput.value = ''
 }
 
-//change email
+//cambiar email
 var profileForm = profileView.querySelector('form')
 
 var changeEmailButton = document.getElementById('change-email-btn')
@@ -158,29 +154,17 @@ var changeEmailButton = document.getElementById('change-email-btn')
 changeEmailButton.onclick = function (event) {
     event.preventDefault()
 
-    var newEmailInput = profileForm.querySelector('#new-email')
-    var newEmail = newEmailInput.value
-
-    var newEmailConfirmInput = profileForm.querySelector('#new-email-confirm')
-    var newEmailConfirm = newEmailConfirmInput.value
-
-    var passwordInput = profileForm.querySelector('#password')
-    var password = passwordInput.value
+    var emailInput = profileForm.querySelector('#email')
+    var email = emailInput.value
 
     var user = retrieveUser(userLogged[0].email)
 
-    try {
-        newEmailInput.value = ''
-        changeEmail(user, newEmail, newEmailConfirm, password)
+    changeEmail(user, email)
 
-    } catch (error) {
-        alert (error.message)
-    }
-
-
+    emailInput.value = ''
 }
 
-//change password
+//cambiar contraseña
 var profileForm = profileView.querySelector('form')
 
 var changePasswordButton = document.getElementById('change-password-btn')
@@ -196,6 +180,7 @@ changePasswordButton.onclick = function (event) {
    var user = retrieveUser(userLogged[0].email)
 
     try {
+        debugger
         passwordInput.value = ''
         confirmPasswordInput.value = ''
         changeUserPassword(user.email, password, confirmPassword)

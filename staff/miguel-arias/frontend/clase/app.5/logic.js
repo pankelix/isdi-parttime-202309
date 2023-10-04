@@ -48,20 +48,3 @@ function changeUserEmail(email, newEmail, newEmailConfirm, password) {
 
     user.email = newEmail
 }
-
-function changeUserPassword(email, newPassword, newPasswordConfirm, password) {
-    validateText(email, 'email')
-    validateText(newPassword, 'new password')
-    validateText(newPasswordConfirm, 'new password confirm')
-    validateText(password, 'password')
-
-    var user = findUserByEmail(email)
-
-    if (!user || user.password !== password)
-        throw new Error('wrong credentials')
-
-    if (newPassword !== newPasswordConfirm)
-        throw new Error('new password and its confirmation do not match')
-
-    user.password = newPassword
-}

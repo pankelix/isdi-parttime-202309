@@ -12,7 +12,7 @@ var users = [
 ]
 
 var userLogged = [
-//hacerlo de manera que solo coja el email
+
 ]
 
 function createUser(name, email, password) {
@@ -25,6 +25,11 @@ function createUser(name, email, password) {
     users.push(user)
 }
 
+function loginUser(email) {
+    var user = findUserByEmail(email)
+    userLogged.push(user)
+}
+
 function findUserByEmail(email) {
     for (var i = 0; i < users.length; i++) {
         var user = users[i]
@@ -34,4 +39,22 @@ function findUserByEmail(email) {
         }
     }
     return null
+}
+
+//cambiar a logic y main
+//como coño funciona esto sin tener que buscar en el array de users?
+
+function logOutUser() {
+    userLogged.splice(0, 1)
+}
+
+function changeName(user, name) {
+    document.getElementById('profile-name').innerText = 'Your name: ' + name
+    user.name = name
+}
+
+function changeEmail(user, email) {
+    document.getElementById('profile-email').innerText = 'Your email: ' + email
+    user.email = email
+    // TODO pedir contraseña y validarla
 }
