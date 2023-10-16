@@ -50,7 +50,7 @@ function includes(string, textToFind) {
 
         /*
         Steps:
-        - Para cualquier longitud de textToFind, vamos a dejarnos de polladas.
+        - Para cualquier longitud de textToFind.
         - No podemos crear tres variables, porque son virtualmente infinitas. Tenemos que crear dos e ir concatenando el resultado de la segunda a la primera.
         - Recorrer string.
         - Buscar en el string la primera de las variables.
@@ -60,13 +60,13 @@ function includes(string, textToFind) {
         var concatenatedLetters = textToFind[0]
         var newLetter = textToFind[1]
 
-        for (var i = 0; i < string.length; i++) {
+        for (var i = 2; i < string.length; i++) {
             if (string[i] === concatenatedLetters && string[i + 1] === newLetter) {
                 concatenatedLetters = string[i] + string[i + 1]
                 newLetter = string[i + 2]
-                if (concatenatedLetters === textToFind)
-                    return true
             }
+            if (concatenatedLetters === textToFind)
+                return true
         }
 
         return false

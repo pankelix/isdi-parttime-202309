@@ -7,3 +7,7 @@ console.log(join(["Ghost"], ","))
 console.log('CASE for array ["Fire", "Air", "Water", "Earth"] and separator "*" join should return "Fire*Air*Water*Earth"')
 console.log(join(["Fire", "Air", "Water", "Earth"], "*"))
 //"Fire*Air*Water*Earth"
+
+console.log('CASE for array ["Fire", "Air", "Water", "Earth"] and separator "*" join should return "Fire*Air*Water*Earth"')
+console.log(join(["Fire", "Air", "Water", "Earth"]))
+//"Fire*Air*Water*Earth"

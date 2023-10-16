@@ -9,7 +9,7 @@ Steps:
 - Para index<0: Cojo el negativo de la longitud del array y voy iterando el for restandole la i. Cuando llega a ser igual que el index que le he dado, que lo devuelva
 */
 
-function at(array, index) {
+/* function at(array, index) {
     for (i = 0; i < array.length; i++) {
         if (index >= 0) {
             if (i === index)
@@ -20,4 +20,17 @@ function at(array, index) {
                 return array[i]
         }
     }
+} */
+
+/* function at(array, index) {
+    if (index >= 0) {
+        return array[index]
+    }
+
+    return array[array.length + index]
+} */
+
+function at(array, index) {
+    // devuelveme array con el indice array.length + index a no ser que index sea mayor que 0, que entonces me devuelves solo index
+    return array[index >= 0 ? index : array.length + index]
 }

@@ -8,6 +8,8 @@ Steps:
 - para modificar el array original, le quito el último elemento reduciendo en 1 la distancia de su longitud
 */
 
+/* funciona
+
 function pop(array) {
     var elementRemoved = ''
     for (i = 0; i < array.length; i++) {
@@ -17,4 +19,14 @@ function pop(array) {
             return elementRemoved
         }
     }
+} */
+
+function pop(array) {
+    if (array.length === 0)
+        return
+
+    var lastElement = array[array.length - 1]
+    array.length--
+
+    return lastElement
 }
