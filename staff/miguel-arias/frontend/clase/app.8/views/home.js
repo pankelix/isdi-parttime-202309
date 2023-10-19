@@ -28,11 +28,12 @@ changeEmailForm.onsubmit = function (event) {
 
         emailLoggedIn = newEmail
 
-        alert('E-mail changed')
+        alert('Email changed')
 
         newEmailInput.value = ''
         newEmailConfirmInput.value = ''
         passwordInput.value = ''
+
     } catch (error) {
         alert(error.message)
     }
@@ -72,7 +73,7 @@ homeLink.onclick = function (event) {
     profileView.style.display = 'none'
 }
 
-// profile
+//profile
 
 var profileView = homeView.querySelector('#profile-view')
 

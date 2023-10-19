@@ -12,7 +12,8 @@ Curry.prototype.join = function (separator) {
 
     for (var i = 0; i < c.length; i++) {
         joinedString += c[i]
-        if (i < c.length-1)
+        
+        if (i < c.length - 1)
             joinedString += separator
     }
     return joinedString

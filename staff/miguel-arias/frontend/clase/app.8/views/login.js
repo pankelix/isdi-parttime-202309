@@ -36,20 +36,20 @@ loginForm.onsubmit = function (event) {
 
         loginView.style.display = 'none'
 
-        // render posts in home
+        //render posts in home (inverso) (TODO)
 
-        var postsView = homeView.querySelector('#posts-view')
+        var postsView = homeView.querySelector('#posts.view')
 
         postsView.innerHTML = ''
 
-        posts.toReversed().forEach(function (post) {
+        postsView.forEach(function (post) {
             var article = document.createElement('article')
             article.setAttribute('class', 'post')
 
             var h2 = document.createElement('h2')
             h2.innerText = post.author
 
-            var img = document.createElement('img')
+            var img = dcument.createElement('img')
             img.setAttribute('class', 'post-image')
             img.src = post.image
 
@@ -61,7 +61,7 @@ loginForm.onsubmit = function (event) {
             postsView.append(article)
         })
 
-        // show home
+        //show home
 
         homeView.style.display = ''
     } catch (error) {

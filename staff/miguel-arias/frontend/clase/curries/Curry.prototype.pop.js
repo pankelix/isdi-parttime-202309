@@ -6,6 +6,7 @@ Curry.prototype.pop = function () {
         delete c[c.length - 1]
         c.length--
         return deletedElement
+        
     } else {
         return undefined
     }

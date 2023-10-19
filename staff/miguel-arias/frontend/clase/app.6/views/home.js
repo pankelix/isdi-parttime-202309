@@ -6,7 +6,6 @@ var logoutButton = homeView.querySelector('#logout-button')
 
 logoutButton.onclick = function () {
     homeView.style.display = 'none'
-    profileView.style.display = 'none'
     loginView.style.display = ''
 }
 
@@ -28,11 +27,12 @@ changeEmailForm.onsubmit = function (event) {
 
         emailLoggedIn = newEmail
 
-        alert('E-mail changed')
+        alert('Email changed')
 
         newEmailInput.value = ''
         newEmailConfirmInput.value = ''
         passwordInput.value = ''
+
     } catch (error) {
         alert(error.message)
     }
@@ -52,7 +52,7 @@ changePasswordForm.onsubmit = function (event) {
     var newPasswordConfirm = newPasswordConfirmInput.value
 
     try {
-        changeUserPassword(emailLoggedIn, newPassword, newPasswordConfirm, password)
+        changeUserPassword(emailLoggedIn, newPassword, newPasswordConfirm, newPasswordConfirmInput, password)
 
         alert('Password changed')
 
@@ -62,26 +62,4 @@ changePasswordForm.onsubmit = function (event) {
     } catch (error) {
         alert(error.message)
     }
-}
-
-var homeLink = homeView.querySelector('#home-link')
-
-homeLink.onclick = function (event) {
-    event.preventDefault()
-
-    profileView.style.display = 'none'
-}
-
-// profile
-
-var profileView = homeView.querySelector('#profile-view')
-
-profileView.style.display = 'none'
-
-var profileLink = homeView.querySelector('#profile-link')
-
-profileLink.onclick = function (event) {
-    event.preventDefault()
-
-    profileView.style.display = ''
 }
