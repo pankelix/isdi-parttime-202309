@@ -1,16 +1,18 @@
-var homeView = document.getElementById('home-view')
+homeView = document.getElementById('home-view')
 
 homeView.style.display = 'none'
 
-var logoutButton = homeView.querySelector('#logout-button')
+logoutButton = homeView.querySelector('#logout-button')
 
 logoutButton.onclick = function () {
     homeView.style.display = 'none'
     profileView.style.display = 'none'
+    newPostView.style.display = 'none'
+    postsView.style.display = ''
     loginView.style.display = ''
 }
 
-var changeEmailForm = homeView.querySelector('#change-email-form')
+changeEmailForm = homeView.querySelector('#change-email-form')
 
 changeEmailForm.onsubmit = function (event) {
     event.preventDefault()
@@ -24,21 +26,19 @@ changeEmailForm.onsubmit = function (event) {
     var password = passwordInput.value
 
     try {
-        changeUserEmail(emailLoggedIn, newEmail, newEmailConfirm, password)
+        changeUserEmail(loggedInEmail, newEmail, newEmailConfirm, password)
 
-        emailLoggedIn = newEmail
+        loggedInEmail = newEmail
 
         alert('E-mail changed')
 
-        newEmailInput.value = ''
-        newEmailConfirmInput.value = ''
-        passwordInput.value = ''
+        changeEmailForm.reset()
     } catch (error) {
         alert(error.message)
     }
 }
 
-var changePasswordForm = homeView.querySelector('#change-password-form')
+changePasswordForm = homeView.querySelector('#change-password-form')
 
 changePasswordForm.onsubmit = function (event) {
     event.preventDefault()
@@ -52,36 +52,111 @@ changePasswordForm.onsubmit = function (event) {
     var newPasswordConfirm = newPasswordConfirmInput.value
 
     try {
-        changeUserPassword(emailLoggedIn, newPassword, newPasswordConfirm, password)
+        changeUserPassword(loggedInEmail, newPassword, newPasswordConfirm, password)
 
         alert('Password changed')
 
-        passwordInput.value = ''
-        newPasswordInput.value = ''
-        newPasswordConfirmInput.value = ''
+        changePasswordForm.reset()
     } catch (error) {
         alert(error.message)
     }
 }
 
-var homeLink = homeView.querySelector('#home-link')
+homeLink = homeView.querySelector('#home-link')
 
 homeLink.onclick = function (event) {
     event.preventDefault()
 
     profileView.style.display = 'none'
+    newPostView.style.display = 'none'
+    postsView.style.display = ''
 }
 
 // profile
 
-var profileView = homeView.querySelector('#profile-view')
+profileView = homeView.querySelector('#profile-view')
 
 profileView.style.display = 'none'
 
-var profileLink = homeView.querySelector('#profile-link')
+profileLink = homeView.querySelector('#profile-link')
 
 profileLink.onclick = function (event) {
     event.preventDefault()
 
+    newPostView.style.display = 'none'
+    postsView.style.display = 'none'
     profileView.style.display = ''
+}
+
+postsView = homeView.querySelector('#posts-view')
+
+newPostView = homeView.querySelector('#new-post-view')
+newPostView.style.display = 'none'
+
+newPostButton = homeView.querySelector('#new-post-button')
+
+newPostButton.onclick = function () {
+    profileView.style.display = 'none'
+    postsView.style.display = ''
+    newPostView.style.display = ''
+}
+
+newPostForm = newPostView.querySelector('#new-post-form')
+
+cancelNewPostButton = newPostForm.querySelector('#cancel-new-post-button')
+
+cancelNewPostButton.onclick = function (event) {
+    event.preventDefault()
+
+    newPostView.style.display = 'none'
+    newPostForm.reset()
+}
+
+newPostForm.onsubmit = function (event) {
+    event.preventDefault()
+
+    var imageInput = newPostForm.querySelector('#image-input')
+    var textInput = newPostForm.querySelector('#text-input')
+
+    var image = imageInput.value
+    var text = textInput.value
+
+    try {
+        publishPost(loggedInEmail, image, text)
+
+        newPostForm.reset()
+
+        newPostView.style.display = 'none'
+
+        // re-render posts
+
+        renderPosts()
+    } catch (error) {
+        alert(error.message)
+    }
+}
+
+function renderPosts() {
+    postsView.innerHTML = ''
+
+    var posts = retrievePosts()
+
+    posts.forEachReverse(function (post) {
+        var article = document.createElement('article')
+        article.setAttribute('class', 'post')
+
+        var h2 = document.createElement('h2')
+        h2.innerText = post.author
+
+        var img = document.createElement('img')
+        img.setAttribute('class', 'post-image')
+        img.src = post.image
+
+        var p = document.createElement('p')
+        p.innerText = post.text
+
+        article.append(h2, img, p)
+
+        postsView.append(article)
+    })
 }

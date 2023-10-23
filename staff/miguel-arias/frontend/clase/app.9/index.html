@@ -10,10 +10,10 @@
 </head>
 
 <body>
-    <div id="register-view" class="view">
+    <div id="register-view">
         <h1>Register</h1>
 
-        <form class="form">
+        <form class="register-form">
             <label for="name-input">Name</label>
             <input id="name-input" type="text">
 
@@ -23,23 +23,23 @@
             <label for="password-input">Password</label>
             <input type="password" id="password-input">
 
-            <button type="submit">Register</button>
+            <button>Register</button>
         </form>
 
         <a href="">Login</a>
     </div>
 
-    <div id="login-view" class="view">
+    <div id="login-view">
         <h1>Login</h1>
 
-        <form class="form">
+        <form class="login-form">
             <label for="email-input">E-mail</label>
             <input id="email-input" type="email">
 
             <label for="password-input">Password</label>
             <input type="password" id="password-input">
 
-            <button type="submit">Login</button>
+            <button>Login</button>
         </form>
 
         <a href="">Register</a>
@@ -50,18 +50,16 @@
             <h1><a href="" id="home-link">Home</a></h1>
 
             <div>
-                <button id="new-post-button">+</button>
-
                 <a href="" class="profile-link" id="profile-link">Profile</a>
 
                 <button id="logout-button">Logout</button>
             </div>
         </header>
 
-        <div id="profile-view" class="view">
+        <div id="profile-view">
             <h2>Update e-mail</h2>
 
-            <form id="change-email-form" class="form">
+            <form id="change-email-form">
                 <label for="new-email-input">New e-mail</label>
                 <input id="new-email-input" type="email">
 
@@ -71,12 +69,12 @@
                 <label for="password-input">Password</label>
                 <input type="password" id="password-input">
 
-                <button type="submit">Update e-mail</button>
+                <button>Update e-mail</button>
             </form>
 
             <h2>Update password</h2>
 
-            <form id="change-password-form" class="form">
+            <form id="change-password-form">
                 <label for="password-input">Current password</label>
                 <input type="password" id="password-input">
 
@@ -86,30 +84,26 @@
                 <label for="new-password-confirm-input">Confirm new password</label>
                 <input id="new-password-confirm-input" type="password">
 
-                <button type="submit">Update password</button>
-            </form>
-        </div>
-
-        <div id="new-post-view" class="view">
-            <h2>New post</h2>
-
-            <form id="new-post-form" class="form">
-                <label for="image-input">Image</label>
-                <input type="url" id="image-input">
-
-                <label for="text-input">Text</label>
-                <input type="text" id="text-input">
-
-                <button type="submit">Post</button>
-                <button id="cancel-new-post-button">Cancel</button>
+                <button>Update password</button>
             </form>
         </div>
 
         <div id="posts-view">
+            <!-- <article class="post">
+                <h2>peter@pan.com</h2>
+                <img class="post-image"
+                    src="https://m.media-amazon.com/images/M/MV5BMzIwMzUyYTUtMjQ3My00NDc3LWIyZjQtOGUzNDJmNTFlNWUxXkEyXkFqcGdeQXVyMjA0MDQ0Mjc@._V1_FMjpg_UX1000_.jpg">
+                <p>my granpa!</p>
+            </article>
+
+            <article class="post">
+                <h2>wendy@darling.com</h2>
+                <img class="post-image"
+                    src="https://ih1.redbubble.net/image.2230349250.8377/pp,840x830-pad,1000x1000,f8f8f8.jpg">
+                <p>my sweety!</p>
+            </article> -->
         </div>
     </div>
-
-    <script src="polyfills.js"></script>
 
     <script src="data.js"></script>
 
