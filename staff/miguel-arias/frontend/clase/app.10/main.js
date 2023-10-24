@@ -1,10 +1,12 @@
-// logic
+// session
 
-const logic = new Logic
+var loggedInEmail = null
 
 // login
 
-const loginView = new LoginView('login-view')
+var loginView = null
+var loginRegisterLink = null
+var loginForm = null
 
 // register
 

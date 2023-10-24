@@ -10,7 +10,7 @@ registerLoginLink.onclick = function (event) {
     registerView.style.display = 'none'
     registerForm.reset()
 
-    loginView.container.style.display = ''
+    loginView.style.display = ''
 }
 
 registerForm = registerView.querySelector('form')
@@ -18,21 +18,21 @@ registerForm = registerView.querySelector('form')
 registerForm.onsubmit = function (event) {
     event.preventDefault()
 
-    const nameInput = registerForm.querySelector('#name-input')
-    const emailInput = registerForm.querySelector('#email-input')
-    const passwordInput = registerForm.querySelector('#password-input')
+    var nameInput = registerForm.querySelector('#name-input')
+    var emailInput = registerForm.querySelector('#email-input')
+    var passwordInput = registerForm.querySelector('#password-input')
 
-    const name = nameInput.value
-    const email = emailInput.value
-    const password = passwordInput.value
+    var name = nameInput.value
+    var email = emailInput.value
+    var password = passwordInput.value
 
     try {
-        logic.registerUser(name, email, password)
+        registerUser(name, email, password)
 
         registerForm.reset()
 
         registerView.style.display = 'none'
-        loginView.container.style.display = ''
+        loginView.style.display = ''
     } catch (error) {
         alert(error.message)
     }

@@ -9,9 +9,7 @@ logoutButton.onclick = function () {
     profileView.style.display = 'none'
     newPostView.style.display = 'none'
     postsView.style.display = ''
-    loginView.container.style.display = ''
-
-    logic.logoutUser()
+    loginView.style.display = ''
 }
 
 changeEmailForm = homeView.querySelector('#change-email-form')
@@ -28,7 +26,9 @@ changeEmailForm.onsubmit = function (event) {
     var password = passwordInput.value
 
     try {
-        logic.changeUserEmail(newEmail, newEmailConfirm, password)
+        changeUserEmail(loggedInEmail, newEmail, newEmailConfirm, password)
+
+        loggedInEmail = newEmail
 
         alert('E-mail changed')
 
@@ -52,7 +52,7 @@ changePasswordForm.onsubmit = function (event) {
     var newPasswordConfirm = newPasswordConfirmInput.value
 
     try {
-        logic.changeUserPassword(newPassword, newPasswordConfirm, password)
+        changeUserPassword(loggedInEmail, newPassword, newPasswordConfirm, password)
 
         alert('Password changed')
 
@@ -122,7 +122,7 @@ newPostForm.onsubmit = function (event) {
     var text = textInput.value
 
     try {
-        logic.publishPost(image, text)
+        publishPost(loggedInEmail, image, text)
 
         newPostForm.reset()
 
@@ -139,28 +139,24 @@ newPostForm.onsubmit = function (event) {
 function renderPosts() {
     postsView.innerHTML = ''
 
-    try {
-        var posts = logic.retrievePosts()
+    var posts = retrievePosts()
 
-        posts.forEachReverse(function (post) {
-            var article = document.createElement('article')
-            article.setAttribute('class', 'post')
+    posts.forEachReverse(function (post) {
+        var article = document.createElement('article')
+        article.setAttribute('class', 'post')
 
-            var h2 = document.createElement('h2')
-            h2.innerText = post.author
+        var h2 = document.createElement('h2')
+        h2.innerText = post.author
 
-            var img = document.createElement('img')
-            img.setAttribute('class', 'post-image')
-            img.src = post.image
+        var img = document.createElement('img')
+        img.setAttribute('class', 'post-image')
+        img.src = post.image
 
-            var p = document.createElement('p')
-            p.innerText = post.text
+        var p = document.createElement('p')
+        p.innerText = post.text
 
-            article.append(h2, img, p)
+        article.append(h2, img, p)
 
-            postsView.append(article)
-        })
-    } catch (error) {
-        alert(error.message)
-    }
+        postsView.append(article)
+    })
 }
