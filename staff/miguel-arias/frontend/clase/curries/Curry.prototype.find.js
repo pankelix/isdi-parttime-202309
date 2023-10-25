@@ -1,9 +1,9 @@
 Curry.prototype.find = function (callback) {
     switch (typeof callback) {
         case 'function':
-            for (var i = 0; i < c.length; i++) {
-                if (callback(c[i]))
-                    return c[i]
+            for (let i = 0; i < this.length; i++) {
+                if (callback(this[i]))
+                    return this[i]
             }
         case 'undefined':
             throw new TypeError('undefined is not a function')

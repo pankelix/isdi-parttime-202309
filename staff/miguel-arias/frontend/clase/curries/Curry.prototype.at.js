@@ -1,18 +1,18 @@
 Curry.prototype.at = function (index) {
-    if (index >= c.length || index + c.length < 0)
+    if (index >= this.length || index + this.length < 0)
         return undefined
 
     if (index === true) {
-        element = c[1]
+        element = this[1]
         return element
     } else if (index === false || typeof index === 'string' || typeof index === 'object' || typeof index === 'undefined') {
-        element = c[0]
+        element = this[0]
         return element
     }
 
     if (Number.isInteger(index)) {
         if (index < 0) {
-            element = c.length - index
+            element = this.length - index
             return element
         }
     }
@@ -22,17 +22,17 @@ Curry.prototype.at = function (index) {
             index = '' + index + ''
             element = index[0]
             element = Number(element)
-            element = c[element]
+            element = this[element]
             return element
         } else {
             index = '' + index + ''
             element = index[0] + index[1]
             element = Number(element)
-            element = c[element + c.length]
+            element = this[element + this.length]
             return element
         }
     }
 
-    element = c[index]
+    element = this[index]
     return element
 }

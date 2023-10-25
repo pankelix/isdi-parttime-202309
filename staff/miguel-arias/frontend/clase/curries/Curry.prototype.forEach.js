@@ -1,6 +1,6 @@
 Curry.prototype.forEach = function (callback) {
-    for (var i = 0; i < c.length; i++) {
-        var element = c[i]
+    for (let i = 0; i < this.length; i++) {
+        const element = this[i]
 
         callback(element)
     }

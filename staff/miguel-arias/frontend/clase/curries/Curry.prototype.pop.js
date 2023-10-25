@@ -1,12 +1,12 @@
 Curry.prototype.pop = function () {
-    if (c.length > 0) {
-        var deletedElement = ''
+    if (this.length > 0) {
+        let deletedElement = ''
 
-        deletedElement = c[c.length - 1]
-        delete c[c.length - 1]
-        c.length--
+        deletedElement = this[this.length - 1]
+        delete this[this.length - 1]
+        this.length--
         return deletedElement
-        
+
     } else {
         return undefined
     }

@@ -1,6 +1,6 @@
 Curry.prototype.indexOf = function (element) {
-    for (var i = 0; i < c.length; i++) {
-        if (element === c[i])
+    for (let i = 0; i < this.length; i++) {
+        if (element === this[i])
             return i
     }
     return -1

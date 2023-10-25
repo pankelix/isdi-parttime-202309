@@ -1,6 +1,6 @@
 class LoginView {
-    constructor() {
-        this.container = document.getElementById('login-view')
+    constructor(containerId) {
+        this.container = document.getElementById(containerId)
 
         this.loginRegisterLink = this.container.querySelector('a')
 
@@ -10,7 +10,7 @@ class LoginView {
             this.container.style.display = 'none'
             this.loginForm.reset()
 
-            registerView.container.style.display = ''
+            registerView.style.display = ''
         }.bind(this)
 
         this.loginForm = this.container.querySelector('form')
@@ -31,17 +31,17 @@ class LoginView {
 
                 const user = logic.retrieveUser()
 
-                homeView.profileLink.innerText = user.name
+                profileLink.innerText = user.name
 
                 this.container.style.display = 'none'
 
                 // render posts in home
 
-                homeView.renderPosts()
+                renderPosts()
 
                 // show home
 
-                homeView.container.style.display = ''
+                homeView.style.display = ''
             } catch (error) {
                 alert(error.message)
             }

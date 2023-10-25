@@ -1,26 +1,24 @@
 Curry.prototype.splice = function (start, deleteCount) {
+    deletedElements = new Curry
     if (arguments.length === 1) {
-        deletedElements = []
-
-        for (var i = start; i < c.length; i++) {
-            deletedElements[deletedElements.length] = c[i]
-            delete c[i]
+        for (let i = start; i < this.length; i++) {
+            deletedElements[deletedElements.length] = this[i]
+            delete this[i]
+            deletedElements.length++
         }
 
-        c.length = c.length - deletedElements.length
+        this.length = this.length - deletedElements.length
         return deletedElements
 
     } else if (arguments.length === 2) {
-        deletedElements = new Curry()
-
-        for (var i = start; i < c.length; i++) {
+        for (let i = start; i < this.length; i++) {
             if (i === start + deleteCount - 1) {
-                deletedElements[deletedElements.length] = c[i]
-                delete c[i]
+                deletedElements[deletedElements.length] = this[i]
+                delete this[i]
+                deletedElements.length++
             }
         }
 
-        //c.length = c.length - deletedElements.length
         return deletedElements
     }
 }

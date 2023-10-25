@@ -26,20 +26,20 @@ Curry.prototype.slice = function (start, end) {
 
     if (!Number.isInteger(arguments[0]))
         if (start > 0) {
-            start = '' + start + ''
+            start = '' + start
             start = start[0]
         } else if (start < 0) {
-            start = '' + start + ''
+            start = '' + start
             start = start[0] + start[1]
         }
     start = Number(start)
 
     if (!Number.isInteger(arguments[1]))
         if (end > 0) {
-            end = '' + end + ''
+            end = '' + end
             end = end[0]
         } else if (start < 0) {
-            end = '' + end + ''
+            end = '' + end
             end = end[0] + end[1]
         }
     end = Number(end)
@@ -49,27 +49,30 @@ Curry.prototype.slice = function (start, end) {
 
     if (arguments.length === 1) {
         if (start < 0)
-            start = start + c.length
+            start = start + this.length
 
-        slicedArray = []
-        for (var i = start; i < c.length; i++) {
-            slicedArray[slicedArray.length] = c[i]
+        const slicedCurry = new Curry
+        for (let i = start; i < this.length; i++) {
+            slicedCurry[slicedCurry.length] = this[i]
+            slicedCurry.length++
         }
-        return slicedArray
+
+        return slicedCurry
     } else if (arguments.length === 2 || arguments.length === 0) {
         if (start < 0)
-            start = start + c.length
+            start = start + this.length
 
         if (end < 0)
-            end = end + c.length
+            end = end + this.length
 
         if (start === 0)
             end = c.length
 
-        slicedArray = []
-        for (var i = start; i < end; i++) {
-            slicedArray[slicedArray.length] = c[i]
+        const slicedCurry = new Curry
+        for (let i = start; i < end; i++) {
+            slicedCurry[slicedCurry.length] = this[i]
+            slicedCurry.length++
         }
-        return slicedArray
+        return slicedCurry
     }
 }

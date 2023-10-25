@@ -1,166 +1,170 @@
-homeView = document.getElementById('home-view')
+class HomeView {
+    constructor() {
+        this.container = document.getElementById('home-view')
 
-homeView.style.display = 'none'
+        this.container.style.display = 'none'
 
-logoutButton = homeView.querySelector('#logout-button')
+        this.logoutButton = this.container.querySelector('#logout-button')
 
-logoutButton.onclick = function () {
-    homeView.style.display = 'none'
-    profileView.style.display = 'none'
-    newPostView.style.display = 'none'
-    postsView.style.display = ''
-    loginView.container.style.display = ''
+        this.logoutButton.onclick = function () {
+            this.container.style.display = 'none'
+            this.profileView.style.display = 'none'
+            this.newPostView.style.display = 'none'
+            this.postsView.style.display = ''
+            loginView.container.style.display = ''
 
-    logic.logoutUser()
-}
+            logic.logoutUser()
+        }.bind(this)
 
-changeEmailForm = homeView.querySelector('#change-email-form')
+        this.changeEmailForm = this.container.querySelector('#change-email-form')
 
-changeEmailForm.onsubmit = function (event) {
-    event.preventDefault()
+        this.changeEmailForm.onsubmit = function (event) {
+            event.preventDefault()
 
-    var newEmailInput = changeEmailForm.querySelector('#new-email-input')
-    var newEmailConfirmInput = changeEmailForm.querySelector('#new-email-confirm-input')
-    var passwordInput = changeEmailForm.querySelector('#password-input')
+            const newEmailInput = this.changeEmailForm.querySelector('#new-email-input')
+            const newEmailConfirmInput = this.changeEmailForm.querySelector('#new-email-confirm-input')
+            const passwordInput = this.changeEmailForm.querySelector('#password-input')
 
-    var newEmail = newEmailInput.value
-    var newEmailConfirm = newEmailConfirmInput.value
-    var password = passwordInput.value
+            const newEmail = newEmailInput.value
+            const newEmailConfirm = newEmailConfirmInput.value
+            const password = passwordInput.value
 
-    try {
-        logic.changeUserEmail(newEmail, newEmailConfirm, password)
+            try {
+                logic.changeUserEmail(newEmail, newEmailConfirm, password)
 
-        alert('E-mail changed')
+                alert('E-mail changed')
 
-        changeEmailForm.reset()
-    } catch (error) {
-        alert(error.message)
+                this.changeEmailForm.reset()
+            } catch (error) {
+                alert(error.message)
+            }
+        }.bind(this)
+
+        this.changePasswordForm = this.container.querySelector('#change-password-form')
+
+        this.changePasswordForm.onsubmit = function (event) {
+            event.preventDefault()
+
+            const passwordInput = this.changePasswordForm.querySelector('#password-input')
+            const newPasswordInput = this.changePasswordForm.querySelector('#new-password-input')
+            const newPasswordConfirmInput = this.changePasswordForm.querySelector('#new-password-confirm-input')
+
+            const password = passwordInput.value
+            const newPassword = newPasswordInput.value
+            const newPasswordConfirm = newPasswordConfirmInput.value
+
+            try {
+                logic.changeUserPassword(newPassword, newPasswordConfirm, password)
+
+                alert('Password changed')
+
+                this.changePasswordForm.reset()
+            } catch (error) {
+                alert(error.message)
+            }
+        }.bind(this)
+
+        this.homeLink = this.container.querySelector('#home-link')
+
+        this.homeLink.onclick = function (event) {
+            event.preventDefault()
+
+            this.profileView.style.display = 'none'
+            this.newPostView.style.display = 'none'
+            this.postsView.style.display = ''
+        }.bind(this)
+
+        // profile
+
+        this.profileView = this.container.querySelector('#profile-view')
+
+        this.profileView.style.display = 'none'
+
+        this.profileLink = this.container.querySelector('#profile-link')
+
+        this.profileLink.onclick = function (event) {
+            event.preventDefault()
+
+            this.newPostView.style.display = 'none'
+            this.postsView.style.display = 'none'
+            this.profileView.style.display = ''
+        }.bind(this)
+
+        this.postsView = this.container.querySelector('#posts-view')
+
+        this.newPostView = this.container.querySelector('#new-post-view')
+        this.newPostView.style.display = 'none'
+
+        this.newPostButton = this.container.querySelector('#new-post-button')
+
+        this.newPostButton.onclick = function () {
+            this.profileView.style.display = 'none'
+            this.postsView.style.display = ''
+            this.newPostView.style.display = ''
+        }.bind(this)
+
+        this.newPostForm = this.newPostView.querySelector('#new-post-form')
+
+        this.cancelNewPostButton = this.newPostForm.querySelector('#cancel-new-post-button')
+
+        this.cancelNewPostButton.onclick = function (event) {
+            event.preventDefault()
+
+            this.newPostView.style.display = 'none'
+            this.newPostForm.reset()
+        }.bind(this)
+
+        this.newPostForm.onsubmit = function (event) {
+            event.preventDefault()
+
+            const imageInput = this.newPostForm.querySelector('#image-input')
+            const textInput = this.newPostForm.querySelector('#text-input')
+
+            const image = imageInput.value
+            const text = textInput.value
+
+            try {
+                logic.publishPost(image, text)
+
+                this.newPostForm.reset()
+
+                this.newPostView.style.display = 'none'
+
+                // re-render posts
+
+                this.renderPosts()
+            } catch (error) {
+                alert(error.message)
+            }
+        }.bind(this)
     }
-}
 
-changePasswordForm = homeView.querySelector('#change-password-form')
+    renderPosts() {
+        this.postsView.innerHTML = ''
 
-changePasswordForm.onsubmit = function (event) {
-    event.preventDefault()
+        try {
+            const posts = logic.retrievePosts()
 
-    var passwordInput = changePasswordForm.querySelector('#password-input')
-    var newPasswordInput = changePasswordForm.querySelector('#new-password-input')
-    var newPasswordConfirmInput = changePasswordForm.querySelector('#new-password-confirm-input')
+            posts.forEachReverse(function (post) {
+                const article = document.createElement('article')
+                article.setAttribute('class', 'post')
 
-    var password = passwordInput.value
-    var newPassword = newPasswordInput.value
-    var newPasswordConfirm = newPasswordConfirmInput.value
+                const h2 = document.createElement('h2')
+                h2.innerText = post.author
 
-    try {
-        logic.changeUserPassword(newPassword, newPasswordConfirm, password)
+                const img = document.createElement('img')
+                img.setAttribute('class', 'post-image')
+                img.src = post.image
 
-        alert('Password changed')
+                const p = document.createElement('p')
+                p.innerText = post.text
 
-        changePasswordForm.reset()
-    } catch (error) {
-        alert(error.message)
-    }
-}
+                article.append(h2, img, p)
 
-homeLink = homeView.querySelector('#home-link')
-
-homeLink.onclick = function (event) {
-    event.preventDefault()
-
-    profileView.style.display = 'none'
-    newPostView.style.display = 'none'
-    postsView.style.display = ''
-}
-
-// profile
-
-profileView = homeView.querySelector('#profile-view')
-
-profileView.style.display = 'none'
-
-profileLink = homeView.querySelector('#profile-link')
-
-profileLink.onclick = function (event) {
-    event.preventDefault()
-
-    newPostView.style.display = 'none'
-    postsView.style.display = 'none'
-    profileView.style.display = ''
-}
-
-postsView = homeView.querySelector('#posts-view')
-
-newPostView = homeView.querySelector('#new-post-view')
-newPostView.style.display = 'none'
-
-newPostButton = homeView.querySelector('#new-post-button')
-
-newPostButton.onclick = function () {
-    profileView.style.display = 'none'
-    postsView.style.display = ''
-    newPostView.style.display = ''
-}
-
-newPostForm = newPostView.querySelector('#new-post-form')
-
-cancelNewPostButton = newPostForm.querySelector('#cancel-new-post-button')
-
-cancelNewPostButton.onclick = function (event) {
-    event.preventDefault()
-
-    newPostView.style.display = 'none'
-    newPostForm.reset()
-}
-
-newPostForm.onsubmit = function (event) {
-    event.preventDefault()
-
-    var imageInput = newPostForm.querySelector('#image-input')
-    var textInput = newPostForm.querySelector('#text-input')
-
-    var image = imageInput.value
-    var text = textInput.value
-
-    try {
-        logic.publishPost(image, text)
-
-        newPostForm.reset()
-
-        newPostView.style.display = 'none'
-
-        // re-render posts
-
-        renderPosts()
-    } catch (error) {
-        alert(error.message)
-    }
-}
-
-function renderPosts() {
-    postsView.innerHTML = ''
-
-    try {
-        var posts = logic.retrievePosts()
-
-        posts.forEachReverse(function (post) {
-            var article = document.createElement('article')
-            article.setAttribute('class', 'post')
-
-            var h2 = document.createElement('h2')
-            h2.innerText = post.author
-
-            var img = document.createElement('img')
-            img.setAttribute('class', 'post-image')
-            img.src = post.image
-
-            var p = document.createElement('p')
-            p.innerText = post.text
-
-            article.append(h2, img, p)
-
-            postsView.append(article)
-        })
-    } catch (error) {
-        alert(error.message)
+                this.postsView.append(article)
+            }.bind(this))
+        } catch (error) {
+            alert(error.message)
+        }
     }
 }

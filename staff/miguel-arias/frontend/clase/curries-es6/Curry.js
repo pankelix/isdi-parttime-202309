@@ -101,18 +101,217 @@ class Curry {
     filter(callback) {
         if (typeof callback !== 'function')
             throw new TypeError(typeof callback + ' ' + callback + ' is not a function')
-    
-        var filteredCurry = new Curry
+
+        const filteredCurry = new Curry
         for (let i = 0; i < this.length; i++) {
             if (callback(this[i])) {
                 filteredCurry[filteredCurry.length] = this[i]
                 filteredCurry.length++
             }
         }
-        
+
         return filteredCurry
     }
 
-    
+    indexOf(element) {
+        for (let i = 0; i < this.length; i++) {
+            if (element === this[i])
+                return i
+        }
+        return -1
+    }
+
+    join(separator) {
+        joinedString = ''
+
+        if (separator === undefined)
+            separator = ','
+
+        if (this.length === 0)
+            return ''
+
+        if (this.length === 1)
+            return this.toString()
+
+        for (let i = 0; i < this.length; i++) {
+            joinedString += this[i]
+
+            if (i < this.length - 1)
+                joinedString += separator
+        }
+        return joinedString
+    }
+
+    map(callback) {
+        switch (typeof callback) {
+            case 'function':
+                const mappedCurry = new Curry
+                for (let i = 0; i < this.length; i++)
+                    mappedCurry[i] = callback(this[i])
+
+                return mappedCurry
+            case 'undefined':
+                throw new TypeError('undefined is not a function')
+            case 'string':
+                throw new TypeError('string "' + callback + '" is not a function')
+            case 'number':
+                throw new TypeError('number ' + callback + ' is not a function');
+            case 'object':
+                throw new TypeError('object ' + callback + ' is not a function');
+            case 'boolean':
+                throw new TypeError('boolean ' + callback + ' is not a function');
+            default:
+        }
+    }
+
+    pop() {
+        if (this.length > 0) {
+            let deletedElement = ''
+
+            deletedElement = this[this.length - 1]
+            delete this[this.length - 1]
+            this.length--
+            return deletedElement
+
+        } else {
+            return undefined
+        }
+    }
+
+    find(callback) {
+        switch (typeof callback) {
+            case 'function':
+                for (let i = 0; i < this.length; i++) {
+                    if (callback(this[i]))
+                        return this[i]
+                }
+            case 'undefined':
+                throw new TypeError('undefined is not a function')
+            case 'string':
+                throw new TypeError('string "' + callback + '" is not a function')
+            case 'number':
+                throw new TypeError('number ' + callback + ' is not a function');
+            case 'object':
+                throw new TypeError('object ' + callback + ' is not a function');
+            case 'boolean':
+                throw new TypeError('boolean ' + callback + ' is not a function');
+            default:
+        }
+    }
+
+    slice(start, end) {
+        if (arguments.length === 0)
+            start = 0
+
+        if (start === null || start === undefined || start === false || typeof start === 'string')
+            start = 0
+
+        if (start === true)
+            start = 1
+
+        if (end === null || end === undefined || end === false || typeof end === 'string')
+            end = 0
+
+        if (end === true)
+            end = 1
+
+        if (!Number.isInteger(arguments[0]))
+            if (start > 0) {
+                start = '' + start
+                start = start[0]
+            } else if (start < 0) {
+                start = '' + start
+                start = start[0] + start[1]
+            }
+        start = Number(start)
+
+        if (!Number.isInteger(arguments[1]))
+            if (end > 0) {
+                end = '' + end
+                end = end[0]
+            } else if (start < 0) {
+                end = '' + end
+                end = end[0] + end[1]
+            }
+        end = Number(end)
+
+        if (arguments.length > 2)
+            arguments.length = 2
+
+        if (arguments.length === 1) {
+            if (start < 0)
+                start = start + this.length
+
+            const slicedCurry = new Curry
+            for (let i = start; i < this.length; i++) {
+                slicedCurry[slicedCurry.length] = this[i]
+                slicedCurry.length++
+            }
+
+            return slicedCurry
+        } else if (arguments.length === 2 || arguments.length === 0) {
+            if (start < 0)
+                start = start + this.length
+
+            if (end < 0)
+                end = end + this.length
+
+            if (start === 0)
+                end = c.length
+
+            const slicedCurry = new Curry
+            for (let i = start; i < end; i++) {
+                slicedCurry[slicedCurry.length] = this[i]
+                slicedCurry.length++
+            }
+            return slicedCurry
+        }
+    }
+
+    splice(start, deleteCount) { //NO TERMINADO
+        deletedElements = new Curry
+        if (arguments.length === 1) {
+            for (let i = start; i < this.length; i++) {
+                deletedElements[deletedElements.length] = this[i]
+                delete this[i]
+                deletedElements.length++
+            }
+
+            this.length = this.length - deletedElements.length
+            return deletedElements
+
+        } else if (arguments.length === 2) {
+            for (let i = start; i < this.length; i++) {
+                if (i === start + deleteCount - 1) {
+                    deletedElements[deletedElements.length] = this[i]
+                    delete this[i]
+                    deletedElements.length++
+                }
+            }
+
+            return deletedElements
+        }
+    }
+
+    reverse() {
+        for (let i = 0; i < Math.floor(this.length / 2); i++) {
+            let forwardElement = this[i]
+            this[i] = this[this.length - 1 - i]
+            this[this.length - 1 - i] = forwardElement
+        }
+
+        return this
+    }
+
+    toReversed() {
+        toReversedCurry = new Curry()
+
+        for (let i = this.length - 1; i > -1; i--) {
+            toReversedCurry[this.length - 1 - i] = this[i]
+            toReversedCurry.length++
+        }
+
+        return toReversedCurry
+    }
 
 }

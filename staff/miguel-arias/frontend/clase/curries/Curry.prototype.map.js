@@ -1,11 +1,11 @@
 Curry.prototype.map = function (callback) {
     switch (typeof callback) {
         case 'function':
-            mappedArray = []
-            for (var i = 0; i < c.length; i++)
-                mappedArray[i] = callback(c[i])
+            const mappedCurry = new Curry
+            for (let i = 0; i < this.length; i++)
+                mappedCurry[i] = callback(this[i])
 
-            return mappedArray
+            return mappedCurry
         case 'undefined':
             throw new TypeError('undefined is not a function')
         case 'string':

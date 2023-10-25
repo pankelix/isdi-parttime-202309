@@ -4,16 +4,16 @@ Curry.prototype.join = function (separator) {
     if (separator === undefined)
         separator = ','
 
-    if (c.length === 0)
+    if (this.length === 0)
         return ''
 
-    if (c.length === 1)
-        return c.toString()
+    if (this.length === 1)
+        return this.toString()
 
-    for (var i = 0; i < c.length; i++) {
-        joinedString += c[i]
-        
-        if (i < c.length - 1)
+    for (let i = 0; i < this.length; i++) {
+        joinedString += this[i]
+
+        if (i < this.length - 1)
             joinedString += separator
     }
     return joinedString
