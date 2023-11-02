@@ -15,8 +15,6 @@ console.log(filteredCurry)
 
 //
 
-console.log('TEST Curry filter')
-
 console.log('CASE filter unordered values > 10')
 
 var c = new Curry(1, 18, 4, 29, 10, 3, 7)
