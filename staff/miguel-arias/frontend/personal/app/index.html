@@ -4,80 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App</title>
+    <title>App-Personal</title>
+    <link rel="shortcut icon" href="https://www.b00tc4mp.com/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="register">
-        <h1>Register</h1>
+    <div id="root"></div>
 
-        <form>
-            <label for="name">Name</label>
-            <input id="name" type="text">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-            <label for="email">E-mail</label>
-            <input id="email" type="email">
+    <script src="polyfills.js"></script>
 
-            <label for="password">Password</label>
-            <input id="password" type="password">
-
-            <button>Register</button>
-        </form>
-        <a href="">Login</a>
-    </div>
-
-    <div id="login">
-        <h1>Login</h1>
-        <form>
-            <label for="email">E-mail</label>
-            <input id="email" type="email">
-
-            <label for="password">Password</label>
-            <input id="password" type="password">
-
-            <button>Login</button>
-        </form>
-        <a href="">Register</a>
-    </div>
-
-    <div id="home">
-        <h1>Hello, Home!</h1>
-        <a href="">Profile</a>
-        <button id="logout-btn">Logout</button>
-    </div>
-
-    <div id="profile">
-        <h1>This is your profile page</h1>
-        <button id="home-btn">Home</button>
-
-        <form>
-            <h2 id="profile-name">Your name:</h2>
-            <input id="name" type="name">
-            <button id="change-name-btn">Change name</button>
-
-            <h2 id="profile-email">Your email:</h2>
-            <h4>New email</h4>
-            <input id="new-email" type="email">
-            <h4>Confirm new email</h4>
-            <input id="new-email-confirm" type="email">
-            <h4>Password</h4>
-            <input id="password" type="password">
-            <button id="change-email-btn">Change email</button>
-            
-            <h2 id="profile-password">Password change</h2>
-            <h4>Type your password</h4>
-            <input id="password" type="password">
-            <h4>Confirm your password</h4>
-            <input id="confirm-password" type="password">
-            <button id="change-password-btn">Change password</button>
-        </form>
-    </div>
+    <script src="data/models.js"></script>
+    <script src="data/db.js"></script>
+    <script src="data/managers.js"></script>
 
     <script src="validators.js"></script>
-
-    <script src="data.js"></script>
     <script src="logic.js"></script>
-    <script src="main.js"></script>
+
+    <script src="views/Login.jsx" type="text/babel"></script>
+    <script src="views/Register.jsx" type="text/babel"></script>
+    <script src="views/Home.jsx" type="text/babel"></script>
+    <script src="App.jsx" type="text/babel"></script>
+    <script src="main.jsx" type="text/babel"></script>
 </body>
 
 </html>

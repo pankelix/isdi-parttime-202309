@@ -3,6 +3,8 @@ function validateText(text, explain) {
     if (!text.trim().length) throw new Error(explain + ' is empty')
 }
 
-function validateNumber(number, explain) {
-    if (typeof number !== 'number') throw new TypeError(`${explain} is not a number`)
+function validatePasswordsMatch(password, confirmPassword) {
+    if (password !== confirmPassword) {
+        throw new Error('passwords do not match')
+    }
 }
