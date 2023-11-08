@@ -1,6 +1,4 @@
 function Register(props) {
-    console.log('Register')
-
     function handleSubmit(event) {
         event.preventDefault()
 

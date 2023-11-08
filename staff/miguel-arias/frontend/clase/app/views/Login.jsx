@@ -1,4 +1,6 @@
 function Login(props) {
+    console.log('Login')
+
     function handleSubmit(event) {
         event.preventDefault()
 
