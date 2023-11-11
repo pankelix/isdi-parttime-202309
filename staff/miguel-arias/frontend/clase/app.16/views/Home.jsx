@@ -97,8 +97,11 @@ function Home(props) {
     function handleNewPostSubmit(event) {
         event.preventDefault()
 
-        const image = event.target.querySelector('#image-input').value
-        const text = event.target.querySelector('#text-input').value
+        const imageInput = event.target.querySelector('#image-input')
+        const textInput = event.target.querySelector('#text-input')
+
+        const image = imageInput.value
+        const text = textInput.value
 
         try {
             logic.publishPost(image, text)
@@ -119,7 +122,7 @@ function Home(props) {
         }
     }
 
-    function handleDeletePostClick(postId) {
+    function handleDeleteClick(postId) {
         if (confirm('Are you sure you want to delete this post?')) {
             try {
                 logic.deletePost(postId)
@@ -133,45 +136,16 @@ function Home(props) {
         return
     }
 
-    function handleToggleFavPostClick(postId) {
-        try {
-            logic.toggleFavPost(postId)
-
-            setTimestamp(Date.now())
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
-    function handleFavListClick(event) {
-        event.preventDefault()
-
-        setView('favlist')
-    }
-
-    let userFavPosts = null
-
-    try {
-        userFavPosts = logic.retrieveFavPosts()
-        //necesito que me devuelva un array con los posts favoritos del usuario conectado
-    } catch (error) {
-        alert(error.message)
-    }
-
     return <div>
         <header className="home-header">
             <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
             <div>
-                <button onClick={handleNewPostClick}>+</button>
-                <a href="" onClick={handleProfileClick}>{name}</a>
-                <a href="" onClick={handleFavListClick}>Fav list</a>
-                <button onClick={handleLogoutClick}>Logout</button>
+                <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <button onClick={handleLogoutClick}>Logout</button>
             </div>
         </header>
 
         {view === 'profile' && <div className="view">
-            {console.log('Profile view')}
             <h2>Update e-mail</h2>
 
             <form className="form" onSubmit={handleChangeEmailSubmit}>
@@ -204,7 +178,6 @@ function Home(props) {
         </div>}
 
         {view === 'new-post' && <div className="view">
-            {console.log('new post view')}
             <h2>New post</h2>
 
             <form className="form" onSubmit={handleNewPostSubmit}>
@@ -219,55 +192,22 @@ function Home(props) {
             </form>
         </div>}
 
-        {view !== 'profile' && view !== 'favlist' && posts !== null && <div>
-            {console.log('normalview')}
+        {view !== 'profile' && posts !== null && <div>
             {posts.map((post) => {
                 function handleToggleLikeButtonClick() {
                     handleToggleLikePostClick(post.id)
                 }
 
-                function handleDeletePostButtonClick() {
-                    handleDeletePostClick(post.id)
-                }
-
-                function handleToggleFavPostButtonClick() {
-                    handleToggleFavPostClick(post.id)
+                function handleDeleteButtonClick() {
+                    handleDeleteClick(post.id)
                 }
 
                 return <article key={post.id} className="post">
                     <h2>{post.author.name}</h2>
                     <img className="post-image" src={post.image} />
                     <p>{post.text}</p>
-                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-                    {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>Delete Post</button>}
-                    <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'} fav</button>
-                </article>
-            })}
-        </div>}
-
-        {view === 'favlist' && <div>
-            {console.log('favlist')}
-
-            {userFavPosts.map((post) => {
-                function handleToggleLikeButtonClick() {
-                    handleToggleLikePostClick(post.id)
-                }
-
-                function handleDeletePostButtonClick() {
-                    handleDeletePostClick(post.id)
-                }
-
-                function handleToggleFavPostButtonClick() {
-                    handleToggleFavPostClick(post.id)
-                }
-
-                return <article key={post.id} className="post">
-                    <h2>{post.author.name}</h2>
-                    <img className="post-image" src={post.image} />
-                    <p>{post.text}</p>
-                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-                    {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>Delete Post</button>}
-                    <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'} fav</button>
+                    <button onClick={handleToggleLikeButtonClick}>{post.isFav ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    {post.author.id === logic.sessionUserId && <button onClick={handleDeleteButtonClick}>Delete Post</button>}
                 </article>
             })}
         </div>}

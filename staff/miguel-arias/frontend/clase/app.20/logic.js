@@ -131,6 +131,7 @@ class Logic {
         })
 
         return userFavPosts
+        //posts tiene que ser un array con los posts favoritos del usuario conectado
     }
 
     publishPost(image, text) {

@@ -88,10 +88,10 @@ class Logic {
         const posts = db.posts.getAll()
 
         posts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId)
+            post.liked = post.likes.includes(this.userId)
 
             const author = db.users.findById(post.author)
-
+            
             post.fav = user.favs.includes(post.id)
 
             post.author = {
@@ -103,41 +103,11 @@ class Logic {
         return posts
     }
 
-    retrieveFavPosts() {
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user)
-            throw new Error('user not found')
-
-        const favPostArray = db.users.getFavPostsById(user.id)
-
-        const userFavPosts = []
-
-        for (let i=0; i < favPostArray.length; i++) {
-            userFavPosts[i] = db.posts.findById(favPostArray[i])
-        }
-
-        userFavPosts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId)
-
-            const author = db.users.findById(post.author)
-
-            post.fav = user.favs.includes(post.id)
-
-            post.author = {
-                name: author.name,
-                id: author.id
-            }
-        })
-
-        return userFavPosts
-    }
-
     publishPost(image, text) {
         validateText(image, 'image')
         validateText(text, 'text')
 
-        db.posts.insert(new Post(null, this.sessionUserId, image, text, []))
+        db.posts.insert(new Post(this.userId, image, text))
     }
 
     toggleLikePost(postId) {
@@ -147,10 +117,10 @@ class Logic {
 
         if (!post) throw new Error('post not found')
 
-        const likeIndex = post.likes.indexOf(this.sessionUserId)
+        const likeIndex = post.likes.indexOf(this.userId)
 
         if (likeIndex < 0)
-            post.likes.push(this.sessionUserId)
+            post.likes.push(this.userId)
         else
             post.likes.splice(likeIndex, 1)
 

@@ -103,36 +103,6 @@ class Logic {
         return posts
     }
 
-    retrieveFavPosts() {
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user)
-            throw new Error('user not found')
-
-        const favPostArray = db.users.getFavPostsById(user.id)
-
-        const userFavPosts = []
-
-        for (let i=0; i < favPostArray.length; i++) {
-            userFavPosts[i] = db.posts.findById(favPostArray[i])
-        }
-
-        userFavPosts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId)
-
-            const author = db.users.findById(post.author)
-
-            post.fav = user.favs.includes(post.id)
-
-            post.author = {
-                name: author.name,
-                id: author.id
-            }
-        })
-
-        return userFavPosts
-    }
-
     publishPost(image, text) {
         validateText(image, 'image')
         validateText(text, 'text')
