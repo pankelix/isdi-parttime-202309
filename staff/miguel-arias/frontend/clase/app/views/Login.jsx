@@ -28,18 +28,23 @@ function Login(props) {
     }
 
     return <div className="view">
-        <h1>Login</h1>
+        <div className="login-view">
+            <h1>Login</h1>
 
-        <form className="form" onSubmit={handleSubmit}>
-            <label htmlFor="email-input">E-mail</label>
-            <input id="email-input" type="email" />
+            <form className="form" onSubmit={handleSubmit}>
+                <label htmlFor="email-input">E-mail</label>
+                <input id="email-input" type="email" />
 
-            <label htmlFor="password-input">Password</label>
-            <input type="password" id="password-input" />
+                <label htmlFor="password-input">Password</label>
+                <input type="password" id="password-input" />
 
-            <button type="submit">Login</button>
-        </form>
+                <button type="submit">Log In</button>
+            </form>
 
-        <a href="" onClick={handleRegisterClick}>Register</a>
+            <div className="login-to-register">
+                <p>Don't have an account?</p>
+                <a href="" onClick={handleRegisterClick}>Sign up</a>
+            </div>
+        </div>
     </div>
 }

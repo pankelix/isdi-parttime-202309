@@ -31,21 +31,26 @@ function Register(props) {
     }
 
     return <div className="view">
-        <h1>Register</h1>
+        <div className="register-view">
+            <h1>Register</h1>
 
-        <form className="form" onSubmit={handleSubmit}>
-            <label htmlFor="name-input">Name</label>
-            <input id="name-input" type="text" />
+            <form className="form" onSubmit={handleSubmit}>
+                <label htmlFor="name-input">Name</label>
+                <input id="name-input" type="text" />
 
-            <label htmlFor="email-input">E-mail</label>
-            <input id="email-input" type="email" />
+                <label htmlFor="email-input">E-mail</label>
+                <input id="email-input" type="email" />
 
-            <label htmlFor="password-input">Password</label>
-            <input type="password" id="password-input" />
+                <label htmlFor="password-input">Password</label>
+                <input type="password" id="password-input" />
 
-            <button type="submit">Register</button>
-        </form>
-
-        <a href="" onClick={handleLoginClick}>Login</a>
+                <button type="submit">Register</button>
+            </form>
+            
+            <div className="register-to-login">
+                <p>Already have an account?</p>
+                <a href="" onClick={handleLoginClick}>Enter</a>
+            </div>
+        </div>
     </div>
 }

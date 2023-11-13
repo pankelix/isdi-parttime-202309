@@ -162,11 +162,11 @@ function Home(props) {
         <header className="home-header">
             <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
-            <div>
-                <button onClick={handleNewPostClick}>+</button>
+            <div className="home-header-buttons">
+                <button className="new-post-button" onClick={handleNewPostClick}>➕</button>
                 <a href="" onClick={handleProfileClick}>{name}</a>
                 <a href="" onClick={handleFavListClick}>Fav list</a>
-                <button onClick={handleLogoutClick}>Logout</button>
+                <button className="logout-button" onClick={handleLogoutClick}>Logout</button>
             </div>
         </header>
 
@@ -219,7 +219,7 @@ function Home(props) {
             </form>
         </div>}
 
-        {view !== 'profile' && view !== 'favlist' && posts !== null && <div>
+        {view !== 'profile' && view !== 'favlist' && posts !== null && <div className="post-div">
             {console.log('normalview')}
             {posts.map((post) => {
                 function handleToggleLikeButtonClick() {
@@ -235,17 +235,24 @@ function Home(props) {
                 }
 
                 return <article key={post.id} className="post">
-                    <h2>{post.author.name}</h2>
+                    <h3>{post.author.name}</h3>
                     <img className="post-image" src={post.image} />
-                    <p>{post.text}</p>
-                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-                    {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>Delete Post</button>}
-                    <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'} fav</button>
+
+                    <div className="post-buttons">
+                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</button>
+                        <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
+                        {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
+                    </div>
+
+                    <div className="post-text">
+                        <h4>{post.author.name}</h4>
+                        <p>{post.text}</p>
+                    </div>
                 </article>
             })}
         </div>}
 
-        {view === 'favlist' && <div>
+        {view === 'favlist' && <div className="post-div">
             {console.log('favlist')}
 
             {userFavPosts.map((post) => {
@@ -262,12 +269,19 @@ function Home(props) {
                 }
 
                 return <article key={post.id} className="post">
-                    <h2>{post.author.name}</h2>
+                    <h3>{post.author.name}</h3>
                     <img className="post-image" src={post.image} />
-                    <p>{post.text}</p>
-                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-                    {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>Delete Post</button>}
-                    <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'} fav</button>
+
+                    <div className="post-buttons">
+                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                        <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
+                        {post.author.id === logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
+
+                        <div className="post-text">
+                            <h4>{post.author.name}</h4>
+                            <p>{post.text}</p>
+                        </div>
+                    </div>
                 </article>
             })}
         </div>}
