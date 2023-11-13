@@ -109,12 +109,10 @@ class Logic {
         if (!user)
             throw new Error('user not found')
 
-        const favPostArray = db.users.getFavPostsById(user.id)
-
         const userFavPosts = []
 
-        for (let i=0; i < favPostArray.length; i++) {
-            userFavPosts[i] = db.posts.findById(favPostArray[i])
+        for (let i = 0; i < user.favs.length; i++) {
+            userFavPosts[i] = db.posts.findById(user.favs[i])
         }
 
         userFavPosts.forEach(post => {

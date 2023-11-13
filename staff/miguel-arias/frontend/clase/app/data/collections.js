@@ -89,12 +89,6 @@ class Users extends Collection {
 
         return this.clone(document)
     }
-
-    getFavPostsById(userId) {
-        //validateText(id, `${this.clazz.name} id`)
-
-        return this.documents.find(document => document.id === userId).favs
-    }
 }
 
 class Posts extends Collection {
