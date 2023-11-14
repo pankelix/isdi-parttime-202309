@@ -314,4 +314,29 @@ class Curry {
         return toReversedCurry
     }
 
+    reduce(callback, initialValue) {
+        if (arguments.length < 2) {
+            let acc = this[0] //1
+            let item = this[1] //2
+    
+            for (let i = 1; i < this.length; i++) {
+                acc = callback(acc, item)
+                item = this[1+i]
+            }
+    
+            return acc
+            
+        } else if (arguments.length >= 2) {
+            let acc = this[0] //1
+            let item = this[1] //2
+    
+            for (let i = 1; i < this.length; i++) {
+                acc = callback(acc, item)
+                item = this[1+i]
+            }
+    
+            return acc + initialValue
+        }
+    }
+
 }
