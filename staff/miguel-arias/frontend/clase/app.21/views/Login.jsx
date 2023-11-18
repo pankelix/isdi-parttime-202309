@@ -1,55 +1,49 @@
-function Register(props) {
-    console.log('Register')
+function Login(props) {
+    console.log('Login')
 
     function handleSubmit(event) {
         event.preventDefault()
 
-        const nameInput = event.target.querySelector('#name-input')
         const emailInput = event.target.querySelector('#email-input')
         const passwordInput = event.target.querySelector('#password-input')
 
-        const name = nameInput.value
         const email = emailInput.value
         const password = passwordInput.value
 
-        // console.log(name, email, password)
-
+        // console.log(email, password)
         try {
-            logic.registerUser(name, email, password, () => {
-                props.onSuccess()
-            })
+            logic.loginUser(email, password)
+
+            props.onSuccess()
         } catch (error) {
             alert(error.message)
         }
     }
 
-    function handleLoginClick(event) {
+    function handleRegisterClick(event) {
         event.preventDefault()
 
-        // console.log('login click')
-        props.onLoginClick()
+        // console.log('register click')
+        props.onRegisterClick()
     }
 
     return <div className="view">
-        <div className="register-view">
-            <h1>Register</h1>
+        <div className="login-view">
+            <h1>Login</h1>
 
             <form className="form" onSubmit={handleSubmit}>
-                <label htmlFor="name-input">Name</label>
-                <input id="name-input" type="text" />
-
                 <label htmlFor="email-input">E-mail</label>
                 <input id="email-input" type="email" />
 
                 <label htmlFor="password-input">Password</label>
                 <input type="password" id="password-input" />
 
-                <button type="submit">Register</button>
+                <button type="submit">Log In</button>
             </form>
-            
-            <div className="register-to-login">
-                <p>Already have an account?</p>
-                <a href="" onClick={handleLoginClick}>Enter</a>
+
+            <div className="login-to-register">
+                <p>Don't have an account?</p>
+                <a href="" onClick={handleRegisterClick}>Sign up</a>
             </div>
         </div>
     </div>
