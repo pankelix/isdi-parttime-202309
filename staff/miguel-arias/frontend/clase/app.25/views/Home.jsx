@@ -1,10 +1,25 @@
 function Home(props) {
     console.log('Home')
 
-    const [view, setView] = React.useState(null)
-    const [name, setName] = React.useState(null)
-    const [posts, setPosts] = React.useState(null)
-    const [favs, setFavs] = React.useState(null)
+    const viewState = React.useState(null)
+    const view = viewState[0]
+    const setView = viewState[1]
+
+    const timestampState = React.useState(null)
+    //const timestamp = timestampState[0]
+    const setTimestamp = timestampState[1]
+
+    const nameState = React.useState(null)
+    const name = nameState[0]
+    const setName = nameState[1]
+
+    const postsState = React.useState(null)
+    const posts = postsState[0]
+    const setPosts = postsState[1]
+
+    const favsState = React.useState(null)
+    const favs = favsState[0]
+    const setFavs = favsState[1]
 
     function handleLogoutClick() {
         logic.logoutUser(error => {
@@ -58,47 +73,6 @@ function Home(props) {
         setView(null)
     }
 
-    function refreshPosts() {
-        if (view === null || view === 'new-post')
-            try {
-                logic.retrievePosts((error, posts) => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    posts.reverse()
-
-                    setPosts(posts)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-        else if (view === 'favs')
-            try {
-                logic.retrieveFavPosts((error, favs) => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    favs.reverse()
-
-                    setFavs(favs)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-    }
-
-    React.useEffect(() => {
-        console.log('Home -> effect (posts)')
-
-        refreshPosts()
-    }, [])
-
     function handleChangeEmailSubmit(event) {
         event.preventDefault()
 
@@ -134,6 +108,43 @@ function Home(props) {
             alert(error.message)
         }
     }
+
+    React.useEffect(() => {
+        console.log('Home -> effect (posts)')
+        if (view === null || view === 'new-post')
+            try {
+                logic.retrievePosts((error, posts) => {
+                    if (error) {
+                        alert(error.message)
+
+                        return
+                    }
+
+                    posts.reverse()
+
+                    setPosts(posts)
+                })
+
+            } catch (error) {
+                alert(error.message)
+            }
+        else if (view === 'favs')
+            try {
+                logic.retrieveFavPosts((error, favs) => {
+                    if (error) {
+                        alert(error.message)
+
+                        return
+                    }
+
+                    favs.reverse()
+
+                    setFavs(favs)
+                })
+            } catch (error) {
+                alert(error.message)
+            }
+    }, [])
 
     function handleNewPostSubmit(event) {
         event.preventDefault()
@@ -180,7 +191,40 @@ function Home(props) {
                     return
                 }
 
-                refreshPosts()
+                if (view === null || view === 'new-post')
+                    try {
+                        logic.retrievePosts((error, posts) => {
+                            if (error) {
+                                alert(error.message)
+
+                                return
+                            }
+
+                            posts.reverse()
+
+                            setPosts(posts)
+                            setTimestamp(Date.now())
+                        })
+                    } catch (error) {
+                        alert(error.message)
+                    }
+                else if (view === 'favs')
+                    try {
+                        logic.retrieveFavPosts((error, favs) => {
+                            if (error) {
+                                alert(error.message)
+
+                                return
+                            }
+
+                            favs.reverse()
+
+                            setFavs(favs)
+                            setTimestamp(Date.now())
+                        })
+                    } catch (error) {
+                        alert(error.message)
+                    }
             })
         } catch (error) {
             alert(error.message)
@@ -210,7 +254,40 @@ function Home(props) {
                     return
                 }
 
-                refreshPosts()
+                if (view === null || view === 'new-post')
+                    try {
+                        logic.retrievePosts((error, posts) => {
+                            if (error) {
+                                alert(error.message)
+
+                                return
+                            }
+
+                            posts.reverse()
+
+                            setPosts(posts)
+                            setTimestamp(Date.now())
+                        })
+                    } catch (error) {
+                        alert(error.message)
+                    }
+                else if (view === 'favs')
+                    try {
+                        logic.retrieveFavPosts((error, favs) => {
+                            if (error) {
+                                alert(error.message)
+
+                                return
+                            }
+
+                            favs.reverse()
+
+                            setFavs(favs)
+                            setTimestamp(Date.now())
+                        })
+                    } catch (error) {
+                        alert(error.message)
+                    }
             })
         } catch (error) {
             alert(error.message)
@@ -284,21 +361,19 @@ function Home(props) {
         </div>}
 
         {view === 'new-post' && <div className="view">
-            <div className="new-post-view">
-                {console.log('new post view')}
-                <h2>New post</h2>
+            {console.log('new post view')}
+            <h2>New post</h2>
 
-                <form className="form" onSubmit={handleNewPostSubmit}>
-                    <label htmlFor="image-input">Image</label>
-                    <input type="url" id="image-input" />
+            <form className="form" onSubmit={handleNewPostSubmit}>
+                <label htmlFor="image-input">Image</label>
+                <input type="url" id="image-input" />
 
-                    <label htmlFor="text-input">Text</label>
-                    <input type="text" id="text-input" />
+                <label htmlFor="text-input">Text</label>
+                <input type="text" id="text-input" />
 
-                    <button type="submit">Post</button>
-                    <button onClick={handleCancelNewPostClick}>Cancel</button>
-                </form>
-            </div>
+                <button type="submit">Post</button>
+                <button onClick={handleCancelNewPostClick}>Cancel</button>
+            </form>
         </div>}
 
         {(view === null || view === 'new-post') && posts !== null && <div className="post-div">
