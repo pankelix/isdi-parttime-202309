@@ -36,7 +36,7 @@ class Collection {
             this.__documents__.push(documentCopy)
 
             callback(null)
-        }, 0.1)
+        }, 1)
     }
 
     __findIndexById__(id, callback) {
@@ -53,12 +53,6 @@ class Collection {
         }
     }
 
-    getAll(callback) {
-        asyncDelay(() => {
-            callback(null, this.__documents__.map(this.__clone__.bind(this)))
-        }, 0.2)
-    }
-
     findById(id, callback) {
         try {
             validateText(id, `${this.__clazz__.name} id`)
@@ -73,7 +67,7 @@ class Collection {
                 }
 
                 callback(null, this.__clone__(document))
-            }, 0.3)
+            }, 0.6)
         } catch (error) {
             callback(error)
         }
@@ -81,8 +75,7 @@ class Collection {
 
     update(document, callback) {
         try {
-            if (!(document instanceof this.__clazz__))
-                callback(new TypeError(`document is not a ${this.__clazz__.name}`))
+            if (!(document instanceof this.__clazz__)) throw new TypeError(`document is not a ${this.__clazz__.name}`)
 
             asyncDelay(() => {
                 this.__findIndexById__(document.id, (error, index) => {
@@ -102,38 +95,20 @@ class Collection {
 
                     callback(null)
                 })
-            }, 0.1)
+            }, 0.5)
         } catch (error) {
             callback(error)
         }
     }
 
-    deleteById(id, callback) {
-        try {
-            validateText(id, `${this.__clazz__.name} id`)
+    deleteById(id) {
+        validateText(id, `${this.__clazz__.name} id`)
 
-            asyncDelay(() => {
-                this.__findIndexById__(id, (error, index) => {
-                    if (error) {
-                        callback(error)
+        const index = this.__findIndexById__(id)
 
-                        return
-                    }
+        if (index < 0) throw new Error(`${this.__clazz__.name} not found`)
 
-                    if (index < 0) {
-                        callback(new Error(`${this.__clazz__.name} not found`))
-
-                        return
-                    }
-
-                    this.__documents__.splice(index, 1)
-
-                    callback(null)
-                })
-            }, 0.2)
-        } catch (error) {
-            callback(error)
-        }
+        this.__documents__.splice(index, 1)
     }
 }
 
@@ -153,7 +128,7 @@ class Users extends Collection {
                     callback(null, null)
 
                 callback(null, this.__clone__(document))
-            }, 0.4)
+            }, 0.7)
         } catch (error) {
             callback(error)
         }
@@ -163,6 +138,12 @@ class Users extends Collection {
 class Posts extends Collection {
     constructor() {
         super(Post, [])
+    }
+
+    getAll(callback) {
+        asyncDelay(() => {
+            callback(null, this.__documents__.map(this.__clone__.bind(this)))
+        }, 0.8)
     }
 }
 

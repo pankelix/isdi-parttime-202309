@@ -190,15 +190,9 @@ function Home(props) {
     function handleDeletePostClick(postId) {
         if (confirm('Are you sure you want to delete this post?')) {
             try {
-                logic.deletePost(postId, error => {
-                    if (error) {
-                        alert(error.message)
+                logic.deletePost(postId)
 
-                        return
-                    }
-
-                    refreshPosts()
-                })
+                setTimestamp(Date.now())
             } catch (error) {
                 alert(error.message)
             }
@@ -323,17 +317,17 @@ function Home(props) {
                 }
 
                 return <article key={post.id} className="post">
-                    <h3>{post.author.name}</h3>
+                    <h3>{post.author}</h3>
                     <img className="post-image" src={post.image} />
 
                     <div className="post-buttons">
                         <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</button>
                         <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
-                        {post.author.id == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
+                        {post.author == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
                     </div>
 
                     <div className="post-text">
-                        <h4>{post.author.name}</h4>
+                        <h4>{post.author}</h4>
                         <p>{post.text}</p>
                     </div>
                 </article>
@@ -357,18 +351,18 @@ function Home(props) {
                 }
 
                 return <article key={post.id} className="post">
-                    <h3>{post.author.name}</h3>
+                    <h3>{post.author}</h3>
                     <img className="post-image" src={post.image} />
 
                     <div className="post-buttons">
-                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</button>
+                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
                         <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
-                        {post.author.id == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
-                    </div>
+                        {post.author == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
 
-                    <div className="post-text">
-                        <h4>{post.author.name}</h4>
-                        <p>{post.text}</p>
+                        <div className="post-text">
+                            <h4>{post.author}</h4>
+                            <p>{post.text}</p>
+                        </div>
                     </div>
                 </article>
             })}

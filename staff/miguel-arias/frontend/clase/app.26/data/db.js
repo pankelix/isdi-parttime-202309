@@ -6,7 +6,7 @@ var db = {
 
 // populate db
 
-const before = Date.now()
+before = new Date
 
 db.users.insert(new User(null, 'Wendy Darling', 'wendy@darling.com', '123123123', []), () => {
     db.users.insert(new User(null, 'Peter Pan', 'peter@pan.com', '123123123', []), () => {

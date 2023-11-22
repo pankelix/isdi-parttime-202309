@@ -153,10 +153,7 @@ class Logic {
                             return
                         }
 
-                        post.author = {
-                            name: author.name,
-                            id: author.id
-                        }
+                        post.author = author.name
 
                         post.fav = user.favs.includes(post.id)
 
@@ -220,81 +217,16 @@ class Logic {
         })
     }
 
-    deletePost(postId, callback) {
+    deletePost(postId) {
         validateText(postId, 'post id')
 
-        db.posts.findById(postId, (error, post) => {
-            if (error) {
-                callback(error)
+        const post = db.posts.findById(postId)
 
-                return
-            }
+        if (!post) {
+            throw new Error('post not found')
+        }
 
-            if (!post) {
-                callback(new Error('post not found'))
-
-                return
-            }
-
-            //sacamos todos los usuarios
-            db.users.getAll((error, users) => {
-                if (error) {
-                    callback(error)
-
-                    return
-                }
-
-                //sacamos el array de usuarios que han dado favorito a ese post
-                const usersWhoFaved = users.filter((user) => user.favs.includes(postId))
-
-                if (!usersWhoFaved.length) {
-                    //si nadie le ha dado favorito, borralo porque no está atado a nada
-                    db.posts.deleteById(post.id, error => {
-                        if (error) {
-                            callback(error)
-
-                            return
-                        }
-
-                        callback(null)
-                    })
-
-                    return
-                }
-
-                let count = 0
-
-                usersWhoFaved.forEach(user => {
-                    //para los que alguien le ha dado favorito, desconectalos de ese alguien y luego borra
-                    //para cada usuario quiero: entrar en su array de favs y borrar ese post con esa id
-                    const index = user.favs.indexOf(postId)
-
-                    user.favs.splice(index, 1)
-
-                    db.users.update(user, error => {
-                        if (error) {
-                            callback(error)
-
-                            return
-                        }
-
-                        count++
-
-                        if (count === usersWhoFaved.length) {
-                            db.posts.deleteById(post.id, error => {
-                                if (error) {
-                                    callback(error)
-
-                                    return
-                                }
-
-                                callback(null)
-                            })
-                        }
-                    })
-                })
-            })
-        })
+        db.posts.deleteById(post.id)
     }
 
     toggleFavPost(postId, callback) {
@@ -395,10 +327,7 @@ class Logic {
                                     return
                                 }
 
-                                post.author = {
-                                    name: author.name,
-                                    id: author.id
-                                }
+                                post.author = author.name
 
                                 post.fav = user.favs.includes(post.id)
 
