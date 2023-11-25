@@ -1,7 +1,5 @@
 import logic from "../logic"
 
-import { Container, Form, Field, Button, Link} from "../library/index"
-
 function Register(props) {
     console.log('Register')
 
@@ -40,26 +38,29 @@ function Register(props) {
         props.onLoginClick()
     }
 
-    return <Container>
+    return <div className="view">
         <div className="register-view">
             <h1>Register</h1>
 
-            <Form onSubmit={handleSubmit}>
-                <Field id="name-input">Name</Field>
+            <form className="form" onSubmit={handleSubmit}>
+                <label htmlFor="name-input">Name</label>
+                <input id="name-input" type="text" />
 
-                <Field id="email-input" type="email">E-mail</Field>
+                <label htmlFor="email-input">E-mail</label>
+                <input id="email-input" type="email" />
 
-                <Field id="password-input" type="password">Password</Field>
+                <label htmlFor="password-input">Password</label>
+                <input type="password" id="password-input" />
 
-                <Button type="submit">Register</Button>
-            </Form>
+                <button type="submit">Register</button>
+            </form>
 
             <div className="register-to-login">
                 <p>Already have an account?</p>
-                <Link onClick={handleLoginClick}>Enter</Link>
+                <a href="" onClick={handleLoginClick}>Enter</a>
             </div>
         </div>
-    </Container>
+    </div>
 }
 
 export default Register

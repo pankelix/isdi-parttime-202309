@@ -1,7 +1,7 @@
 import { validateText } from "./utils/validators"
 import db from "./data/db"
 import { User, Post } from "./data/models"
-import randomDelay from "./utils/randomDelay"
+import asyncDelay from "./utils/asyncDelay"
 
 class Logic {
     constructor() {
@@ -63,7 +63,7 @@ class Logic {
     }
 
     logoutUser(callback) {
-        randomDelay(() => {
+        asyncDelay(() => {
             this.sessionUserId = null
             callback(null)
         })

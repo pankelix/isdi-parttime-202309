@@ -2,9 +2,6 @@ import React from "react"
 import logic from "../logic"
 import Profile from "./Profile"
 
-import { Container, Form, Field, Button, Link, } from "../library/index"
-import { Post } from "../components/index"
-
 function Home(props) {
     console.log('Home')
 
@@ -17,11 +14,11 @@ function Home(props) {
         logic.logoutUser(error => {
             if (error) {
                 alert(error.message)
-
+    
                 return
             }
         })
-
+    
         props.onLogoutClick()
     }
 
@@ -217,43 +214,101 @@ function Home(props) {
 
     return <div>
         <header className="home-header">
-            <h1><Link onClick={handleHomeClick}>Home</Link></h1>
+            <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
             <div className="home-header-buttons">
-                <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>
-                <Link onClick={handleProfileClick}>{name}</Link>
-                <Link onClick={handleFavPostsClick}>Fav list</Link>
-                <Button className="logout-button" onClick={handleLogoutClick}>Logout</Button>
+                <button className="new-post-button" onClick={handleNewPostClick}>➕</button>
+                <a href="" onClick={handleProfileClick}>{name}</a>
+                <a href="" onClick={handleFavPostsClick}>Fav list</a>
+                <button className="logout-button" onClick={handleLogoutClick}>Logout</button>
             </div>
         </header>
 
         {view === 'profile' && <Profile onClick={handleProfileClick} />}
 
-        {view === 'new-post' && <Container>
+        {view === 'new-post' && <div className="view">
             <div className="new-post-view">
                 {console.log('new post view')}
                 <h2>New post</h2>
 
-                <Form onSubmit={handleNewPostSubmit}>
-                    <Field id="image-input" type="url">Image</Field>
+                <form className="form" onSubmit={handleNewPostSubmit}>
+                    <label htmlFor="image-input">Image</label>
+                    <input type="url" id="image-input" />
 
-                    <Field id="text-input">Text</Field>
+                    <label htmlFor="text-input">Text</label>
+                    <input type="text" id="text-input" />
 
-                    <Button type="submit">Post</Button>
-                    <Button onClick={handleCancelNewPostClick}>Cancel</Button>
-                </Form>
+                    <button type="submit">Post</button>
+                    <button onClick={handleCancelNewPostClick}>Cancel</button>
+                </form>
             </div>
-        </Container>}
+        </div>}
 
         {(view === null || view === 'new-post') && posts !== null && <div className="post-div">
             {console.log('normalview')}
-            {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavPostClick={handleToggleFavPostClick} onDeletePostClick={handleDeletePostClick} />)}
+            {posts.map((post) => {
+                function handleToggleLikeButtonClick() {
+                    handleToggleLikePostClick(post.id)
+                }
+
+                function handleDeletePostButtonClick() {
+                    handleDeletePostClick(post.id)
+                }
+
+                function handleToggleFavPostButtonClick() {
+                    handleToggleFavPostClick(post.id)
+                }
+
+                return <article key={post.id} className="post">
+                    <h3>{post.author.name}</h3>
+                    <img className="post-image" src={post.image} />
+
+                    <div className="post-buttons">
+                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</button>
+                        <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
+                        {post.author.id == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
+                    </div>
+
+                    <div className="post-text">
+                        <h4>{post.author.name}</h4>
+                        <p>{post.text}</p>
+                    </div>
+                </article>
+            })}
         </div>}
 
         {view === 'favs' && favs !== null && <div className="post-div">
             {console.log('favs')}
 
-            {favs.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavPostClick={handleToggleFavPostClick} onDeletePostClick={handleDeletePostClick} />)}
+            {favs.map((post) => {
+                function handleToggleLikeButtonClick() {
+                    handleToggleLikePostClick(post.id)
+                }
+
+                function handleDeletePostButtonClick() {
+                    handleDeletePostClick(post.id)
+                }
+
+                function handleToggleFavPostButtonClick() {
+                    handleToggleFavPostClick(post.id)
+                }
+
+                return <article key={post.id} className="post">
+                    <h3>{post.author.name}</h3>
+                    <img className="post-image" src={post.image} />
+
+                    <div className="post-buttons">
+                        <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</button>
+                        <button onClick={handleToggleFavPostButtonClick}>{post.fav ? '🌟' : '⭐'}</button>
+                        {post.author.id == logic.sessionUserId && <button onClick={handleDeletePostButtonClick}>🚽</button>}
+                    </div>
+
+                    <div className="post-text">
+                        <h4>{post.author.name}</h4>
+                        <p>{post.text}</p>
+                    </div>
+                </article>
+            })}
         </div>}
     </div>
 }
