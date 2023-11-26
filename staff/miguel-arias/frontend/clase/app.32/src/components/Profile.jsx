@@ -2,7 +2,7 @@ import logic from "../logic"
 
 import { Container, Form, Field, Button } from "../library/index"
 
-function Profile() {
+function Profile(props) {
     console.log('profile')
 
     function handleChangeEmailSubmit(event) {
@@ -13,11 +13,16 @@ function Profile() {
         const password = event.target.querySelector('#password-input').value
 
         try {
-            logic.changeUserEmail(newEmail, newEmailConfirm, password)
+            logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
+                if (error) {
+                    alert(error.message)
 
+                    return
+                }
+            })
             alert('Email changed successfully')
 
-            setView(null)
+            props.onSuccess(event)
         } catch (error) {
             alert(error.message)
         }
@@ -31,11 +36,16 @@ function Profile() {
         const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
 
         try {
-            logic.changeUserPassword(password, newPassword, newPasswordConfirm)
+            logic.changeUserPassword(password, newPassword, newPasswordConfirm, error => {
+                if (error) {
+                    alert(error.message)
 
+                    return
+                }
+            })
             alert('Password changed successfully')
 
-            setView(null)
+            props.onSuccess(event)
         } catch (error) {
             alert(error.message)
         }
@@ -46,11 +56,11 @@ function Profile() {
             <h2>Update e-mail</h2>
 
             <Form onSubmit={handleChangeEmailSubmit}>
-                <Field htmlFor="new-email-input" type="email">New e-mail</Field>
+                <Field id="new-email-input" type="email">New e-mail</Field>
 
-                <Field htmlFor="new-email-confirm-input" type="email">Confirm new e-mail</Field>
+                <Field id="new-email-confirm-input" type="email">Confirm new e-mail</Field>
 
-                <Field htmlFor="password-input" type="password">Password</Field>
+                <Field id="password-input" type="password">Password</Field>
 
                 <Button type="submit">Update e-mail</Button>
             </Form>
@@ -58,11 +68,11 @@ function Profile() {
             <h2>Update password</h2>
 
             <Form onSubmit={handleChangePasswordSubmit}>
-                <Field htmlFor="password-input" type="password">Current password</Field>
+                <Field id="password-input" type="password">Current password</Field>
 
-                <Field htmlFor="new-password-input" type="password">New password</Field>
+                <Field id="new-password-input" type="password">New password</Field>
 
-                <Field htmlFor="new-password-confirm-input" type="password">Confirm new password</Field>
+                <Field id="new-password-confirm-input" type="password">Confirm new password</Field>
 
                 <Button type="submit">Update password</Button>
             </Form>
