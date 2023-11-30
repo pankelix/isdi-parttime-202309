@@ -78,7 +78,9 @@ html {
   width: 260px;
   flex-direction: column;
 }
-.form label {
+
+.login-view label,
+.register-view label {
   padding-left: 10px;
   font-size: 10px;
   color: rgb(160, 168, 181);
@@ -103,8 +105,7 @@ html {
   margin-top: 20px;
 }
 
-.posts,
-.update-data {
+.posts {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,21 +113,18 @@ html {
 }
 
 @media (min-width: 768px) {
-  .posts,
-  .update-data {
+  .posts {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (min-width: 1024px) {
-  .posts,
-  .update-data {
+  .posts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
 }
-.post,
-.update-data-view {
+.post {
   background-color: white;
   border-radius: 7px;
   margin: 20px;
@@ -135,8 +133,7 @@ html {
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 5px 10px;
 }
-.post h3,
-.update-data-view h3 {
+.post h3 {
   margin-left: 30px;
 }
 
@@ -164,18 +161,6 @@ html {
   align-items: baseline;
   gap: 10px;
   margin-left: 30px;
-}
-
-.post-input {
-  display: flex;
-  justify-content: center;
-}
-.post-input input {
-  width: 80%;
-}
-.post-input div {
-  display: flex;
-  gap: 1rem;
 }
 
 .footer {

@@ -450,6 +450,56 @@ class Logic {
             })
         })
     }
+
+    toggleEditPost(postId, callback) {
+        validateText(postId, 'post id')
+
+        db.posts.findById(postId, (error, post) => {
+            if (error) {
+                callback(error)
+
+                return
+            }
+
+            if (!post) {
+                callback(new Error('post not found'))
+
+                return
+            }
+
+            callback(null)
+        })
+    }
+
+    editPost(text, postId, callback) {
+        validateText(text, 'text to edit')
+
+        db.posts.findById(postId, (error, post) => {
+            if (error) {
+                callback(error)
+
+                return
+            }
+
+            if (!post) {
+                callback(new Error('post not found'))
+
+                return
+            }
+
+            post.text = text
+
+            db.posts.update(post, error => {
+                if (error) {
+                    callback(error)
+
+                    return
+                }
+
+                callback(null)
+            })
+        })
+    }
 }
 
 const logic = new Logic

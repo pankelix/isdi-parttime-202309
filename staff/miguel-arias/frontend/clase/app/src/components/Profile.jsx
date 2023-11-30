@@ -52,30 +52,34 @@ function Profile(props) {
     }
 
     return <>
-        <Container>
-            <h2>Update e-mail</h2>
+        <Container className={"update-data"}>
+            <div className="update-data-view">
+                <h2>Update e-mail</h2>
 
-            <Form onSubmit={handleChangeEmailSubmit}>
-                <Field id="new-email-input" type="email">New e-mail</Field>
+                <Form onSubmit={handleChangeEmailSubmit}>
+                    <Field id="new-email-input" type="email">New e-mail</Field>
 
-                <Field id="new-email-confirm-input" type="email">Confirm new e-mail</Field>
+                    <Field id="new-email-confirm-input" type="email">Confirm new e-mail</Field>
 
-                <Field id="password-input" type="password">Password</Field>
+                    <Field id="password-input" type="password">Password</Field>
 
-                <Button type="submit">Update e-mail</Button>
-            </Form>
+                    <Button type="submit">Update e-mail</Button>
+                </Form>
+            </div>
 
-            <h2>Update password</h2>
+            <div className="update-data-view">
+                <h2>Update password</h2>
 
-            <Form onSubmit={handleChangePasswordSubmit}>
-                <Field id="password-input" type="password">Current password</Field>
+                <Form onSubmit={handleChangePasswordSubmit}>
+                    <Field id="password-input" type="password">Current password</Field>
 
-                <Field id="new-password-input" type="password">New password</Field>
+                    <Field id="new-password-input" type="password">New password</Field>
 
-                <Field id="new-password-confirm-input" type="password">Confirm new password</Field>
+                    <Field id="new-password-confirm-input" type="password">Confirm new password</Field>
 
-                <Button type="submit">Update password</Button>
-            </Form>
+                    <Button type="submit">Update password</Button>
+                </Form>
+            </div>
         </Container>
     </>
 }

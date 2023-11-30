@@ -1,16 +1,16 @@
-import React from "react"
+import { useState, useEffect } from "react"
+
 import logic from "../logic"
 
 import { Button, Link, } from "../library/index"
-import { Post, Profile, NewPost } from "../components/index"
+import { Post, Profile, Posts, NewPost } from "../components/index"
 
 function Home(props) {
     console.log('Home')
 
-    const [view, setView] = React.useState(null)
-    const [name, setName] = React.useState(null)
-    const [posts, setPosts] = React.useState(null)
-    const [favs, setFavs] = React.useState(null)
+    const [view, setView] = useState(null)
+    const [name, setName] = useState(null)
+    const [stamp, setStamp] = useState(null)
 
     function handleLogoutClick() {
         logic.logoutUser(error => {
@@ -24,7 +24,7 @@ function Home(props) {
         props.onLogoutClick()
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         console.log('Home -> effect (name)')
 
         try {
@@ -51,6 +51,8 @@ function Home(props) {
     function handleHomeClick(event) {
         event.preventDefault()
 
+        window.scrollTo(0, 0)
+
         setView(null)
     }
 
@@ -58,118 +60,21 @@ function Home(props) {
         setView('new-post')
     }
 
-    function refreshPosts() {
-        if (view === null || view === 'new-post')
-            try {
-                logic.retrievePosts((error, posts) => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    posts.reverse()
-
-                    setPosts(posts)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-        else if (view === 'favs')
-            try {
-                logic.retrieveFavPosts((error, favs) => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    favs.reverse()
-
-                    setFavs(favs)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
+    function handleNewPostCancel() {
+        setView(null)
     }
 
-    React.useEffect(() => {
-        console.log('Home -> effect (posts)')
+    function handleNewPostPublish() {
+        setStamp(Date.now())
+        setView(null)
 
-        refreshPosts()
-    }, [view])
-
-    function handleToggleLikePostClick(postId) {
-        try {
-            logic.toggleLikePost(postId, error => {
-                if (error) {
-                    alert(error.message)
-
-                    return
-                }
-
-                refreshPosts()
-            })
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
-    function handleDeletePostClick(postId) {
-        if (confirm('Are you sure you want to delete this post?')) {
-            try {
-                logic.deletePost(postId, error => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    refreshPosts()
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-        }
-
-        return
-    }
-
-    function handleToggleFavPostClick(postId) {
-        try {
-            logic.toggleFavPost(postId, error => {
-                if (error) {
-                    alert(error.message)
-
-                    return
-                }
-
-                refreshPosts()
-            })
-        } catch (error) {
-            alert(error.message)
-        }
+        window.scrollTo(0, 0)
     }
 
     function handleFavPostsClick(event) {
         event.preventDefault()
 
-        try {
-            logic.retrieveFavPosts((error, favs) => {
-                if (error) {
-                    alert(error.message)
-
-                    return
-                }
-
-                favs.reverse()
-
-                setFavs(favs)
-                setView('favs')
-            })
-        } catch (error) {
-            alert(error.message)
-        }
+        setView('favs')
     }
 
     return <div>
@@ -177,27 +82,25 @@ function Home(props) {
             <h1><Link onClick={handleHomeClick}>Home</Link></h1>
 
             <div className="home-header-buttons">
-                <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>
                 <Link onClick={handleProfileClick}>{name}</Link>
                 <Link onClick={handleFavPostsClick}>Fav list</Link>
                 <Button className="logout-button" onClick={handleLogoutClick}>Logout</Button>
             </div>
         </header>
 
-        {view === 'profile' && <Profile setView={setView}/>}
+        {view === 'profile' && <Profile onSuccess={setView} />}
 
-        {view === 'new-post' && <NewPost onSuccess={handleHomeClick} onCancel={setView}/>}
 
-        {(view === null || view === 'new-post') && posts !== null && <div className="post-div">
-            {console.log('normalview')}
-            {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavPostClick={handleToggleFavPostClick} onDeletePostClick={handleDeletePostClick} />)}
-        </div>}
 
-        {view === 'favs' && favs !== null && <div className="post-div">
-            {console.log('favs')}
+        {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp}/>}
 
-            {favs.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavPostClick={handleToggleFavPostClick} onDeletePostClick={handleDeletePostClick} />)}
-        </div>}
+        {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic)} />}
+
+        <footer className="footer">
+            {view === 'new-post' && <NewPost onSuccess={handleNewPostPublish} onCancel={handleNewPostCancel} />}
+
+            {view !== 'new-post' && <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>}
+        </footer>
     </div>
 }
 

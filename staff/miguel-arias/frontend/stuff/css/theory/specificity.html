@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* specificity: 121 */
+        div.box-3#box-3:nth-child(3) {
+            background-color: brown !important;
+        }
+
+        /* specificity: 111 */
+        div#box-3:nth-child(3) {
+            background-color: skyblue !important;
+        }
+
+        /* exceptional use */
+        div {
+            background-color: orange !important;
+        }
+
+        /* exceptional use */
+        div {
+            background-color: magenta !important;
+        }
+
+        /* specificity: 111 */
+        div#box-3:nth-child(3) {
+            background-color: yellow;
+        }
+
+        /* specificity: 100 */
+        #box-3 {
+            background-color: blue;
+        }
+
+        /* specificity: 011 */
+        div:nth-child(3) {
+            background-color: red;
+        }
+
+        /* specificity: 001 */
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            border: 2px solid black;
+            margin: 2px;
+        }
+
+        /* specificity: 001 */
+        div {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box-1"></div>
+    <div id="box-2"></div>
+    <div class="box-3" id="box-3" style="background-color: cyan _!important;"></div>
+</body>
+
+</html>

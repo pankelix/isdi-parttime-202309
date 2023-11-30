@@ -1,14 +1,13 @@
 import { Container, Form, Field, Button } from "../library/index"
 import logic from "../logic"
 
-function NewPost(props) {
-    console.log('new-post')
+function NewPost({ onSuccess, onCancel }) {
 
-    function handleNewPostSubmit(event) {
+    const handleSubmit = event => {
         event.preventDefault()
 
-        const image = event.target.querySelector('#image-input').value
-        const text = event.target.querySelector('#text-input').value
+        const image = event.target.image.value
+        const text = event.target.text.value
 
         try {
             logic.publishPost(image, text, error => {
@@ -18,47 +17,29 @@ function NewPost(props) {
                     return
                 }
 
-                try {
-                    logic.retrievePosts((error, posts) => {
-                        if (error) {
-                            alert(error.message)
-
-                            return
-                        }
-
-                        posts.reverse()
-                    })
-                } catch (error) {
-                    alert(error.message)
-                }
+                onSuccess()
             })
-
-            props.onSuccess(event)
         } catch (error) {
             alert(error.message)
         }
     }
 
-    function handleCancelNewPostClick(event) {
+    function handleCancel(event) {
         event.preventDefault()
 
-        props.onCancel(null)
+        onCancel()
     }
 
-    return <Container>
-        <div className="new-post-view">
-            {console.log('new post view')}
-            <h2>New post</h2>
+    return <Container className="new-post-view">
+        <h2>New post</h2>
 
-            <Form onSubmit={handleNewPostSubmit}>
-                <Field id="image-input" type="url">Image</Field>
+        <Form onSubmit={handleSubmit}>
+            <Field id="image" type="url">Image</Field>
+            <Field id="text">Text</Field>
 
-                <Field id="text-input">Text</Field>
-
-                <Button type="submit">Post</Button>
-                <Button onClick={handleCancelNewPostClick}>Cancel</Button>
-            </Form>
-        </div>
+            <Button type="submit">Post</Button>
+            <Button onClick={handleCancel}>Cancel</Button>
+        </Form>
     </Container>
 }
 

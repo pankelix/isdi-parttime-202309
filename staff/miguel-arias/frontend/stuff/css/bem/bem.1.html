@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .panel {
+            background-color: lightgray;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem;
+        }
+
+        .panel--warn {
+            background-color: yellow;
+        }
+
+        .panel--error {
+            background-color: red;
+            color: white;
+        }
+
+        .panel__subject {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .panel__body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .panel__buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .panel__button {
+            padding: .5rem;
+            border-radius: .5rem;
+            border: 0;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .panel__button:hover {
+            background-color: snow;
+        }
+
+        .panel__button--accept {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        .panel__button--accept:hover {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel">
+        <h2 class="panel__subject">Hello, World!</h2>
+        <p class="panel__body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, pariatur minima, officia
+            doloremque
+            vitae nam
+            cumque deserunt autem dignissimos nulla laudantium suscipit perferendis impedit a ipsum, quidem voluptas ut
+            illum!</p>
+
+        <div class="panel__buttons">
+            <button class="panel__button">Cancel</button>
+            <button class="panel__button panel__button--accept">Accept</button>
+        </div>
+    </div>
+
+    <div class="panel panel--warn">
+        <h2 class="panel__subject">Hello, World!</h2>
+        <p class="panel__body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, pariatur minima, officia
+            doloremque
+            vitae nam
+            cumque deserunt autem dignissimos nulla laudantium suscipit perferendis impedit a ipsum, quidem voluptas ut
+            illum!</p>
+    </div>
+
+    <div class="panel panel--error">
+        <h2 class="panel__subject">Hello, World!</h2>
+        <p class="panel__body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, pariatur minima, officia
+            doloremque
+            vitae nam
+            cumque deserunt autem dignissimos nulla laudantium suscipit perferendis impedit a ipsum, quidem voluptas ut
+            illum!</p>
+    </div>
+</body>
+
+</html>

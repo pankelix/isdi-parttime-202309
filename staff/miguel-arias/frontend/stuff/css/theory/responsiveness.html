@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div {
+            background-color: gray;
+            min-height: 100px;
+            margin: 1px;
+            font-size: 4rem;
+            color: white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 1rem;
+        }
+
+        /* xs */
+        @media screen and (min-width: 480px) {
+            div {
+                height: 125px;
+            }
+        }
+
+        /* s */
+        @media screen and (min-width: 640px) {
+            div {
+                height: 150px;
+            }
+        }
+
+        /* m */
+        @media screen and (min-width: 768px) {
+            div {
+                height: 175px;
+            }
+
+            body {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* l */
+        @media screen and (min-width: 1024px) {
+            div {
+                height: 200px;
+            }
+
+            body {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* xl */
+        @media screen and (min-width: 1280px) {
+            div {
+                height: 250px;
+            }
+
+            body {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* 2xl */
+        @media screen and (min-width: 1536px) {
+            div {
+                height: 300px;
+                width: 100%;
+            }
+
+            body {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+</body>
+
+</html>
