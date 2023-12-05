@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"> <!-- codificaci'on -->
+    <meta name="viewport" content="width=device-width"> <!-- que se ajuste a los tamaños de dispositivo -->
+    <title>Portfolio de Miguelón</title> <!-- importante -->
+
+    <meta name="description" content="portfolio de miguel, 15 años de noseque nosecuantos">
+    <!-- una descripción de la web -->
+
+    <!--   OPEN GRAPH https://ogp.me/ -->
+    <meta property="og:title" content="algo igual que el título pero un poco distinto">
+    <!-- etiquetas para que se vea bien en facebook y demas (cards) https://www.opengraph.xyz/ aqui puedes checkear una web-->
+    <meta property="og:description" content="algo igual que la descripción pero para la card, un poco distinto">
+    <meta property="og:image" content="https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg">
+    <meta property="og:image:alt" content="un pingüinito autista bla bla">
+
+    <link rel="alternate" href="link-a-la-web.com" hreflang="en-GB">
+    <!-- ponerle una alternativa a nuestra página, (en caso de que no cargue o que quieras que se vea en X idioma) -->
+    <link rel="canonical" href="la-pagina-realmente-principal.com"> <!-- para decirle cual es la pagina principal -->
+
+    <meta name="robots" content="index, follow">
+    <!-- importante para google, le decimos si tiene que indexar la pagina y/o seguir los enlaces -->
+    <meta name="theme-color" content="09f"> <!-- colorines para alrededores del navegador/movil, queda bonito -->
+
+    <link rel="icon" type="image/jpg" href="https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg">
+    <!-- favicon -->
+
+    <style>
+        /* aqui van los estilos */
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Portfolio de Miguel</h1>
+
+        <nav>
+            <a href="#tecnologias">Tecnologías</a> <!-- enlace interno -->
+            <a href="#peli">Peli</a>
+            <a href="https://google.com" target="_blank" rel="noreferrer">Ir a gugel</a>
+            <!-- enlace externo, el target hace que se abra en pestaña nueva, el noreferrer es seguridad para que no envíe datos al destino -->
+        </nav>
+    </header>
+
+    <div role="banner">
+        <!-- se pueden poner roles a las cosas para darles semántica https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles -->
+        Equis cosa random
+    </div>
+
+    <main>
+        <!-- solo puede haber 1 en todo el HTML, es el contenido que primero queremos que vea el usuario, es el contenido que va a cambiar en cada URL, por ejemplo en un periódico el título del periodico o el buscador, pese a estar mas arriba, no son lo primero que se tiene que ver -->
+
+        <p>Bla bla <strong>bla</strong></p>
+
+        <aside> <!-- algo separado del contenido principal, anexo -->
+            <h2 id="tecnologias">Mis tecnologías favoritas</h2>
+            <ul>
+                <li>Bla</li>
+                <li>Bla</li>
+                <li>Bla</li>
+                <li>Bla</li>
+            </ul>
+            <ol type="I" reversed start="15">
+                <!-- se puede cambiar el tipo de orden, que vaya al reves y que empiece en X numero -->
+                <li value="5">bla</li> <!-- se le puede poner el valor concreto -->
+                <li>bla</li>
+            </ol>
+        </aside>
+
+        <section> <!-- una sección entera -->
+            <article> <!-- elemento con información propia y que tiene sentido aun separado del resto -->
+                <header> <!-- se puede usar más de 1 vez -->
+                    <h4 id="peli">Titulo de la pelicula</h4>
+                </header>
+
+                <p>La pelicula trata sobre bla bla bla</p>
+
+                <footer>
+                    <small>Información más secundaria</small> <!-- no pensarlo en pequeño, si no en poco importante -->
+                </footer>
+            </article>
+        </section>
+
+        <section>
+            <article>
+                <header>
+                    <h4>Titulo de la pelicula</h4>
+                </header>
+
+                <p>La pelicula trata sobre bla bla bla</p>
+
+                <footer>
+                    <small>Información más secundaria</small>
+                </footer>
+            </article>
+        </section>
+
+        <section>
+            <h2>Preguntas frecuentes</h2>
+
+            <details> <!-- para hacer el acordeón este raro, details y summary -->
+                <summary>¿Que estudios tienes?</summary>
+                <p>Estudié en bla bla bla</p>
+            </details>
+
+            <details open> <!-- abierto por defecto -->
+                <summary>¿Cuales son tus hobbies?</summary>
+                <p>Me gusta mucho el deporte y el balonsesto</p>
+            </details>
+
+            <details>
+                <summary>¿Cual es tu lenguaje favorito?</summary>
+                <p>Javascript porque es el unico que conozco</p>
+            </details>
+        </section>
+
+        <div>
+            <dialog id="modal"> <!-- se abre encima del contenido, "no ocupa espacio2" -->
+                <h1>¿Sabías que puedes abrir una modal asi?</h1>
+                <p>¡Y de forma nativa!</p>
+                <button id="hide">Cerrar</button>
+            </dialog>
+
+            <button id="show">Ver más información</button>
+        </div>
+
+        <script>
+            window.show.addEventListener('click', () => window.modal.show()) /* show(al ser una id) se convierte en una propiedad de window, por eso podemos acceder a ella. show() es función nativa para mostrar */
+
+            window.hide.addEventListener('click', () => window.modal.close()) /* close es función nativa para cerrar */
+        </script>
+
+
+        <img loading="lazy" title="foto de pingüino" alt="un pingüino autista con la mirada de las 1000 yardas"
+            src="https://raulperez.tieneblog.net/wp-content/uploads/2015/09/tux.jpg">
+        <!-- el loading lazy lo que hace es que cargue la imagen cuando se vea en pantalla(o cuando ya haya cargado el resto de cosas) -->
+
+        <input type="range">
+        <input type="color">
+
+        <video autoplay loop muted src="https://www.youtube.com/watch?v=3nYLTiY5skU"></video>
+        <!-- controls para poder darle play y tal. Con poster="x" se le puede poner una imagen como portada -->
+    </main>
+
+    <section>
+        <h2>Formulario de contacto</h2>
+        <form method="post" action="/a donde van los formularios"> <!-- cosas de servidores -->
+            <fieldset>
+                <legend>Información personal</legend>
+
+                <label for="name">Nombre:</label> <!-- al clicar en el label te tiene que llevar al input -->
+                <input type="text" id="name" name="name" placeholder="tu nombre" required>
+                <!-- se le puede pedir requerido -->
+
+                <label>Phone:
+                    <input type="tel" name="phone" placeholder="tu teléfono" pattern="{0-9}{9}">
+                    <!-- se le puede poner un patron para que coja solo dígitos -->
+                </label> <!-- otra forma es rodear el input con el label, y asi te ahorras poner el for y el id -->
+            </fieldset>
+
+            <fieldset>
+                <legend>Otros</legend>
+
+                <div>
+                    <label for="why">¿Por qué quieres contactar?</label>
+                    <select name="why" id="why"> <!-- para elegir entre distintas opciones -->
+                        <option value="1">Trabajo</option>
+                        <option value="2">Dudas</option>
+                        <option value="3">Otros</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>¿Aceptas los términos?
+                        <input type="checkbox" name="terms" required>
+                    </label>
+                </div>
+
+                <div>
+                    <datalist id="languages">
+                        <option value="Javascript"></option>
+                        <option value="Python"></option>
+                        <option value="Java"></option>
+                        <option value="C#"></option>
+                    </datalist>
+                    <label>Con que lenguaje quieres que te ayude?
+                        <input list="languages" name="languages" </label>
+                </div>
+            </fieldset>
+
+            <input type="submit" value="Enviar contacto">
+        </form>
+    </section>
+
+    <footer>
+        Copyright 2023. No copiar por favor en serio
+        <a href="mailto:miguel@gmail.com">Envíame un correo</a>
+        <a href="tel:345678">Llamar por teléfono</a>
+        <a href="whatsapp://send?text=Mensaje predeterminado&phone=+345678&abid=+345678">Enviar un whatsapp</a>
+        <a href="https://wa.me/345678?text=Mensaje predeterminado o URL">Otra forma quizá mejor de enviar un
+            whatsapp</a>
+    </footer>
+</body>
+
+</html>
