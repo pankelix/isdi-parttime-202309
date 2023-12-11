@@ -28,13 +28,384 @@
     <!-- favicon -->
 
     <style>
-        /* aqui van los estilos */
+        body {
+            margin: 0;
+        }
+
+        .header {
+            border: 3px solid #09f;
+            /* vemos que no heredan todos los hijos el borde */
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            /* vemos que esto si lo heredan todos los hijos */
+            /* para saber las herencias, mirar en mdn y buscar inherit */
+        }
+
+        .child {
+            border: inherit;
+            /* ahora si que heredan todo lo que hubiera en el borde del padre */
+            font-family: initial;
+            /* con esto podemos cancelar la herencia */
+        }
+
+        li:first-child {
+            color: green
+        }
+
+        li:last-child {
+            color: indianred
+        }
+
+        article>p {
+            /* con el > hago que se refiera solo a los hijos directos de article (que sean p). Si se lo quito, todos los p dentro de article se pondrán azul */
+            color: blue
+        }
+
+        p+span {
+            /* todos los span que haya justo después de un p, me los pones verdes. Si le pusiera un ~ sería para los que span que haya después de p, aunque haya algo enmedio */
+            color: pink
+        }
+
+        .container {
+            width: 150px;
+            height: 150px;
+            background: pink;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 40px;
+            overflow: hidden;
+            /* otras opciones es "scroll", "auto" (mejor este que scroll) y "visible" (por defecto) */
+            text-overflow: ellipsis;
+            /* te saca los 3 puntos para que el hidden no se vea tan cortado (que seria con el valor "clip", que viene por defecto) */
+        }
+
+        .parent {
+            border: 5px solid #000;
+            width: 250px;
+            height: 250px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .box {
+            background: #09f;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            /*
+            -"static" es la posición de base, en sentido de la lectura y dependiendo de si es box o inline, se usa por defecto.
+            -"relative" sirve para seleccionar qué elemento es la referencia para el elemento absoluto, si no hay ningun relativo lo será el documento entero
+            -"absolute" le puedes indicar coordenadas en el elemento relativo con "top", "bottom", "left" o "right"
+            -"fixed" parecido al absolute pero no se mueve al hacer scroll, queda fijo en pantalla
+            -"sticky" se va a quedar fijo en pantalla, pero al hacer scroll irá acompañando hasta donde pueda (no necesita relative)
+            */
+        }
+
+        .section {
+            background: lightsalmon;
+            border: 3px solid black;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: minmax(100px, 2fr) repeat(2, 1fr) 25px;
+            grid-template-rows: repeat(2, 50px 25px) 30px;
+            column-gap: 5px;
+            row-gap: 15px;
+            /* se pueden usar medidas normales, se puede poner auto para que el navegador le diga cuanto coger o se pueden usar "fr" para que coja la fracción porcentual que le digas. Si usas fr, el auto se queda al tamaño del elemento. Si le pones mas rows de los elementos que tiene, se hace un hueco vacio*/
+            /* el minmax(min,max) te deja establecer los valores minimos y máximos de ese elemento */
+            /* el repeat(veces, valor) te deja repetir x veces x valor */
+            grid-auto-rows: 100px;
+            /*  Esto sirve para que te haga automaticamente de x tamaño las filas donde tú no especifiques un tamaño */
+        }
+
+        .section div {
+            background: lightblue;
+            border: 1px solid #09f;
+            border-radius: 6px;
+        }
+
+        .section div:first-child {
+            background-color: red;
+            border: 3px black solid;
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row: 1 / 3;
+        }
+
+        .section div:last-child {
+            background-color: red;
+            border: 3px black solid;
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .grid-total {
+            display: grid;
+            grid-template-columns: minmax(100px, 1fr) 5fr;
+            height: 50vh;
+        }
+
+        .grid-total aside {
+            border: 1px solid red;
+        }
+
+        .grid-total div {
+            border: 1px solid blue;
+        }
+
+        .section2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            /* auto-fill rellena los huecos de la cuadricula y los que no rellena quedan vacíos  */
+            /* auto-fit rellena todo el espacio disponible y elimina las cuadriculas vacías  */
+        }
+
+        .section2 img {
+            width: 200px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 35px 1fr 100px;
+            min-height: 50vh;
+            grid-template-areas:
+                "header header header"
+                "sidebar content content"
+                "footer footer ."
+        }
+
+        .grid-container header {
+            background: #09f;
+            grid-area: header;
+        }
+
+        .grid-container aside {
+            background: yellow;
+            grid-area: sidebar;
+        }
+
+        .grid-container div {
+            background: red;
+            grid-area: content;
+        }
+
+        .grid-container footer {
+            background: cyan;
+            grid-area: footer;
+        }
+
+        .pulser {
+            width: 50px;
+            height: 50px;
+            margin: 40px;
+            background: #09f;
+            border-radius: 50%;
+            position: relative;
+            transition-duration: 2s;
+            /* la duracion tiene que estar en el estado inicial, o si no quedará mal */
+            transition-property: scale, background-color;
+            /* aquí puedes especificar lo que quieres que transicione, el resto lo hará instantaneamente */
+            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+            /* "linear" (sin cambios de velocidad) es por defecto
+            "ease-in" (ease significa con calma) principio lento final rapido
+            "ease-out" principio rapido final lento
+            "ease-in-out" ambos lentos, enmedio rapido
+            "ease" igual que el ease-in-out pero en general mas rapido
+            "steps" le puedes decir los pasos en los que puede hacer la animación, que quede mas ortopédico
+            "cubic bezier" eliges tú la curva, te ofrece opciones bastante buenas y en herramientas de desarrollo se puede modificar como el flex */
+            transition-delay: 0.1s;
+            /* a partir de qué momento empieza la transicion, con 0.1 por ejemplo puedes hacer que al pasar por encima el raton por accidente no se active */
+
+            /* para poner todo junto (y cada propiedad a transicionar distinta) seria:
+            transition: background 300ms linear 2s, scale 500ms ease-in-out; */
+            box-shadow: 0 0px 4px purple;
+        }
+
+        .pulser:hover {
+            scale: 2;
+            /* diferencia con cambiar width y height? pues que con scale no empuja alrededor porque realmente no cambia su tamaño */
+            background: purple;
+        }
+
+        .pulser2 {
+            width: 30px;
+            height: 30px;
+            background-color: #91f;
+            border-radius: 50%;
+            position: relative;
+            transition-timing-function: ease;
+            opacity: 0;
+        }
+
+        .animation {
+            display: flex;
+            gap: 16px;
+        }
+
+        .animation:hover .pulser2 {
+            opacity: 1;
+            transition-duration: 5s;
+            /* puedo hacer que tarde mucho en entrar y luego salga rápido */
+        }
+
+        .pulser2:first-child {
+            transition-delay: 0s;
+            transition-duration: 0.3s;
+        }
+
+        .pulser2:nth-child(2) {
+            transition-delay: 0.2s;
+            transition-duration: 0.3s;
+        }
+
+        .pulser2:nth-child(3) {
+            transition-delay: 0.4s;
+            transition-duration: 0.3s;
+        }
+
+        @keyframes move
+
+        /* el nombre que queramos darle */
+            {
+            from {
+                transform: translateY(0px);
+                /* trasladar */
+            }
+
+            to {
+                transform: translateY(100px);
+            }
+        }
+
+        .pulser3 {
+            width: 50px;
+            height: 50px;
+            margin: 40px;
+            background-color: #673;
+            border-radius: 50%;
+            position: relative;
+            animation-name: move;
+            /* el nombre que hemos dado */
+            animation-duration: 3s;
+            animation-direction: alternate;
+            /* que vaya y vuelva */
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            /* "none", "backwards"(que vuelva al keyframe inicial), "forwards" (que se quede en el keyframe final), "both" (te controla al inicio y al final, el recomendado) */
+
+            /* en resumen:
+            animation: pulse 2s linear 0s(delay) infinite both reverse*/
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                scale: 1.6;
+                opacity: .4;
+            }
+
+            100% {
+                opacity: .6;
+            }
+
+        }
+
+        .pulser3::after {
+            /* ::after es un pseudoelemento, que se pondrá al final de pulser3, tambien hay ::before */
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #673;
+            border-radius: 50%;
+            z-index: -1;
+            animation-name: pulse;
+            animation-duration: 1s;
+            animation-delay: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: 3;
+            animation-direction: reverse;
+        }
+
+        .pulser3:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes progress-grow {
+            from {
+                width: 0%;
+                background-color: pink;
+            }
+
+            to {
+                width: 100%;
+                background-color: indigo;
+            }
+        }
+
+        .progress {
+            height: 2em;
+            position: fixed;
+            top: 0;
+            width: 0%;
+            opacity: 0.3;
+            background-color: pink;
+            backdrop-filter: blur(10px);
+            /* esto hace que se difumine lo que tiene detras, aunque no me funciona no se por que */
+            animation: progress-grow auto linear;
+            animation-timeline: scroll(root block);
+            /* a partir de qué queremos que haga la animación, en este caso el scroll (de la pagina entera, podria ser de un scroll interno) */
+            /* animation-range serviría para decirle "0 200px" y que hiciera toda la animación en los primeros 200 pixeles" */
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                translate: 0 100px;
+                scale: 0.5;
+            }
+
+            to {
+                opacity: 1;
+                translate: 0 0;
+                scale: 1;
+            }
+        }
+
+        .section2 img {
+            animation: reveal linear both;
+            animation-timeline: view();
+            /* view hace que solo cuando sea visible ese elemento se activa la animacion */
+            animation-range: entry 20% cover 30%;
+            /* cuando haya entrado un 20% de la imagen, inicia la animación (0% opacity), y cuando estemos viendo un 30% acaba la animación (100% opacity) */
+        }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>Portfolio de Miguel</h1>
+    <header class="header">
+        <div class="progress"></div>
+        <div class="child">
+            <h1>Portfolio de Miguel</h1>
+        </div>
+
+        <div class="pulser"></div>
+
+        <div class="pulser3"></div>
+
+        <section class="animation">Haz hover para mostrar
+            <div class="pulser2"></div>
+            <div class="pulser2"></div>
+            <div class="pulser2"></div>
+        </section>
 
         <nav>
             <a href="#tecnologias">Tecnologías</a> <!-- enlace interno -->
@@ -52,20 +423,66 @@
     <main>
         <!-- solo puede haber 1 en todo el HTML, es el contenido que primero queremos que vea el usuario, es el contenido que va a cambiar en cada URL, por ejemplo en un periódico el título del periodico o el buscador, pese a estar mas arriba, no son lo primero que se tiene que ver -->
 
-        <p>Bla bla <strong>bla</strong></p>
+        <section class="section">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+        </section>
+
+        <div>
+            <h2>Sin usar media queries v</h2>
+        </div>
+        <section class="section2">
+            <div><img src="./moon_patrol.jpg"></div>
+            <div><img src="./moon_patrol.jpg"></div>
+            <div><img src="./moon_patrol.jpg"></div>
+            <div><img src="./moon_patrol.jpg"></div>
+            <div><img src="./moon_patrol.jpg"></div>
+            <div><img src="./moon_patrol.jpg"></div>
+        </section>
+
+        <div class="grid-container">
+            <header>header</header>
+            <aside>aside</aside>
+            <div>main content</div>
+            <footer>footer</footer>
+        </div>
+
+        <section class="container">
+            CSS IS AWESOME
+        </section>
+
+        <div class="grid-total">
+            <aside>Barra lateral</aside>
+            <div>Contenido principal (tocaria ser main)</div>
+        </div>
+
+        <section class="parent">
+            <div class="box">
+                container
+            </div>
+        </section>
 
         <aside> <!-- algo separado del contenido principal, anexo -->
             <h2 id="tecnologias">Mis tecnologías favoritas</h2>
             <ul>
+                <li>li:first-child</li>
                 <li>Bla</li>
                 <li>Bla</li>
-                <li>Bla</li>
-                <li>Bla</li>
+                <li>li:last-child</li>
             </ul>
             <ol type="I" reversed start="15">
                 <!-- se puede cambiar el tipo de orden, que vaya al reves y que empiece en X numero -->
-                <li value="5">bla</li> <!-- se le puede poner el valor concreto -->
-                <li>bla</li>
+                <li value="5">li:first-child</li> <!-- se le puede poner el valor concreto -->
+                <li>li:last-child</li>
             </ol>
         </aside>
 
@@ -75,7 +492,12 @@
                     <h4 id="peli">Titulo de la pelicula</h4>
                 </header>
 
-                <p>La pelicula trata sobre bla bla bla</p>
+                <p> article > p : Un hijo directo de article</p>
+                <div>
+                    <p> article > p :Otro párrafo, pero dentro de un div, lo cual hace que no sea hijo directo</p>
+                </div>
+
+                <p> article > p : Este si es azul, aunque vaya después, porque tambien es hijo directo</p>
 
                 <footer>
                     <small>Información más secundaria</small> <!-- no pensarlo en pequeño, si no en poco importante -->
@@ -90,6 +512,7 @@
                 </header>
 
                 <p>La pelicula trata sobre bla bla bla</p>
+                <span>Esto es rosa porque es un span después de un p</span>
 
                 <footer>
                     <small>Información más secundaria</small>
