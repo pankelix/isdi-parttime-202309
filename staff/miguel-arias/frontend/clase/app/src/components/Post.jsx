@@ -111,7 +111,7 @@ function Post(props) {
         <aside>
             <h4>{post.author.name}</h4>
             <p>{post.text}</p>
-            {post.author.id == logic.sessionUserId && <Button onClick={handleToggleEditClick}>✏</Button>}
+            {post.author.id == logic.sessionUserId && <Button className="edit-button" onClick={handleToggleEditClick}>✏</Button>}
             {edit === 'edit' && <div> <Input id="textToEdit"></Input> <Button onClick={handleEditConfirmClick}>✅</Button> </div>}
         </aside>
     </article>

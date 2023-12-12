@@ -77,13 +77,13 @@ function Home(props) {
         setView('favs')
     }
 
-    return <div>
+    return <>
         <header>
-            <h1><Link onClick={handleHomeClick}>Home</Link></h1>
+            <h1><Link className="header-text" onClick={handleHomeClick}></Link></h1>
 
             <nav>
                 <Link onClick={handleProfileClick}>{name}</Link>
-                <Link onClick={handleFavPostsClick}>Fav list</Link>
+                <Link onClick={handleFavPostsClick}>Your ⭐</Link>
                 <Button className="logout-button" onClick={handleLogoutClick}>Logout</Button>
             </nav>
         </header>
@@ -101,7 +101,7 @@ function Home(props) {
 
             {view !== 'new-post' && <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>}
         </footer>
-    </div>
+    </>
 }
 
 export default Home

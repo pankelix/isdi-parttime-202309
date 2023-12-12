@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
 * {
   font-family: Inter;
 }
@@ -16,13 +16,14 @@ body {
   margin: 5rem 0 3rem;
 }
 .container article {
+  box-sizing: border-box;
   background-color: white;
   border-radius: 7px;
-  width: 260px;
+  width: 360px;
+  height: 460px;
   max-width: 400px;
-  height: 294px;
   margin-top: 40px;
-  padding: 60px 40px;
+  padding: 100px 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,6 +46,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
 }
 form input {
   background-color: rgb(246, 248, 251);
@@ -61,6 +63,9 @@ form nav {
   justify-content: center;
   align-items: baseline;
   gap: 4px;
+  position: absolute;
+  top: 190px;
+  width: 100%;
 }
 
 header {
@@ -73,16 +78,30 @@ header {
   justify-content: space-between;
   width: 100%;
 }
+header h1 a {
+  text-decoration: none;
+  font-weight: 900;
+  color: rgb(100, 198, 237);
+}
 header nav {
   margin-right: 3.5rem;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 15px;
 }
 header nav a {
   text-decoration: none;
 }
 
+.header-text::after {
+  content: "H";
+}
+
+@media (min-width: 424px) {
+  .header-text::after {
+    content: "Home";
+  }
+}
 .profile-view,
 .posts {
   display: grid;
@@ -115,8 +134,16 @@ header nav a {
   align-items: center;
   gap: 15px;
 }
-.post img + aside button {
+.post aside button {
   background-color: white;
+  color: black;
+}
+.post aside button:hover {
+  opacity: 0.6;
+}
+.post .edit-button {
+  background-color: rgb(100, 198, 237);
+  color: white;
 }
 
 footer {

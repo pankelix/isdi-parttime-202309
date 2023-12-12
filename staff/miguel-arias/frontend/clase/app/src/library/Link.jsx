@@ -1,5 +1,5 @@
-function Link(props) {
-    return <a className="link" href="" onClick={props.onClick}>{props.children}</a>
+function Link({className, onClick, children}) {
+    return <a className={`link ${className ? className : ''}`} href="" onClick={onClick}>{children}</a>
 }
 
 export default Link

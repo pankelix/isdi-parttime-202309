@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap')
 
 $m-size: 768px
 
@@ -17,13 +17,14 @@ body
     margin: 5rem 0 3rem
 
     & article
+        box-sizing: border-box
         background-color: white
         border-radius: 7px
-        width: 260px
+        width: 360px
+        height: 460px
         max-width: 400px
-        height: 294px
         margin-top: 40px
-        padding: 60px 40px
+        padding: 100px 70px
         display: flex
         flex-direction: column
         align-items: center
@@ -44,6 +45,7 @@ form
     display: flex
     flex-direction: column
     gap: 10px
+    position: relative
 
     & input
         background-color: rgb(246, 248, 251)
@@ -60,6 +62,9 @@ form
         justify-content: center
         align-items: baseline
         gap: 4px
+        position: absolute
+        top: 190px
+        width: 100%
 
 header
     position: fixed
@@ -71,14 +76,26 @@ header
     justify-content: space-between
     width: 100%
 
+    & h1 a
+        text-decoration: none
+        font-weight: 900
+        color: rgb(100, 198, 237)
+        
     & nav
         margin-right: 3.5rem
         display: flex
-        align-items: center
+        align-items: baseline
         gap: 15px
 
         & a
             text-decoration: none
+
+.header-text::after
+    content: 'H'
+
+@media (min-width: 424px)
+    .header-text::after
+        content: 'Home'
 
 .profile-view,
 .posts
@@ -111,8 +128,16 @@ header
         align-items: center
         gap: 15px
 
-    & img+aside button
+    & aside button
         background-color: white
+        color: black
+
+        &:hover
+            opacity: .6
+
+    & .edit-button
+        background-color: rgb(100, 198, 237)
+        color: white
 
 footer
     background-color: white
