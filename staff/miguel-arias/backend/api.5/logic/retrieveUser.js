@@ -2,8 +2,8 @@ const { validateText, validateFunction } = require('../utils/validators')
 const JSON = require('../utils/JSON')
 
 function retrieveUser(userId, callback) {
-    validateText(userId, 'user id')
-    validateFunction(callback, 'callback')
+    validateText (userId, 'userId')
+    validateFunction (callback, 'callback')
 
     JSON.parseFromFile('./data/users.json', (error, users) => {
         if (error) {

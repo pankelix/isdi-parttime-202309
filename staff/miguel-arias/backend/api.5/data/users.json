@@ -26,19 +26,5 @@
         "email": "le@chuga.com",
         "password": "123123123",
         "favs": []
-    },
-    {
-        "id": "2rgpwht62vs0",
-        "name": "Ce Bolla",
-        "email": "ce@bolla.com",
-        "password": "123123123",
-        "favs": []
-    },
-    {
-        "id": "2l9olwt97f80",
-        "name": "Ma Zorca",
-        "email": "ma@zorca.com",
-        "password": "123123123",
-        "favs": []
     }
 ]
