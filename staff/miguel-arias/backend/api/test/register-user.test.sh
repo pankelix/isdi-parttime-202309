@@ -1,7 +1,9 @@
- echo TEST register-user
+source colors.sh
+
+echo -e "${blue}TEST register-user${reset}"
 
 echo
-echo CASE success on correct credentials
+echo -e "${green}CASE success on correct credentials${reset}"
 
  curl 'http://localhost:8000/register' \
  -H 'Content-Type: application/json' \

@@ -1,4 +1,5 @@
 const JSON = require('../utils/JSON')
+const { SystemError, NotFoundError, ContentError } = require('../utils/errors')
 const { validateText, validateFunction } = require('../utils/validators')
 
 function authenticateUser(email, password, callback) {
@@ -8,7 +9,7 @@ function authenticateUser(email, password, callback) {
 
     JSON.parseFromFile('./data/users.json', (error, users) => {
         if (error) {
-            callback(error)
+            callback(new SystemError(error.message))
 
             return
         }
@@ -16,13 +17,13 @@ function authenticateUser(email, password, callback) {
         let user = users.find(user => user.email === email)
 
         if (!user) {
-            callback(new Error('user not found'))
+            callback(new NotFoundError('user not found'))
 
             return
         }
 
         if (user.password !== password) {
-            callback(new Error('wrong credentials'))
+            callback(new ContentError('wrong credentials'))
 
             return
         }

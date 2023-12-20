@@ -29,8 +29,8 @@ function stringifyToFile(file, data, callback) {
 }
 
 module.exports = {
-    parse: JSON.parse, /* interpretar un string y convertirlo a un objeto */
+    parse: JSON.parse,
     parseFromFile,
-    stringify: JSON.stringify, /* un objeto convertirlo a un string */
+    stringify: JSON.stringify,
     stringifyToFile
 }

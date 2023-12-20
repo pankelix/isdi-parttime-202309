@@ -1,7 +1,9 @@
-echo TEST retrieve-user
+source colors.sh
+
+echo -e "${blue}TEST retrieve-user${reset}"
 
 echo
-echo CASE success on correct user id
+echo -e "${green}CASE success on correct user id${reset}"
 
 curl 'http://localhost:8000/users' \
 -H 'Authorization: Bearer 2l9olwt97f80' \
@@ -25,7 +27,7 @@ curl 'http://localhost:8000/users' \
 # {"name":"Ma Zorca"}
 
 echo
-echo CASE failure on incorrect user id
+echo -e "${tomato}CASE failure on incorrect user id${reset}"
 
 curl 'http://localhost:8000/users' \
 -H 'Authorization: Bearer 123456' \

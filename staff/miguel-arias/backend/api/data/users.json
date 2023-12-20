@@ -40,5 +40,12 @@
         "email": "ma@zorca.com",
         "password": "123123123",
         "favs": []
+    },
+    {
+        "id": "1c894nnhbchs",
+        "name": "Pimi Ento",
+        "email": "pimi@ento.com",
+        "password": "123123123",
+        "favs": []
     }
 ]

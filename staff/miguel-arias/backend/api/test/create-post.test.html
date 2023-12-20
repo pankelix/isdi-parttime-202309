@@ -1,0 +1,19 @@
+<script>
+    const req = {
+        method: 'POST',
+        headers: {
+            Authorization: "Bearer 1c894nnhbchs",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ image: "https://gastronomiaycia.republica.com/wp-content/uploads/2010/06/pimiento_morron.jpg", text: "With my cousins!" })
+    }
+
+    fetch('http://localhost:8000/posts', req)
+        .then(res => {
+            if (res.ok)
+                console.log(res.status)
+            else
+                console.error(res.status)
+        })
+        .catch(error => console.error(error))
+</script>

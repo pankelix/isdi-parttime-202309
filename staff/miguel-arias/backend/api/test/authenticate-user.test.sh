@@ -1,7 +1,9 @@
-echo TEST authenticate-user
+source colors.sh
+
+echo -e "${blue}TEST authenticate-user${reset}"
 
 echo
-echo CASE success on correct credentials
+echo -e "${green}CASE success on correct credentials${reset}"
 
  curl 'http://localhost:8000/users/auth' \
  -H 'Content-Type: application/json' \
@@ -27,7 +29,7 @@ echo CASE success on correct credentials
 # "2l9olwt97f80"
 
 echo
-echo CASE error on wrong email
+echo -e "${tomato}CASE error on wrong email${reset}"
 
  curl 'http://localhost:8000/users/auth' \
  -H 'Content-Type: application/json' \
@@ -53,7 +55,7 @@ echo CASE error on wrong email
 # {"error":"Error","message":"user not found"}
 
 echo
-echo CASE error on wrong password
+echo -e "${tomato}CASE error on wrong password${reset}"
 
  curl 'http://localhost:8000/users/auth' \
  -H 'Content-Type: application/json' \
