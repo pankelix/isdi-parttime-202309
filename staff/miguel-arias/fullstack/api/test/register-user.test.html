@@ -1,0 +1,20 @@
+<script>
+    const req = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: 'Pimi Ento', email: "pimi@ento.com", password: "123123123" })
+    }
+
+    fetch('http://localhost:8000/users', req)
+        .then(res => {
+            if (res.ok)
+                console.log(res.status)
+            else
+                console.error(res.status)
+        })
+        .catch(error => console.error(error))
+
+    /* se llama al fetch a esa ruta, y se configura un callback para cuando la cosa va bien (then) y otro para cuando la cosa va mal (catch) */
+</script>
