@@ -8,6 +8,7 @@ curl url -v <!-- -v para que te muestra la verborrea -->
 
 Iniciar servidor:
 node . (si el server está en index.js y estás en la carpeta correcta)
+node --watch . (para no ir teniendo que parar y encender el server, cuando guardas se actualizan los cambios)
 
 Parar servidor: ctrol+c
 

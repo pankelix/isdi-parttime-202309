@@ -169,53 +169,28 @@ class Logic {
     }
 
     retrievePosts(callback) {
-        db.users.findById(this.sessionUserId, (error, user) => {
-            if (error) {
-                callback(error)
-
-                return
+        const req = {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${this.sessionUserId}`
             }
+        }
 
-            if (!user) {
-                callback(new Error('user not found'))
-
-                return
-            }
-
-            db.posts.getAll((error, posts) => {
-                if (error) {
-                    callback(error)
+        fetch('http://localhost:8000/posts', req)
+            .then(res => {
+                if (!res.ok) {
+                    res.json()
+                        .then(body => console.log(new Error(body.message)))
+                        .catch(error => callback(error))
 
                     return
                 }
 
-                let count = 0
-
-                posts.forEach(post => {
-                    post.liked = post.likes.includes(this.sessionUserId)
-
-                    db.users.findById(post.author, (error, author) => {
-                        if (error) {
-                            callback(error)
-
-                            return
-                        }
-
-                        post.author = {
-                            name: author.name,
-                            id: author.id
-                        }
-
-                        post.fav = user.favs.includes(post.id)
-
-                        count++
-
-                        if (count === posts.length)
-                            callback(null, posts)
-                    })
-                })
+                res.json()
+                    .then(posts => callback(null, posts))
+                    .catch(error => callback(error))
             })
-        })
+            .catch(error => callback(error))
     }
 
     publishPost(image, text, callback) {

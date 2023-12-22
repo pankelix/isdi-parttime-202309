@@ -91,7 +91,7 @@ function Home(props) {
         <main>
             {view === 'profile' && <Profile onSuccess={setView} />}
 
-            {/* (view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} /> */}
+            {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
 
             {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic) } />}
         </main>
