@@ -5,7 +5,6 @@ const retrieveUser = require('./logic/retrieveUser')
 const retrievePosts = require('./logic/retrievePosts')
 const createPost = require('./logic/createPost')
 const toggleLikePost = require('./logic/toggleLikePost')
-const toggleFavPost = require('./logic/toggleFavPost')
 const { SystemError, NotFoundError, ContentError, DuplicityError } = require('./utils/errors')
 
 const server = express()
@@ -151,38 +150,6 @@ server.patch('/posts/:postId/likes', (req, res) => {
         const { postId } = req.params
 
         toggleLikePost(userId, postId, error => {
-            if (error) {
-                let status = 400
-
-                if (error instanceof SystemError)
-                    status = 500
-                else if (error instanceof NotFoundError)
-                    status = 404
-
-                res.status(status).json({ error: error.constructor.name, message: error.message })
-
-                return
-            }
-
-            res.status(204).send()
-        })
-    } catch (error) {
-        let status = 400
-
-        if (error instanceof ContentError)
-            status = 406
-
-        res.status(status).json({ error: error.constructor.name, message: error.message })
-    }
-})
-
-server.patch('/posts/:postId/favs', (req, res) => {
-    try {
-        const userId = req.headers.authorization.substring(7)
-
-        const { postId } = req.params
-
-        toggleFavPost(userId, postId, error => {
             if (error) {
                 let status = 400
 

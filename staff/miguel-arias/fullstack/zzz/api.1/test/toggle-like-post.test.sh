@@ -5,16 +5,16 @@ echo -e "${blue}TEST toggle like post${reset}"
 echo
 echo -e "${green}CASE success on correct data${reset}"
 
-curl 'http://localhost:8000/posts/57m97a366js0/likes' \
--H 'Authorization: Bearer 2rgpwht62vs0' \
+curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
+-H 'Authorization: Bearer 2l9olwt97f80' \
 -X PATCH \
 -v
 
-# > PATCH /posts/57m97a366js0/likes HTTP/1.1
+# > PATCH /posts/4g3ep12zedm0/likes HTTP/1.1
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
-# > Authorization: Bearer 2rgpwht62vs0
+# > Authorization: Bearer 2l9olwt97f80
 
 # < HTTP/1.1 204 No Content
 # < X-Powered-By: Express
@@ -26,7 +26,7 @@ echo
 echo -e "${tomato}CASE failure on wrong post id${reset}"
 
 curl 'http://localhost:8000/posts/wrong-postId/likes' \
--H 'Authorization: Bearer 2rgpwht62vs0' \
+-H 'Authorization: Bearer 2l9olwt97f80' \
 -X PATCH \
 -v
 
@@ -34,7 +34,7 @@ curl 'http://localhost:8000/posts/wrong-postId/likes' \
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
-# > Authorization: Bearer 2rgpwht62vs0
+# > Authorization: Bearer 2l9olwt97f80
 
 # < HTTP/1.1 404 Not Found
 # < X-Powered-By: Express
@@ -50,12 +50,12 @@ curl 'http://localhost:8000/posts/wrong-postId/likes' \
 echo
 echo -e "${tomato}CASE failure on wrong userId${reset}"
 
-curl 'http://localhost:8000/posts/57m97a366js0/likes' \
+curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
 -H 'Authorization: Bearer wrong-userId' \
 -X PATCH \
 -v
 
-# > PATCH /posts/57m97a366js0/likes HTTP/1.1
+# > PATCH /posts/4g3ep12zedm0/likes HTTP/1.1
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
@@ -75,16 +75,16 @@ curl 'http://localhost:8000/posts/57m97a366js0/likes' \
 echo
 echo -e "${tomato}CASE server fails (eg: force fail on loading collection)${reset}"
 
-curl 'http://localhost:8000/posts/57m97a366js0/likes' \
--H 'Authorization: Bearer 2rgpwht62vs0' \
+curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
+-H 'Authorization: Bearer 2l9olwt97f80' \
 -X PATCH \
 -v
 
-# > PATCH /posts/57m97a366js0/likes HTTP/1.1
+# > PATCH /posts/4g3ep12zedm0/likes HTTP/1.1
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
-# > Authorization: Bearer 2rgpwht62vs0
+# > Authorization: Bearer 2l9olwt97f80
 
 # < HTTP/1.1 500 Internal Server Error
 # < X-Powered-By: Express
