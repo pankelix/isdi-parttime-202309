@@ -5,8 +5,8 @@ echo -e "${blue}TEST toggle like post${reset}"
 echo
 echo -e "${green}CASE success on correct data${reset}"
 
-curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
+-H 'Authorization: Bearer 658e003d92e90fd57c67a684' \
 -X PATCH \
 -v
 
@@ -14,7 +14,7 @@ curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
-# > Authorization: Bearer 2l9olwt97f80
+# > Authorization: Bearer 658e003d92e90fd57c67a684
 
 # < HTTP/1.1 204 No Content
 # < X-Powered-By: Express
@@ -26,7 +26,7 @@ echo
 echo -e "${tomato}CASE failure on wrong post id${reset}"
 
 curl 'http://localhost:8000/posts/wrong-postId/likes' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+-H 'Authorization: Bearer 658e003d92e90fd57c67a684' \
 -X PATCH \
 -v
 
@@ -50,7 +50,7 @@ curl 'http://localhost:8000/posts/wrong-postId/likes' \
 echo
 echo -e "${tomato}CASE failure on wrong userId${reset}"
 
-curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
+curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
 -H 'Authorization: Bearer wrong-userId' \
 -X PATCH \
 -v
@@ -75,8 +75,8 @@ curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
 echo
 echo -e "${tomato}CASE server fails (eg: force fail on loading collection)${reset}"
 
-curl 'http://localhost:8000/posts/4g3ep12zedm0/likes' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
+-H 'Authorization: Bearer 658e003d92e90fd57c67a684' \
 -X PATCH \
 -v
 

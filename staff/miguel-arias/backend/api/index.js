@@ -127,13 +127,23 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 createPost(userId, image, text, error => {
                     if (error) {
-                        res.status(400).json({ error: error.constructor.name, message: error.message })
+                        let status = 500
+
+                        if (error instanceof NotFoundError)
+                            status = 404
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
                     }
 
                     res.status(201).send()
                 })
             } catch (error) {
-                res.status(400).json({ error: error.constructor.name, message: error.message })
+                let status = 500
+
+                if (error instanceof ContentError || error instanceof TypeError)
+                    status = 406
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         })
 

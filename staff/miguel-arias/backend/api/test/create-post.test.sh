@@ -6,7 +6,7 @@ echo
 echo -e "${green}CASE success on correct data${reset}"
 
 curl 'http://localhost:8000/posts' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+-H 'Authorization: Bearer 658f0f0ff58499e7aacac4f6' \
 -H 'Content-Type: application/json' \
 -d '{ "image": "https://tortillasnagual.com/wp-content/uploads/2022/11/Todo-sobre-la-mazorca-de-maiz-1024x704.jpg", "text": "My family! :)"}' \
 -v
@@ -58,7 +58,7 @@ echo
 echo -e "${tomato}CASE failure on no image${reset}"
 
 curl 'http://localhost:8000/posts' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+-H 'Authorization: Bearer 658f0f0ff58499e7aacac4f6' \
 -H 'Content-Type: application/json' \
 -d '{ "image": "", "text": "My family! :)"}' \
 -v
@@ -86,7 +86,7 @@ echo
 echo -e "${tomato}CASE failure on no text${reset}"
 
 curl 'http://localhost:8000/posts' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+-H 'Authorization: Bearer 658f0f0ff58499e7aacac4f6' \
 -H 'Content-Type: application/json' \
 -d '{ "image": "https://tortillasnagual.com/wp-content/uploads/2022/11/Todo-sobre-la-mazorca-de-maiz-1024x704.jpg", "text": ""}' \
 -v
