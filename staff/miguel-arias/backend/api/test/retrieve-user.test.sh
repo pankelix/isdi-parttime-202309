@@ -6,14 +6,14 @@ echo
 echo -e "${green}CASE success on correct user id${reset}"
 
 curl 'http://localhost:8000/users' \
--H 'Authorization: Bearer 2l9olwt97f80' \
+-H 'Authorization: Bearer 658f0f0ff58499e7aacac4f6' \
 -v
 
 # > GET /users HTTP/1.1
 # > Host: localhost:8000
 # > User-Agent: curl/8.2.1
 # > Accept: */*
-# > Authorization: Bearer 2l9olwt97f80
+# > Authorization: Bearer 658f0f0ff58499e7aacac4f6
 
 # < HTTP/1.1 200 OK
 # < X-Powered-By: Express

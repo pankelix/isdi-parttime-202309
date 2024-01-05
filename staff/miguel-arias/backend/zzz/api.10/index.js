@@ -5,8 +5,6 @@ const authenticateUser = require('./logic/authenticateUser')
 const retrieveUser = require('./logic/retrieveUser')
 const createPost = require('./logic/createPost')
 const toggleLikePost = require('./logic/toggleLikePost')
-const retrievePost = require('./logic/retrievePost')
-const toggleFavPost = require('./logic/toggleFavPost')
 const { NotFoundError, ContentError, DuplicityError, CredentialsError } = require('./logic/errors')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
@@ -170,66 +168,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                     res.status(204).send()
                 })
-            } catch (error) {
-                let status = 500
-
-                if (error instanceof ContentError || error instanceof TypeError)
-                    status = 406
-
-                res.status(status).json({ error: error.constructor.name, message: error.message })
-            }
-        })
-
-        server.get('/posts', (req, res) => {
-            try {
-                const postId = req.headers.authorization.substring(7)
-
-                retrievePost(postId, (error, post) => {
-                    if (error) {
-                        let status = 500
-
-                        if (error instanceof NotFoundError)
-                            status = 404
-
-                        res.status(status.json({ error: error.constructor.name, message: error.message }))
-
-                        return
-                    }
-
-                    res.json(post)
-                })
-
-            } catch (error) {
-                let status = 500
-
-                if (error instanceof ContentError || error instanceof TypeError)
-                    status = 406
-
-                res.status(status).json({ error: error.constructor.name, message: error.message })
-            }
-        })
-
-        server.patch('/users/:userId/favs', (req, res) => {
-            try {
-                const postId = req.headers.authorization.substring(7)
-
-                const { userId } = req.params
-
-                toggleFavPost(postId, userId, error => {
-                    if (error) {
-                        let status = 500
-
-                        if (error instanceof NotFoundError)
-                            status = 404
-
-                        res.status(status).json({ error: error.constructor.name, message: error.message })
-
-                        return
-                    }
-
-                    res.status(204).send()
-                })
-
             } catch (error) {
                 let status = 500
 
