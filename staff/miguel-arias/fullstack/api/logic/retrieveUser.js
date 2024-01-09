@@ -1,32 +1,25 @@
-const { validateText, validateFunction } = require('../utils/validators')
-const JSON = require('../utils/JSON')
+const { validateFunction, validateId } = require('./helpers/validators')
+
+const { User } = require('../data/models')
+const { SystemError, NotFoundError } = require('./errors')
 
 function retrieveUser(userId, callback) {
-    validateText(userId, 'user id')
+    validateId(userId, 'user id')
     validateFunction(callback, 'callback')
 
-    JSON.parseFromFile('./data/users.json', (error, users) => {
-        if (error) {
-            callback(error)
+    User.findById(userId, 'name').lean() //en el findById le digo que me busque por userId pero que me devuelva solo name (y el _id, que siempre lo devuelve)
+        .then(user => {
+            if (!user) {
+                callback(new NotFoundError('user not found'))
 
-            return
-        }
+                return
+            }
 
-        const user = users.find(user => user.id === userId)
+            delete user._id
 
-        if (!user) {
-            callback(new Error('user not found'))
-
-            return
-        }
-
-        delete user.id
-        delete user.email
-        delete user.password
-        delete user.favs
-
-        callback(null, user)
-    })
+            callback(null, user) //al haber usado el lean y borrado user._id, el user es un objeto que envuelve el nombre
+        })
+        .catch(error => callback(new SystemError(error.message)))
 }
 
 module.exports = retrieveUser

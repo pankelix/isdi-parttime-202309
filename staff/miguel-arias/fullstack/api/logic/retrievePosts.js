@@ -1,50 +1,46 @@
-const { validateText, validateFunction } = require('../utils/validators')
-const JSON = require('../utils/JSON')
+const { validateFunction, validateId } = require('./helpers/validators')
+
+const { User, Post } = require('../data/models')
+const { SystemError, NotFoundError } = require('./errors')
 
 function retrievePosts(userId, callback) {
-    validateText(userId, 'user id')
+    validateId(userId, 'user id')
     validateFunction(callback, 'callback')
 
-    JSON.parseFromFile('./data/users.json', (error, users) => {
-        if (error) {
-            callback(error)
-
-            return
-        }
-
-        const user = users.find(user => user.id === userId)
-
-        if (!user) {
-            callback(new Error('user not found'))
-
-            return
-        }
-
-        JSON.parseFromFile('./data/posts.json', (error, posts) => {
-            if (error) {
-                callback(error)
+    User.findById(userId).lean() //el lean hace que nos devuelva el documento desconectado de la base de datos, antes nos devuelve un objeto complejo y ahora el objeto user sin más (esto sirve cuando solo queremos leer el objeto, ya que perdemos capacidad de salvarlo de nuevo)
+        .then(user => {
+            if (!user) {
+                callback(new NotFoundError('user not found'))
 
                 return
             }
 
-            posts.forEach(post => {
-                post.liked = post.likes.includes(userId)
+            Post.find().populate('author', 'name').lean() //populate(author) usa el vínculo que tiene Post con User (ver ref en models) para coger el usuario completo (y no solo el id como hace de base). Si pongo populate('author', 'name') me traerá solo name del user
+                .then(posts => {
+                    // callback(posts) si lo devolvieramos así, tendría demasiada mierda, hay que sanear los datos
+                    posts.forEach(post => {
+                        post.id = post._id.toString()
+                        delete post._id
 
-                const author = users.find(user => user.id === post.author)
+                        if (post.author._id) {
+                            post.author.id = post.author._id.toString()
+                            delete post.author._id
+                        }
 
-                //TODO what if the author suddenly does not exist?
+                        delete post.__v //una propiedad de los objetos de mongoose que no queremos
 
-                post.author = {
-                    id: author.id,
-                    name: author.name
-                }
+                        post.likes = post.likes.map(userObjectId => userObjectId.toString()) //para que no aparezca el objectid
 
-                post.fav = user.favs.includes(post.id)
-            })
+                        post.liked = post.likes.includes(userId) //si este user le ha dado like
 
-            callback(null, posts)
+                        post.fav = user.favs.some(postObjectId => postObjectId.toString() === post.id) // si este user le ha dado fav
+                    })
+
+                    callback(null, posts)
+                })
+                .catch(error => callback(new SystemError(error.message)))
         })
-    })
+        .catch(error => callback(new SystemError(error.message)))
 }
 
 module.exports = retrievePosts
