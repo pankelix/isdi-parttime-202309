@@ -34,7 +34,6 @@ class DuplicityError extends Error {
     }
 }
 
-// 401
 class CredentialsError extends Error {
     constructor(message) {
         super(message)

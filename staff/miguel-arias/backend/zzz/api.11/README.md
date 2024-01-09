@@ -48,6 +48,6 @@
 
 ## Change user email
 
-* Request: PATCH /users/email "Content-Type: application/json" { newEmail, newEmailConfirm, password }
-* Response: 204
+* Request: PATCH /users/userId/email
+* Response: 200 "Content-Type: application/json" { email }
 * Response (error): 400 "Content-Type: application/json" { error, message }

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const express = require('express')
-const { NotFoundError, ContentError, DuplicityError, CredentialsError } = require('./logic/errors')
 const registerUser = require('./logic/registerUser')
 const authenticateUser = require('./logic/authenticateUser')
 const retrieveUser = require('./logic/retrieveUser')
@@ -8,7 +7,7 @@ const createPost = require('./logic/createPost')
 const toggleLikePost = require('./logic/toggleLikePost')
 const retrievePost = require('./logic/retrievePost')
 const toggleFavPost = require('./logic/toggleFavPost')
-const changeUserEmail = require('./logic/changeUserEmail')
+const { NotFoundError, ContentError, DuplicityError, CredentialsError } = require('./logic/errors')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {
@@ -241,45 +240,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             }
         })
 
-        server.patch('/users/:userId/email', jsonBodyParser, (req, res) => {
-            try {
-                const { newEmail, newEmailConfirm, password } = req.body
-
-                const { userId } = req.params
-
-                changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
-                    if (error) {
-                        let status = 500
-
-                        if (error instanceof CredentialsError)
-                            status = 401
-
-                        if (error instanceof NotFoundError)
-                            status = 404
-
-                        if (error instanceof ContentError)
-                            status = 406
-
-                        res.status(status).json({ error: error.constructor.name, message: error.message })
-
-                        return
-                    }
-
-                    res.status(204).send()
-                })
-
-            } catch (error) {
-                let status = 500
-
-                if (error instanceof ContentError || error instanceof TypeError)
-                    status = 406
-
-                res.status(status).json({ error: error.constructor.name, message: error.message })
-            }
-        })
-
         const date = new Date()
 
-        server.listen(8000, () => console.log(`Server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`))
+        server.listen(8000, () => console.log(`server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`))
     })
     .catch(error => console.error(error))
