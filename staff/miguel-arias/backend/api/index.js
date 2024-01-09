@@ -6,7 +6,7 @@ const authenticateUser = require('./logic/authenticateUser')
 const retrieveUser = require('./logic/retrieveUser')
 const createPost = require('./logic/createPost')
 const toggleLikePost = require('./logic/toggleLikePost')
-const retrievePost = require('./logic/retrievePost')
+const retrievePosts = require('./logic/retrievePosts')
 const toggleFavPost = require('./logic/toggleFavPost')
 const changeUserEmail = require('./logic/changeUserEmail')
 
@@ -185,7 +185,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             try {
                 const postId = req.headers.authorization.substring(7)
 
-                retrievePost(postId, (error, post) => {
+                retrievePosts(postId, (error, post) => {
                     if (error) {
                         let status = 500
 

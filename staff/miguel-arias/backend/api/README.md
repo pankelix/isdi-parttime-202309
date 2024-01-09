@@ -1,6 +1,10 @@
-.test.js -> node ./archivo
+.test.js -> en la carpeta test -> node ./archivo
 .test.html -> open with live server, recargar y mirar network
 .test.sh -> con el server abierto -> ./archivo
+
+npm run start
+npm run watch
+npm run inspect
 
 # API
 
