@@ -1,4 +1,4 @@
-.test.js -> en la carpeta test -> node ./archivo
+.test.js -> en la carpeta logic -> node --inspect-brk ./archivo
 .test.html -> open with live server, recargar y mirar network
 .test.sh -> con el server abierto -> ./archivo
 
@@ -48,10 +48,16 @@ npm run inspect
 
 * Request: PATCH /posts/userId/favs "Authorization: Bearer postId"
 * Response: 204
-* Response (error): 400|404|406|500 "Content-Type: application/json" { error, message }
+* Response (error): 404|406|500 "Content-Type: application/json" { error, message }
 
 ## Change user email
 
-* Request: PATCH /users/email "Content-Type: application/json" { newEmail, newEmailConfirm, password }
+* Request: PATCH /users/:userId/email "Content-Type: application/json" { newEmail, newEmailConfirm, password }
 * Response: 204
-* Response (error): 400 "Content-Type: application/json" { error, message }
+* Response (error): 401|404|406|500 "Content-Type: application/json" { error, message }
+
+## Change user password
+
+* Request: PATCH /users/:userId/password "Content-Type: application/json" { password, newPassword, newPasswordConfirm }
+* Response: 204
+* Response (error): 401|404|406|500 "Content-Type: application/json" { error, message }

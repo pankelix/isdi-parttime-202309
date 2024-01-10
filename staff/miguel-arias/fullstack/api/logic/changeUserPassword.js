@@ -1,17 +1,16 @@
 const { User } = require("../data/models")
-const { NotFoundError, CredentialsError, ContentError, SystemError } = require("./errors")
-const { validateText, validateFunction, validateId } = require("./helpers/validators")
+const { ContentError, NotFoundError, CredentialsError, SystemError } = require("./errors")
+const { validateId, validateText, validateFunction } = require("./helpers/validators")
 
-
-function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
+function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
     validateId(userId, 'user id')
-    validateText(newEmail, 'new email')
-    validateText(newEmailConfirm, 'new email confirmation')
     validateText(password, 'password')
+    validateText(newPassword, 'new password')
+    validateText(newPasswordConfirm, 'new password confirmation')
     validateFunction(callback, 'callback')
 
-    if (newEmail !== newEmailConfirm) {
-        callback(new ContentError('new email and its confirmation do not match'))
+    if (newPassword !== newPasswordConfirm) {
+        callback(new ContentError('new password and its confirmation do not match'))
 
         return
     }
@@ -30,13 +29,12 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) 
                 return
             }
 
-            user.email = newEmail
+            user.password = newPassword
             user.save()
 
             callback(null)
-
         })
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = changeUserEmail
+module.exports = changeUserPassword

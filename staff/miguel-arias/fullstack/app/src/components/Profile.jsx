@@ -1,4 +1,5 @@
 import logic from "../logic"
+import context from "../logic/context"
 
 import { Container, Form, Input, Button } from "../library/index"
 
@@ -13,7 +14,7 @@ function Profile(props) {
         const password = event.target.querySelector('#password-input').value
 
         try {
-            logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
+            logic.changeUserEmail(context.sessionUserId, newEmail, newEmailConfirm, password, error => {
                 if (error) {
                     alert(error.message)
 
@@ -59,7 +60,7 @@ function Profile(props) {
                 <Form onSubmit={handleChangeEmailSubmit}>
                     <Input id="new-email-input" type="email" placeholder="New Email">New e-mail</Input>
 
-                    <Input id="new-email-confirm-input" type="email"placeholder="Confirm new Email">Confirm new e-mail</Input>
+                    <Input id="new-email-confirm-input" type="email" placeholder="Confirm new Email">Confirm new e-mail</Input>
 
                     <Input id="password-input" type="password" placeholder="Password">Password</Input>
 

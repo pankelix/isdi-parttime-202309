@@ -72,13 +72,13 @@ curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
 
 # {"error":"NotFoundError","message":"user not found"}
 
-echo
-echo -e "${tomato}CASE server fails (eg: force fail on loading collection)${reset}"
+# echo
+# echo -e "${tomato}CASE server fails (eg: force fail on loading collection)${reset}"
 
-curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
--H 'Authorization: Bearer 658e003d92e90fd57c67a684' \
--X PATCH \
--v
+# curl 'http://localhost:8000/posts/658f397b09527317a285ddfe/likes' \
+# -H 'Authorization: Bearer 658e003d92e90fd57c67a684' \
+# -X PATCH \
+# -v
 
 # > PATCH /posts/4g3ep12zedm0/likes HTTP/1.1
 # > Host: localhost:8000

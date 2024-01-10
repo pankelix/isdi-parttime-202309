@@ -1,12 +1,32 @@
 import { validateText } from "../utils/validators"
-import context from './context'
 
-function changeUserEmail(newEmail, newEmailConfirm, password, callback) {
+function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
+    validateText(userId, 'user id')
     validateText(newEmail, 'new email')
     validateText(newEmailConfirm, 'new email confirm')
     validateText(password, 'password')
 
-    //TODO call api (fetch)
+    const req = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ newEmail, newEmailConfirm, password })
+    }
+
+    fetch(`http://localhost:8000/users/${userId}/email`, req)
+        .then(res => {
+            if (!res.ok) {
+                res.json()
+                    .then(body => callback(new Error(body.message)))
+                    .catch(error => callback(error))
+
+                return
+            }
+
+            callback(null)
+        })
+        .catch(error => callback(error))
 }
 
 export default changeUserEmail

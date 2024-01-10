@@ -7,7 +7,7 @@ function toggleLikePost(userId, postId, callback) {
     validateId(postId, 'post id')
     validateFunction(callback, 'callback')
 
-    User.findById(userId)
+    User.findById(userId).lean()
         .then(user => {
             if (!user) {
                 callback(new NotFoundError('user not found'))

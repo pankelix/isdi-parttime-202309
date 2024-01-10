@@ -9,6 +9,7 @@ const toggleLikePost = require('./logic/toggleLikePost')
 const retrievePosts = require('./logic/retrievePosts')
 const toggleFavPost = require('./logic/toggleFavPost')
 const changeUserEmail = require('./logic/changeUserEmail')
+const changeUserPassword = require('./logic/changeUserPassword')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {
@@ -181,6 +182,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             }
         })
 
+        /* retrieve posts */
         server.get('/posts', (req, res) => {
             try {
                 const postId = req.headers.authorization.substring(7)
@@ -210,11 +212,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             }
         })
 
-        server.patch('/users/:userId/favs', (req, res) => {
+        /* toggle fav post */
+        server.patch('/posts/:postId/favs', (req, res) => {
             try {
-                const postId = req.headers.authorization.substring(7)
+                const { postId } = req.params
 
-                const { userId } = req.params
+                const userId = req.headers.authorization.substring(7)
 
                 toggleFavPost(postId, userId, error => {
                     if (error) {
@@ -240,12 +243,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         })
-
+        /* change user email */
         server.patch('/users/:userId/email', jsonBodyParser, (req, res) => {
             try {
-                const { newEmail, newEmailConfirm, password } = req.body
-
                 const { userId } = req.params
+
+                const { newEmail, newEmailConfirm, password } = req.body
 
                 changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
                     if (error) {
@@ -263,6 +266,42 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
                         res.status(status).json({ error: error.constructor.name, message: error.message })
 
                         return
+                    }
+
+                    res.status(204).send()
+                })
+
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof ContentError || error instanceof TypeError)
+                    status = 406
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
+
+        /* change user password */
+        server.patch('/users/:userId/password', jsonBodyParser, (req, res) => {
+            try {
+                const { userId } = req.params
+
+                const { password, newPassword, newPasswordConfirm } = req.body
+
+                changeUserPassword(userId, password, newPassword, newPasswordConfirm, error => {
+                    if (error) {
+                        let status = 500
+
+                        if (error instanceof ContentError)
+                            status = 406
+
+                        if (error instanceof NotFoundError)
+                            status = 404
+
+                        if (error instanceof CredentialsError)
+                            status = 401
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
                     }
 
                     res.status(204).send()
