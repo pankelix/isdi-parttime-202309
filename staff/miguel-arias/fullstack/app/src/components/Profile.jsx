@@ -37,7 +37,7 @@ function Profile(props) {
         const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
 
         try {
-            logic.changeUserPassword(password, newPassword, newPasswordConfirm, error => {
+            logic.changeUserPassword(context.sessionUserId, password, newPassword, newPasswordConfirm, error => {
                 if (error) {
                     alert(error.message)
 

@@ -1,5 +1,6 @@
 import { Container, Form, Field, Button } from "../library/index"
 import logic from "../logic"
+import context from "../logic/context"
 
 function NewPost({ onSuccess, onCancel }) {
 
@@ -10,7 +11,7 @@ function NewPost({ onSuccess, onCancel }) {
         const text = event.target.text.value
 
         try {
-            logic.publishPost(image, text, error => {
+            logic.publishPost(context.sessionUserId, image, text, error => {
                 if (error) {
                     alert(error.message)
 

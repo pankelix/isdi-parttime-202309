@@ -61,3 +61,9 @@ npm run inspect
 * Request: PATCH /users/:userId/password "Content-Type: application/json" { password, newPassword, newPasswordConfirm }
 * Response: 204
 * Response (error): 401|404|406|500 "Content-Type: application/json" { error, message }
+
+## Delete post
+
+* Request: POST /posts/:postId/delete "Authorization: Bearer userId"
+* Response: 204
+* Response(error): 404|406|500 "Content-Type: application/json" { error, message }

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Image, Button, Input } from "../library/index"
 import logic from "../logic"
+import context from "../logic/context"
 
 function Post(props) {
     const post = props.post
@@ -27,7 +28,7 @@ function Post(props) {
     function handleDeleteClick() {
         if (confirm('Are you sure you want to delete this post?')) {
             try {
-                logic.deletePost(post.id, error => {
+                logic.deletePost(context.sessionUserId, post.id, error => {
                     if (error) {
                         alert(error.message)
 
@@ -105,13 +106,13 @@ function Post(props) {
         <aside>
             <Button onClick={handleToggleLikeClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length}</Button>
             <Button onClick={handleToggleFavClick}>{post.fav ? '🌟' : '⭐'}</Button>
-            {post.author.id == logic.sessionUserId && <Button onClick={handleDeleteClick}>🚽</Button>}
+            {post.author.id == context.sessionUserId && <Button onClick={handleDeleteClick}>🚽</Button>}
         </aside>
 
         <aside>
             <h4>{post.author.name}</h4>
             <p>{post.text}</p>
-            {post.author.id == logic.sessionUserId && <Button className="edit-button" onClick={handleToggleEditClick}>✏</Button>}
+            {post.author.id == context.sessionUserId && <Button className="edit-button" onClick={handleToggleEditClick}>✏</Button>}
             {edit === 'edit' && <div> <Input id="textToEdit"></Input> <Button onClick={handleEditConfirmClick}>✅</Button> </div>}
         </aside>
     </article>

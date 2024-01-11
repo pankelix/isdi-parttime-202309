@@ -10,6 +10,8 @@ const retrievePosts = require('./logic/retrievePosts')
 const toggleFavPost = require('./logic/toggleFavPost')
 const changeUserEmail = require('./logic/changeUserEmail')
 const changeUserPassword = require('./logic/changeUserPassword')
+const deletePost = require('./logic/deletePost')
+const retrieveFavPosts = require('./logic/retrieveFavPosts')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {
@@ -212,6 +214,38 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             }
         })
 
+        /* retrieve fav posts */
+
+        server.get('/posts/favs', (req, res) => {
+            try {
+
+                const userId = req.headers.authorization.substring(7)
+
+                retrieveFavPosts(userId, (error, posts) => {
+                    if (error) {
+                        let status = 500
+
+                        if (error instanceof NotFoundError)
+                            status = 404
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
+
+                        return
+                    }
+
+                    res.json(posts)
+                })
+
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof ContentError || error instanceof TypeError)
+                    status = 406
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
+
         /* toggle fav post */
         server.patch('/posts/:postId/favs', (req, res) => {
             try {
@@ -300,6 +334,36 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                         if (error instanceof CredentialsError)
                             status = 401
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
+                    }
+
+                    res.status(204).send()
+                })
+
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof ContentError || error instanceof TypeError)
+                    status = 406
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
+
+        /* delete post */
+        server.post('/posts/:postId/delete', (req, res) => {
+            try {
+                const { postId } = req.params
+
+                const userId = req.headers.authorization.substring(7)
+
+                deletePost(userId, postId, error => {
+                    if (error) {
+                        let status = 505
+
+                        if (error instanceof NotFoundError)
+                            status = 404
 
                         res.status(status).json({ error: error.constructor.name, message: error.message })
                     }
