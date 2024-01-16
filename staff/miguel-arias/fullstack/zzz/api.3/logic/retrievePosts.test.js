@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require ('mongoose')
 
-const retrievePosts = require('./retrievePosts')
+const retrievePosts = require ('./retrievePosts')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {

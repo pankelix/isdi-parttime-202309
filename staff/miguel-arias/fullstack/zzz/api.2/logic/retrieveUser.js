@@ -1,5 +1,5 @@
-const { validateText, validateFunction } = require('../utils/validate')
-const JSON = require('../utils/JSON')
+const { validateText, validateFunction } = require ('../utils/validate')
+const JSON = require ('../utils/JSON')
 
 function retrieveUser(userId, callback) {
     validateText(userId, 'user id')
@@ -29,4 +29,4 @@ function retrieveUser(userId, callback) {
     })
 }
 
-module.exports = retrieveUser
+module.export = retrieveUser

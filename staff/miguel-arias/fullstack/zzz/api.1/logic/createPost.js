@@ -1,6 +1,6 @@
-const { validateText, validateFunction } = require('../utils/validate')
-const JSON = require('../utils/JSON')
-const generateId = require('../data/generateId')
+const { validateText, validateFunction } = require ('../utils/validate')
+const JSON = require ('../utils/JSON')
+const generateId = require ('../data/generateId')
 
 function createPost(userId, image, text, callback) {
     validateText(userId, 'user id')
@@ -53,4 +53,4 @@ function createPost(userId, image, text, callback) {
     })
 }
 
-module.exports = createPost
+module.export = createPost

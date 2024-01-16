@@ -1,6 +1,6 @@
-const JSON = require("../utils/JSON");
-const { NotFoundError, SystemError } = require("../utils/errors");
-const { validateText, validateFunction } = require("../utils/validators");
+const JSON = require ("../utils/JSON");
+const { NotFoundError, SystemError } = require ("../utils/errors");
+const { validateText, validateFunction } = require ("../utils/validators");
 
 function toggleFavPost(userId, postId, callback) {
     validateText(userId, 'user id')
@@ -57,4 +57,4 @@ function toggleFavPost(userId, postId, callback) {
     })
 }
 
-module.exports = toggleFavPost
+module.export = toggleFavPost

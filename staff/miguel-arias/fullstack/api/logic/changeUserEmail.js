@@ -1,6 +1,6 @@
-const { User } = require("../data/models")
-const validate = require("./helpers/validate")
-const { NotFoundError, CredentialsError, ContentError, SystemError } = require("./errors")
+import { User } from '../data/models.js'
+import validate from './helpers/validate.js'
+import { NotFoundError, CredentialsError, ContentError, SystemError } from './errors.js'
 
 function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
     validate.id(userId, 'user id')
@@ -38,4 +38,4 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) 
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = changeUserEmail
+export default changeUserEmail

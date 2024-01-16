@@ -1,5 +1,5 @@
-import { Container, Form, Field, Button } from "../library/index"
-import logic from "../logic"
+import { Container, Form, Field, Button } = require ("../library/index"
+import logic = require ("../logic"
 
 function NewPost({ onSuccess, onCancel }) {
 
@@ -43,4 +43,4 @@ function NewPost({ onSuccess, onCancel }) {
     </Container>
 }
 
-export default NewPost
+module.export = NewPost

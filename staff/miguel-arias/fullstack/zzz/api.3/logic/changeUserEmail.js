@@ -1,6 +1,6 @@
-const { User } = require("../data/models")
-const { NotFoundError, CredentialsError, ContentError, SystemError } = require("./errors")
-const { validateText, validateFunction, validateId } = require("./helpers/validators")
+const { User } = require ("../data/models")
+const { NotFoundError, CredentialsError, ContentError, SystemError } = require ("./errors")
+const { validateText, validateFunction, validateId } = require ("./helpers/validators")
 
 
 function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
@@ -39,4 +39,4 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) 
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = changeUserEmail
+module.export = changeUserEmail

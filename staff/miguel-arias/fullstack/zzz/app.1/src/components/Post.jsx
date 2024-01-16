@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { Image, Button, Input } from "../library/index"
-import logic from "../logic"
+import { useState } = require ("react"
+import { Image, Button, Input } = require ("../library/index"
+import logic = require ("../logic"
 
 function Post(props) {
     const post = props.post
@@ -117,4 +117,4 @@ function Post(props) {
     </article>
 }
 
-export default Post
+module.export = Post

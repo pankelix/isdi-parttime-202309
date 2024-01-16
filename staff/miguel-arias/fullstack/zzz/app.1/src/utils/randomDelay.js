@@ -6,4 +6,4 @@ function randomDelay(callback) {
     setTimeout(callback, seconds * 1000))
 }*/
 
-export default randomDelay
+module.export = randomDelay

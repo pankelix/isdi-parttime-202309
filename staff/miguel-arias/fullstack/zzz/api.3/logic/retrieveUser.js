@@ -1,7 +1,7 @@
-const { validateFunction, validateId } = require('./helpers/validators')
+const { validateFunction, validateId } = require ('./helpers/validators')
 
-const { User } = require('../data/models')
-const { SystemError, NotFoundError } = require('./errors')
+const { User } = require ('../data/models')
+const { SystemError, NotFoundError } = require ('./errors')
 
 function retrieveUser(userId, callback) {
     validateId(userId, 'user id')
@@ -22,4 +22,4 @@ function retrieveUser(userId, callback) {
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = retrieveUser
+module.export = retrieveUser

@@ -1,5 +1,5 @@
-import { Users, Posts, CreditCards } from "./collections"
-import { User, Post, CreditCard } from "./models"
+import { Users, Posts, CreditCards } = require ("./collections"
+import { User, Post, CreditCard } = require ("./models"
 
 var db = {
     users: new Users,
@@ -43,4 +43,4 @@ db.users.insert(new User(null, 'Wendy Darling', 'wendy@darling.com', '123123123'
     })
 })
 
-export default db
+module.export = db

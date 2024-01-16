@@ -1,6 +1,6 @@
-const { Post, User } = require("../data/models")
-const { NotFoundError, SystemError } = require("./errors")
-const { validateFunction, validateId } = require("./helpers/validators")
+const { Post, User } = require ("../data/models")
+const { NotFoundError, SystemError } = require ("./errors")
+const { validateFunction, validateId } = require ("./helpers/validators")
 
 function toggleFavPost(postId, userId, callback) {
     validateId(postId, 'post id')
@@ -39,4 +39,4 @@ function toggleFavPost(postId, userId, callback) {
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = toggleFavPost
+module.export = toggleFavPost

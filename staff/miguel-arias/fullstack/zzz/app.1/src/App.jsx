@@ -1,7 +1,7 @@
-import React from "react"
-import Login from "./views/Login"
-import Register from "./views/Register"
-import Home from "./views/Home"
+import React = require ("react"
+import Login = require ("./views/Login"
+import Register = require ("./views/Register"
+import Home = require ("./views/Home"
 
 function App() {
   console.log('App')
@@ -33,4 +33,4 @@ function App() {
   </>
 }
 
-export default App
+module.export = App

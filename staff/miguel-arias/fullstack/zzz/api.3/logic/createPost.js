@@ -1,7 +1,7 @@
-const { Post, User } = require('../data/models')
-const { SystemError, NotFoundError } = require('./errors')
+const { Post, User } = require ('../data/models')
+const { SystemError, NotFoundError } = require ('./errors')
 
-const { validateText, validateFunction, validateId } = require('./helpers/validators')
+const { validateText, validateFunction, validateId } = require ('./helpers/validators')
 
 function createPost(userId, image, text, callback) {
     validateId(userId, 'user id')
@@ -26,4 +26,4 @@ function createPost(userId, image, text, callback) {
 
 }
 
-module.exports = createPost
+module.export = createPost

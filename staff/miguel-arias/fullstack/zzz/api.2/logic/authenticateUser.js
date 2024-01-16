@@ -32,4 +32,4 @@ function authenticateUser(email, password, callback) {
     })
 }
 
-module.exports = authenticateUser
+module.export = authenticateUser

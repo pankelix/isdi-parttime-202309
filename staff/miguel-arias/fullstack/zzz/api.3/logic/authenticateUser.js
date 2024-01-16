@@ -1,7 +1,7 @@
-const { validateText, validateFunction } = require('./helpers/validators')
-const { SystemError, NotFoundError, CredentialsError } = require('./errors')
+const { validateText, validateFunction } = require ('./helpers/validators')
+const { SystemError, NotFoundError, CredentialsError } = require ('./errors')
 
-const { User } = require('../data/models')
+const { User } = require ('../data/models')
 
 function authenticateUser(email, password, callback) {
     validateText(email, 'email')
@@ -27,4 +27,4 @@ function authenticateUser(email, password, callback) {
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = authenticateUser
+module.export = authenticateUser

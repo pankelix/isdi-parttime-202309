@@ -1,6 +1,6 @@
-import { User, Post, CreditCard } from "./models"
-import randomDelay from "../utils/randomDelay"
-import { validateText } from "../utils/validators"
+import { User, Post, CreditCard } = require ("./models"
+import randomDelay = require ("../utils/randomDelay"
+import { validateText } = require ("../utils/validators"
 
 class Collection {
     constructor(clazz, documents) {

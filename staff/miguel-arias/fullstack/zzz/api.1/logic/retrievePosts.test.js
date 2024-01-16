@@ -1,4 +1,4 @@
-const retrievePosts = require('./retrievePosts')
+const retrievePosts = require ('./retrievePosts')
 
 try {
     retrievePosts("amhkljhnhc4", (error, user) => {

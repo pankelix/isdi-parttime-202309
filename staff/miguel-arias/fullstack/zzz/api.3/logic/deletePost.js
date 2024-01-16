@@ -1,6 +1,6 @@
-const { Post, User } = require('../data/models')
-const { SystemError, NotFoundError } = require('./errors')
-const { validateId, validateFunction } = require('./helpers/validators')
+const { Post, User } = require ('../data/models')
+const { SystemError, NotFoundError } = require ('./errors')
+const { validateId, validateFunction } = require ('./helpers/validators')
 
 function deletePost(userId, postId, callback) {
     validateId(userId, 'user id')
@@ -29,4 +29,4 @@ function deletePost(userId, postId, callback) {
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = deletePost
+module.export = deletePost

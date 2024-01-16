@@ -1,6 +1,6 @@
-import logic from "../logic"
+import logic = require ("../logic"
 
-import { Container, Form, Input, Button } from "../library/index"
+import { Container, Form, Input, Button } = require ("../library/index"
 
 function Profile(props) {
     console.log('profile')
@@ -84,4 +84,4 @@ function Profile(props) {
     </>
 }
 
-export default Profile
+module.export = Profile

@@ -1,4 +1,4 @@
-const retrieveUser = require('./retrieveUser')
+const retrieveUser = require ('./retrieveUser')
 
 try {
     retrieveUser("amhkljhnhc4", (error, user) => {

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
-const retrieveUser = require('./retrieveUser')
+import retrieveUser from './retrieveUser'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {

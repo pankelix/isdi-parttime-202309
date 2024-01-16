@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import Post from "./Post"
+import { useEffect, useState } = require ("react"
+import Post = require ("./Post"
 
 function Posts({ loadPosts, stamp }) {
     console.log('Posts')
@@ -35,4 +35,4 @@ function Posts({ loadPosts, stamp }) {
     </div>
 }
 
-export default Posts
+module.export = Posts

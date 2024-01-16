@@ -1,7 +1,7 @@
-const JSON = require('../utils/JSON')
-const generateId = require('../data/generateId')
-const { validateText, validateFunction } = require('../utils/validate')
-const { DuplicityError, SystemError } = require('../utils/errors')
+const JSON = require ('../utils/JSON')
+const generateId = require ('../data/generateId')
+const { validateText, validateFunction } = require ('../utils/validate')
+const { DuplicityError, SystemError } = require ('../utils/errors')
 
 function registerUser(name, email, password, callback) {
     validateText(name, 'name')
@@ -46,4 +46,4 @@ function registerUser(name, email, password, callback) {
     })
 }
 
-module.exports = registerUser
+module.export = registerUser

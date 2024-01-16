@@ -1,4 +1,4 @@
-const { ContentError } = require("./errors")
+const { ContentError } = require ("./errors")
 
 function validateText(text, explain) {
     if (typeof text !== 'string') throw new TypeError(explain + ' is not string')
@@ -13,7 +13,7 @@ function validateFunction(funktion, explain) {
     if (typeof funktion !== 'function') throw new TypeError(`${explain} is not a function`)
 }
 
-module.exports = {
+module.export = {
     validateText,
     validateNumber,
     validateFunction

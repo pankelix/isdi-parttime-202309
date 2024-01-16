@@ -1,6 +1,6 @@
-const { Post, User } = require('../data/models')
-const { NotFoundError, SystemError } = require("./errors");
-const { validateId, validateFunction } = require("./helpers/validators");
+const { Post, User } = require ('../data/models')
+const { NotFoundError, SystemError } = require ("./errors");
+const { validateId, validateFunction } = require ("./helpers/validators");
 
 function toggleLikePost(userId, postId, callback) {
     validateId(userId, 'user id')
@@ -40,4 +40,4 @@ function toggleLikePost(userId, postId, callback) {
 }
 
 
-module.exports = toggleLikePost
+module.export = toggleLikePost

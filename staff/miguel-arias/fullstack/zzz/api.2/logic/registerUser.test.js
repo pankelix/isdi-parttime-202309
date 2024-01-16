@@ -1,4 +1,4 @@
-const registerUser = require('./registerUser')
+const registerUser = require ('./registerUser')
 
 try {
     registerUser('Le Chuga', 'le@chuga.com', '123123123', error => {

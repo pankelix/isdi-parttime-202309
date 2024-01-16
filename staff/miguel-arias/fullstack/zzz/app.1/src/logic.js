@@ -1,7 +1,7 @@
-import { validateText } from "./utils/validators"
-import db from "./data/db"
-import { User, Post } from "./data/models"
-import randomDelay from "./utils/randomDelay"
+import { validateText } = require ("./utils/validators"
+import db = require ("./data/db"
+import { User, Post } = require ("./data/models"
+import randomDelay = require ("./utils/randomDelay"
 
 class Logic {
     constructor() {
@@ -490,4 +490,4 @@ class Logic {
 
 const logic = new Logic
 
-export default logic
+module.export = logic

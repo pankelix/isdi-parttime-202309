@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
-const express = require('express')
-const { NotFoundError, ContentError, DuplicityError, CredentialsError } = require('./logic/errors')
-const logic = require('./logic')
-const cors = require('cors')
+import mongoose from 'mongoose'
+import express from 'express'
+import { NotFoundError, ContentError, DuplicityError, CredentialsError } from './logic/errors.js'
+import logic from './logic/index.js'
+import cors from 'cors'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {

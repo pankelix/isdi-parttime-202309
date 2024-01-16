@@ -34,7 +34,7 @@ class DuplicityError extends Error {
     }
 }
 
-module.exports = {
+module.export = {
     NotFoundError,
     SystemError,
     ContentError,

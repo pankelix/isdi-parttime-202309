@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
-const toggleFavPost = require('./toggleFavPost')
+import toggleFavPost from './toggleFavPost'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {

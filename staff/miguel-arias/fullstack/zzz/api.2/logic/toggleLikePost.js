@@ -1,6 +1,6 @@
-const JSON = require("../utils/JSON");
-const { NotFoundError, SystemError } = require("../utils/errors");
-const { validateText, validateFunction } = require("../utils/validators");
+const JSON = require ("../utils/JSON");
+const { NotFoundError, SystemError } = require ("../utils/errors");
+const { validateText, validateFunction } = require ("../utils/validators");
 
 function toggleLikePost(userId, postId, callback) {
     validateText(userId, 'user id')
@@ -59,4 +59,4 @@ function toggleLikePost(userId, postId, callback) {
     })
 }
 
-module.exports = toggleLikePost
+module.export = toggleLikePost

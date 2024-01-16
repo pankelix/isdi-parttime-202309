@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } = require ("react"
 
-import logic from "../logic"
+import logic = require ("../logic"
 
-import { Button, Link, } from "../library/index"
-import { Profile, Posts, NewPost } from "../components/index"
+import { Button, Link, } = require ("../library/index"
+import { Profile, Posts, NewPost } = require ("../components/index"
 
 function Home(props) {
     console.log('Home')
@@ -104,4 +104,4 @@ function Home(props) {
     </>
 }
 
-export default Home
+module.export = Home

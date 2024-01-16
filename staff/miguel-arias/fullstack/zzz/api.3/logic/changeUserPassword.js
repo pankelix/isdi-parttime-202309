@@ -1,6 +1,6 @@
-const { User } = require("../data/models")
-const { ContentError, NotFoundError, CredentialsError, SystemError } = require("./errors")
-const { validateId, validateText, validateFunction } = require("./helpers/validators")
+const { User } = require ("../data/models")
+const { ContentError, NotFoundError, CredentialsError, SystemError } = require ("./errors")
+const { validateId, validateText, validateFunction } = require ("./helpers/validators")
 
 function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
     validateId(userId, 'user id')
@@ -37,4 +37,4 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm, c
         .catch(error => callback(new SystemError(error.message)))
 }
 
-module.exports = changeUserPassword
+module.export = changeUserPassword

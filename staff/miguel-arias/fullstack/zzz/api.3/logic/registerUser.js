@@ -1,7 +1,7 @@
-const { validateText, validateFunction } = require('./helpers/validators')
-const { DuplicityError, SystemError } = require('./errors')
+const { validateText, validateFunction } = require ('./helpers/validators')
+const { DuplicityError, SystemError } = require ('./errors')
 
-const { User } = require('../data/models')
+const { User } = require ('../data/models')
 
 function registerUser(name, email, password, callback) {
     validateText(name, 'name')
@@ -25,4 +25,4 @@ function registerUser(name, email, password, callback) {
         })
 }
 
-module.exports = registerUser
+module.export = registerUser

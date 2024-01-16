@@ -1,5 +1,5 @@
-import Label from "./Label"
-import Input from "./Input"
+import Label = require ("./Label"
+import Input = require ("./Input"
 
 function Field(props) {
     return <>
@@ -8,4 +8,4 @@ function Field(props) {
     </>
 }
 
-export default Field
+module.export = Field

@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require ('fs')
 
 function parseFromFile(file, callback) {
     fs.readFile(file, 'utf8', (error, json) => {
@@ -28,7 +28,7 @@ function stringifyToFile(file, data, callback) {
     })
 }
 
-module.exports = {
+module.export = {
     parse: JSON.parse,
     parseFromFile,
     stringify: JSON.stringify,

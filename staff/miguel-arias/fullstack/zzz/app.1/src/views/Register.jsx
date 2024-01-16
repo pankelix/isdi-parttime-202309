@@ -1,6 +1,6 @@
-import logic from "../logic"
+import logic = require ("../logic"
 
-import { Container, Form, Input, Button, Link } from "../library/index"
+import { Container, Form, Input, Button, Link } = require ("../library/index"
 
 function Register(props) {
     console.log('Register')
@@ -62,4 +62,4 @@ function Register(props) {
     </Container>
 }
 
-export default Register
+module.export = Register

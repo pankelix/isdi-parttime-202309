@@ -1,4 +1,4 @@
-const authenticateUser = require('./authenticateUser')
+const authenticateUser = require ('./authenticateUser')
 
 try {
     authenticateUser('zana@horia.com', '123123123', (error, userId) => {

@@ -1,6 +1,6 @@
-const { Post, User } = require('../data/models')
-const validate = require("./helpers/validate")
-const { NotFoundError, SystemError } = require("./errors");
+import { Post, User } from '../data/models.js'
+import validate from './helpers/validate.js'
+import { NotFoundError, SystemError } from './errors.js'
 
 function toggleLikePost(userId, postId, callback) {
     validate.id(userId, 'user id')
@@ -40,4 +40,4 @@ function toggleLikePost(userId, postId, callback) {
 }
 
 
-module.exports = toggleLikePost
+export default toggleLikePost
