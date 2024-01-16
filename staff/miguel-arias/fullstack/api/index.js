@@ -1,17 +1,8 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const { NotFoundError, ContentError, DuplicityError, CredentialsError } = require('./logic/errors')
-const registerUser = require('./logic/registerUser')
-const authenticateUser = require('./logic/authenticateUser')
-const retrieveUser = require('./logic/retrieveUser')
-const createPost = require('./logic/createPost')
-const toggleLikePost = require('./logic/toggleLikePost')
-const retrievePosts = require('./logic/retrievePosts')
-const toggleFavPost = require('./logic/toggleFavPost')
-const changeUserEmail = require('./logic/changeUserEmail')
-const changeUserPassword = require('./logic/changeUserPassword')
-const deletePost = require('./logic/deletePost')
-const retrieveFavPosts = require('./logic/retrieveFavPosts')
+const logic = require('./logic')
+const cors = require('cors')
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() => {
@@ -28,20 +19,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
         const jsonBodyParser = express.json()
 
-        server.use((req, res, next) => {
-            res.setHeader("Access-Control-Allow-Origin", "*")
-            res.setHeader("Access-Control-Allow-Headers", "*")
-            res.setHeader("Access-Control-Allow-Methods", "*")
-
-            next()
-        })
+        server.use(cors())
 
         /* register user */
         server.post('/users', jsonBodyParser, (req, res) => {
             try {
                 const { name, email, password } = req.body
 
-                registerUser(name, email, password, error => {
+                logic.registerUser(name, email, password, error => {
                     if (error) {
                         let status = 500
 
@@ -70,7 +55,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             try {
                 const { email, password } = req.body
 
-                authenticateUser(email, password, (error, userId) => {
+                logic.authenticateUser(email, password, (error, userId) => {
                     if (error) {
                         let status = 500
 
@@ -101,7 +86,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             try {
                 const userId = req.headers.authorization.substring(7) /* cogemos el authorization y cortamos a partir del carácter 7 (para tener solo el id) */
 
-                retrieveUser(userId, (error, user) => {
+                logic.retrieveUser(userId, (error, user) => {
                     if (error) {
                         let status = 500
 
@@ -131,7 +116,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
                 const userId = req.headers.authorization.substring(7)
                 const { image, text } = req.body
 
-                createPost(userId, image, text, error => {
+                logic.createPost(userId, image, text, error => {
                     if (error) {
                         let status = 500
 
@@ -160,7 +145,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 const { postId } = req.params
 
-                toggleLikePost(userId, postId, error => {
+                logic.toggleLikePost(userId, postId, error => {
                     if (error) {
                         let status = 500
 
@@ -189,7 +174,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
             try {
                 const postId = req.headers.authorization.substring(7)
 
-                retrievePosts(postId, (error, post) => {
+                logic.retrievePosts(postId, (error, post) => {
                     if (error) {
                         let status = 500
 
@@ -215,13 +200,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
         })
 
         /* retrieve fav posts */
-
         server.get('/posts/favs', (req, res) => {
             try {
 
                 const userId = req.headers.authorization.substring(7)
 
-                retrieveFavPosts(userId, (error, posts) => {
+                logic.retrieveFavPosts(userId, (error, posts) => {
                     if (error) {
                         let status = 500
 
@@ -253,7 +237,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 const userId = req.headers.authorization.substring(7)
 
-                toggleFavPost(postId, userId, error => {
+                logic.toggleFavPost(postId, userId, error => {
                     if (error) {
                         let status = 500
 
@@ -277,6 +261,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         })
+
         /* change user email */
         server.patch('/users/:userId/email', jsonBodyParser, (req, res) => {
             try {
@@ -284,7 +269,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 const { newEmail, newEmailConfirm, password } = req.body
 
-                changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
+                logic.changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
                     if (error) {
                         let status = 500
 
@@ -322,7 +307,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 const { password, newPassword, newPasswordConfirm } = req.body
 
-                changeUserPassword(userId, password, newPassword, newPasswordConfirm, error => {
+                logic.changeUserPassword(userId, password, newPassword, newPasswordConfirm, error => {
                     if (error) {
                         let status = 500
 
@@ -358,7 +343,39 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 const userId = req.headers.authorization.substring(7)
 
-                deletePost(userId, postId, error => {
+                logic.deletePost(userId, postId, error => {
+                    if (error) {
+                        let status = 505
+
+                        if (error instanceof NotFoundError)
+                            status = 404
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
+                    }
+
+                    res.status(204).send()
+                })
+
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof ContentError || error instanceof TypeError)
+                    status = 406
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
+
+        /* update post text */
+        server.patch('/posts/:postId/text', jsonBodyParser, (req, res) => {
+            try {
+                const userId = req.headers.authorization.substring(7)
+
+                const { postId } = req.params
+
+                const { text } = req.body
+
+                logic.updatePostText(userId, postId, text, error => {
                     if (error) {
                         let status = 505
 

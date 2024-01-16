@@ -1,4 +1,4 @@
-const { validateText, validateFunction } = require('../utils/validators')
+const { validateText, validateFunction } = require('../utils/validate')
 const JSON = require('../utils/JSON')
 
 function retrieveUser(userId, callback) {

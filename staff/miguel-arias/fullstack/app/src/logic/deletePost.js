@@ -1,8 +1,9 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 
 function deletePost(userId, postId, callback) {
-    validateText(userId, 'user id')
-    validateText(postId, 'post id')
+    validate.id(userId, 'user id')
+    validate.id(postId, 'post id')
+    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',

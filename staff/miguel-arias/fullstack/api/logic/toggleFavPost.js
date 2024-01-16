@@ -1,11 +1,11 @@
 const { Post, User } = require("../data/models")
+const validate = require("./helpers/validate")
 const { NotFoundError, SystemError } = require("./errors")
-const { validateFunction, validateId } = require("./helpers/validators")
 
 function toggleFavPost(postId, userId, callback) {
-    validateId(postId, 'post id')
-    validateId(userId, 'user id')
-    validateFunction(callback, 'callback')
+    validate.id(postId, 'post id')
+    validate.id(userId, 'user id')
+    validate.function(callback, 'callback')
 
     Post.findById(postId)
         .then(post => {

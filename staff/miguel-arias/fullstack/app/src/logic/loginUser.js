@@ -1,9 +1,10 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 import context from './context'
 
 function loginUser(email, password, callback) {
-    validateText(email, 'email')
-    validateText(password, 'password')
+    validate.email(email)
+    validate.password(password)
+    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',

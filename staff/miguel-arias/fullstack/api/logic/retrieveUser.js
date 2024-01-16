@@ -1,11 +1,10 @@
-const { validateFunction, validateId } = require('./helpers/validators')
-
 const { User } = require('../data/models')
+const validate = require("./helpers/validate")
 const { SystemError, NotFoundError } = require('./errors')
 
 function retrieveUser(userId, callback) {
-    validateId(userId, 'user id')
-    validateFunction(callback, 'callback')
+    validate.id(userId, 'user id')
+    validate.function(callback, 'callback')
 
     User.findById(userId, 'name').lean() //en el findById le digo que me busque por userId pero que me devuelva solo name (y el _id, que siempre lo devuelve)
         .then(user => {

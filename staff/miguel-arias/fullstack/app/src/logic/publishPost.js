@@ -1,9 +1,10 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 
 function publishPost(userId, image, text, callback) {
-    validateText(userId, 'user id')
-    validateText(image, 'image')
-    validateText(text, 'text')
+    validate.id(userId, 'user id')
+    validate.text(image, 'image')
+    validate.text(text)
+    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',

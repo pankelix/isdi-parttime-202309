@@ -72,10 +72,12 @@ function Post(props) {
 
                 if (edit !== 'edit') {
                     setEdit('edit')
-                }
-            })
 
-            setEdit('null')
+                    return
+                }
+
+                setEdit('null')
+            })
         } catch (error) {
             alert(error.message)
         }
@@ -85,7 +87,7 @@ function Post(props) {
         const textToEdit = document.querySelector('#textToEdit').value
         console.log(textToEdit)
         try {
-            logic.editPost(textToEdit, post.id, error => {
+            logic.updatePostText(post.id, textToEdit, error => {
                 if (error) {
                     alert(error.message)
 

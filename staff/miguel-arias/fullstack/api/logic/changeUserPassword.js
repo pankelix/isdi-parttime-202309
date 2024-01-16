@@ -1,13 +1,13 @@
 const { User } = require("../data/models")
+const validate = require("./helpers/validate")
 const { ContentError, NotFoundError, CredentialsError, SystemError } = require("./errors")
-const { validateId, validateText, validateFunction } = require("./helpers/validators")
 
 function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
-    validateId(userId, 'user id')
-    validateText(password, 'password')
-    validateText(newPassword, 'new password')
-    validateText(newPasswordConfirm, 'new password confirmation')
-    validateFunction(callback, 'callback')
+    validate.id(userId, 'user id')
+    validate.password(password)
+    validate.password(newPassword, 'new password')
+    validate.password(newPasswordConfirm, 'new password confirmation')
+    validate.function(callback, 'callback')
 
     if (newPassword !== newPasswordConfirm) {
         callback(new ContentError('new password and its confirmation do not match'))

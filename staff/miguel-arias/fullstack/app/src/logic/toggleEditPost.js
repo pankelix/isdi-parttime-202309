@@ -1,9 +1,10 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 
 function toggleEditPost(postId, callback) {
-    validateText(postId, 'post id')
+    validate.id(postId, 'post id')
+    validate.function(callback, 'callback')
 
-    // TODO call api (fetch)
+    callback(null)
 }
 
 export default toggleEditPost

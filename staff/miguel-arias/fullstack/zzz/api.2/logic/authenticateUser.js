@@ -1,6 +1,6 @@
 const JSON = require('../utils/JSON')
 const { SystemError, NotFoundError, ContentError } = require('../utils/errors')
-const { validateText, validateFunction } = require('../utils/validators')
+const { validateText, validateFunction } = require('../utils/validate')
 
 function authenticateUser(email, password, callback) {
     validateText(email, 'email')

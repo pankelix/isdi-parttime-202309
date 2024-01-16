@@ -1,8 +1,9 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 import context from "./context"
 
 function toggleLikePost(postId, callback) {
-    validateText(postId, 'post id')
+    validate.id(postId, 'post id')
+    validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',

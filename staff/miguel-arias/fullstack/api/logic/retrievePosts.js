@@ -1,11 +1,10 @@
-const { validateFunction, validateId } = require('./helpers/validators')
-
 const { User, Post } = require('../data/models')
+const validate = require("./helpers/validate")
 const { SystemError, NotFoundError } = require('./errors')
 
 function retrievePosts(userId, callback) {
-    validateId(userId, 'user id')
-    validateFunction(callback, 'callback')
+    validate.id(userId, 'user id')
+    validate.function(callback, 'callback')
 
     User.findById(userId).lean() //el lean hace que nos devuelva el documento desconectado de la base de datos, antes nos devuelve un objeto complejo y ahora el objeto user sin más (esto sirve cuando solo queremos leer el objeto, ya que perdemos capacidad de salvarlo de nuevo)
         .then(user => {

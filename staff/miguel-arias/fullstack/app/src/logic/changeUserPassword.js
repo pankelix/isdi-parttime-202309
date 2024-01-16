@@ -1,10 +1,11 @@
-import { validateText } from "../utils/validators"
+import validate from "./helpers/validate"
 
 function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
-    validateText(userId, 'user id')
-    validateText(password, 'password')
-    validateText(newPassword, 'new password')
-    validateText(newPasswordConfirm, 'new password confirm')
+    validate.id(userId, 'user id')
+    validate.password(password, 'password')
+    validate.password(newPassword, 'new password')
+    validate.password(newPasswordConfirm, 'new password confirm')
+    validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',

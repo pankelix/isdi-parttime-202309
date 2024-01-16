@@ -1,6 +1,9 @@
+import validate from "./helpers/validate"
 import context from './context'
 
 function retrieveUser(callback) {
+    validate.function(callback, 'callback')
+
     const req = {
         method: 'GET',
         headers: {

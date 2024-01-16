@@ -1,6 +1,9 @@
+import validate from "./helpers/validate"
 import context from "./context"
 
 function retrieveFavPosts(callback) {
+    validate.function(callback, 'callback')
+    
     const req = {
         method: 'GET',
         headers: {

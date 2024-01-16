@@ -1,14 +1,13 @@
 const { User } = require("../data/models")
+const validate = require("./helpers/validate")
 const { NotFoundError, CredentialsError, ContentError, SystemError } = require("./errors")
-const { validateText, validateFunction, validateId } = require("./helpers/validators")
-
 
 function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
-    validateId(userId, 'user id')
-    validateText(newEmail, 'new email')
-    validateText(newEmailConfirm, 'new email confirmation')
-    validateText(password, 'password')
-    validateFunction(callback, 'callback')
+    validate.id(userId, 'user id')
+    validate.email(newEmail, 'new email')
+    validate.email(newEmailConfirm, 'new email confirmation')
+    validate.password(password)
+    validate.function(callback, 'callback')
 
     if (newEmail !== newEmailConfirm) {
         callback(new ContentError('new email and its confirmation do not match'))

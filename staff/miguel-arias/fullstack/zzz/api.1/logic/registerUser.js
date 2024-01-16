@@ -1,6 +1,6 @@
 const JSON = require('../utils/JSON')
 const generateId = require('../data/generateId')
-const { validateText, validateFunction } = require('../utils/validators')
+const { validateText, validateFunction } = require('../utils/validate')
 const { DuplicityError, SystemError } = require('../utils/errors')
 
 function registerUser(name, email, password, callback) {
