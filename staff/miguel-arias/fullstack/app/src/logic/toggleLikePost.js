@@ -12,7 +12,7 @@ function toggleLikePost(postId, callback) {
         }
     }
 
-    fetch(`http://localhost:8000/posts/${postId}/likes`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/likes`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

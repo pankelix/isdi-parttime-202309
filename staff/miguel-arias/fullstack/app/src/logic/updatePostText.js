@@ -15,7 +15,7 @@ function updatePostText(postId, text, callback) {
         body: JSON.stringify({ text })
     }
 
-    fetch(`http://localhost:8000/posts/${postId}/text`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/text`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

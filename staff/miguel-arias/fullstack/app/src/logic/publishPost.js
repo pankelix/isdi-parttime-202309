@@ -15,7 +15,7 @@ function publishPost(userId, image, text, callback) {
         body: JSON.stringify({ image, text })
     }
 
-    fetch('http://localhost:8000/posts', req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

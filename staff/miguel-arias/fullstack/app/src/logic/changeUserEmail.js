@@ -15,7 +15,7 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) 
         body: JSON.stringify({ newEmail, newEmailConfirm, password })
     }
 
-    fetch(`http://localhost:8000/users/${userId}/email`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/email`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

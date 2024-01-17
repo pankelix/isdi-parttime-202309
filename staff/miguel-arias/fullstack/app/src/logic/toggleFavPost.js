@@ -12,7 +12,7 @@ function toggleFavPost(postId, callback) {
         }
     }
 
-    fetch(`http://localhost:8000/posts/${postId}/favs`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/favs`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

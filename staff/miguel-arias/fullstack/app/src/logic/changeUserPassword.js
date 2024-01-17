@@ -15,7 +15,7 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm, c
         body: JSON.stringify({ password, newPassword, newPasswordConfirm })
     }
 
-    fetch(`http://localhost:8000/users/${userId}/password`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/password`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
