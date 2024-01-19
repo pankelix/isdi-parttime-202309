@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import updatePostText from './updatePostText'
+import updatePostText from './updatePostText.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         try {
             updatePostText('658956f7eed889536efe91d7', '65895deeeed889536efe91dd', '123', error => {

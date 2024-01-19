@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import retrievePosts from './retrievePosts'
+import retrievePosts from './retrievePosts.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         try {
             retrievePosts('658f0f0ff58499e7aacac4f6', (error, posts) => {

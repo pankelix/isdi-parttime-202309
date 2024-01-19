@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import toggleFavPost from './toggleFavPost'
+import toggleFavPost from './toggleFavPost.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         try {
             toggleFavPost('658f397b09527317a285ddfe', '658e003d92e90fd57c67a684', error => {

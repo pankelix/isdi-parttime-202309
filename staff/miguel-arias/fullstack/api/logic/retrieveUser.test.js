@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import retrieveUser from './retrieveUser'
+import retrieveUser from './retrieveUser.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         try {
             retrieveUser('658e003d92e90fd57c67a684', (error, user) => {

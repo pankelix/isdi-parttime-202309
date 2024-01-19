@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import changeUserPassword from './changeUserPassword'
+import changeUserPassword from './changeUserPassword.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         try {
             changeUserPassword('658f0f0ff58499e7aacac4f6', '123123123', '345345345', '345345345', error => {
