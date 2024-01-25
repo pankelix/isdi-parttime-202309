@@ -25,9 +25,20 @@ function loginUser(email, password, callback) {
             }
 
             res.json()
-                .then(userId => {
+                .then(token => {
+                    // 325435435345.345435345345345.345345345345
+                    const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
+                    // 345435345345345 (entre los puntos)
+                    const payloadJson = atob(payloadB64)
+                    // {"sub":"el id", "iat":"231312323"} objeto json
+                    const payload = JSON.parse(payloadJson)
+                    // {sub: "el id", iat: "231312323"} objeto normal
+                    const userId = payload.sub
+                    // el id
+
                     context.sessionUserId = userId
                     callback(null)
+                    context.token = token
                 })
                 .catch(error => callback(error))
         })

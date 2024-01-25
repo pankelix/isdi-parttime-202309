@@ -1,14 +1,17 @@
 import validate from "./helpers/validate"
-import context from './context'
 
-function retrieveUser(callback) {
+function registerUser(name, email, password, callback) {
+    validate.text(name, 'name')
+    validate.email(email, 'email')
+    validate.password(password, 'password')
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET',
+        method: 'POST',
         headers: {
-            Authorization: `Bearer ${context.token}`
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password })
     }
 
     fetch(`${import.meta.env.VITE_API_URL}/users`, req)
@@ -21,11 +24,9 @@ function retrieveUser(callback) {
                 return
             }
 
-            res.json()
-                .then(user => callback(null, user))
-                .catch(error => callback(error))
+            callback(null)
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUser
+export default registerUser

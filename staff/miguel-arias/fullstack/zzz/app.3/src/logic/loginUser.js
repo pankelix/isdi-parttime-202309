@@ -1,17 +1,20 @@
 import validate from "./helpers/validate"
 import context from './context'
 
-function retrieveUser(callback) {
+function loginUser(email, password, callback) {
+    validate.email(email)
+    validate.password(password)
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET',
+        method: 'POST',
         headers: {
-            Authorization: `Bearer ${context.token}`
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -22,10 +25,13 @@ function retrieveUser(callback) {
             }
 
             res.json()
-                .then(user => callback(null, user))
+                .then(userId => {
+                    context.sessionUserId = userId
+                    callback(null)
+                })
                 .catch(error => callback(error))
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUser
+export default loginUser

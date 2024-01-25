@@ -7,7 +7,7 @@ echo -e "${green}CASE success on correct credentials${reset}"
 
  curl 'http://localhost:8000/users/auth' \
  -H 'Content-Type: application/json' \
- -d '{ "email": "ma@zorca.com", "password": "123123123" }' \
+ -d '{ "email": "peter@pan.com", "password": "123123123" }' \
  -v
 
 # > POST /users/auth HTTP/1.1
@@ -59,7 +59,7 @@ echo -e "${tomato}CASE error on wrong password${reset}"
 
  curl 'http://localhost:8000/users/auth' \
  -H 'Content-Type: application/json' \
- -d '{ "email": "ma@zorca.com", "password": "wrong-123123123" }' \
+ -d '{ "email": "peter@pan.com", "password": "wrong-123123123" }' \
  -v
 
 # > POST /users/auth HTTP/1.1

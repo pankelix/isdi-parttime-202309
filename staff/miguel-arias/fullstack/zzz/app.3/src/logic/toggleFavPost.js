@@ -1,17 +1,18 @@
 import validate from "./helpers/validate"
-import context from './context'
+import context from "./context"
 
-function retrieveUser(callback) {
+function toggleFavPost(postId, callback) {
+    validate.id(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET',
+        method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${context.sessionUserId}`
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/favs`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -21,11 +22,9 @@ function retrieveUser(callback) {
                 return
             }
 
-            res.json()
-                .then(user => callback(null, user))
-                .catch(error => callback(error))
+            callback(null)
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUser
+export default toggleFavPost

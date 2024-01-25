@@ -1,17 +1,18 @@
 import validate from "./helpers/validate"
-import context from './context'
 
-function retrieveUser(callback) {
+function deletePost(userId, postId, callback) {
+    validate.id(userId, 'user id')
+    validate.id(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET',
+        method: 'POST',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${userId}`
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/delete`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -21,11 +22,9 @@ function retrieveUser(callback) {
                 return
             }
 
-            res.json()
-                .then(user => callback(null, user))
-                .catch(error => callback(error))
+            callback(null)
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUser
+export default deletePost

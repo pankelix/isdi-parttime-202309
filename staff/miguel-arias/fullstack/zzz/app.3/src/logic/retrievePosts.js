@@ -1,17 +1,17 @@
 import validate from "./helpers/validate"
 import context from './context'
 
-function retrieveUser(callback) {
+function retrievePosts(callback) {
     validate.function(callback, 'callback')
 
     const req = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${context.sessionUserId}`
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -22,10 +22,10 @@ function retrieveUser(callback) {
             }
 
             res.json()
-                .then(user => callback(null, user))
+                .then(posts => callback(null, posts))
                 .catch(error => callback(error))
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUser
+export default retrievePosts

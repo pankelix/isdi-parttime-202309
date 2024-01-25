@@ -7,7 +7,7 @@ function retrieveUser(callback) {
     const req = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${context.sessionUserId}`
         }
     }
 
