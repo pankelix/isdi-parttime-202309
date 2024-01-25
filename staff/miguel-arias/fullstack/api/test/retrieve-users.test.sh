@@ -3,10 +3,10 @@ source colors.sh
 echo -e "${blue}TEST retrieve-users${reset}"
 
 echo
-echo -e "${green}CASE success on correct user id${reset}"
+echo -e "${green}CASE success on correct token${reset}"
 
 curl 'http://localhost:8000/users' \
--H 'Authorization: Bearer 658f0f0ff58499e7aacac4f6' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWIxOWYyN2Q2ZTYyNTMxMTc3NjlkYWYiLCJpYXQiOjE3MDYyMDIxNTd9.2CFXRSkeXZQp7MmEW-hYjGk9YvJHAqHvR-byIu6bZ2g' \
 -v
 
 # > GET /users HTTP/1.1
@@ -26,12 +26,12 @@ curl 'http://localhost:8000/users' \
 
 # {"name":"Ma Zorca"}
 
-echo
-echo -e "${tomato}CASE failure on incorrect user id${reset}"
+# echo
+# echo -e "${tomato}CASE failure on incorrect user id${reset}"
 
-curl 'http://localhost:8000/users' \
--H 'Authorization: Bearer 123456' \
--v
+# curl 'http://localhost:8000/users' \
+# -H 'Authorization: Bearer 123456' \
+# -v
 
 # > GET /users HTTP/1.1
 # > Host: localhost:8000

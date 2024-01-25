@@ -43,10 +43,20 @@ class CredentialsError extends Error {
     }
 }
 
+// 401
+class TokenError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
 export {
     NotFoundError,
     SystemError,
     ContentError,
     DuplicityError,
-    CredentialsError
+    CredentialsError,
+    TokenError
 }

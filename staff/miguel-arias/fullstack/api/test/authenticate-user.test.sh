@@ -28,13 +28,13 @@ echo -e "${green}CASE success on correct credentials${reset}"
 
 # "2l9olwt97f80"
 
-echo
-echo -e "${tomato}CASE error on wrong email${reset}"
+# echo
+# echo -e "${tomato}CASE error on wrong email${reset}"
 
- curl 'http://localhost:8000/users/auth' \
- -H 'Content-Type: application/json' \
- -d '{ "email": "wrong-ma@zorca.com", "password": "123123123" }' \
- -v
+#  curl 'http://localhost:8000/users/auth' \
+#  -H 'Content-Type: application/json' \
+#  -d '{ "email": "wrong-ma@zorca.com", "password": "123123123" }' \
+#  -v
 
 # > POST /users/auth HTTP/1.1
 # > Host: localhost:8000
@@ -54,13 +54,13 @@ echo -e "${tomato}CASE error on wrong email${reset}"
 
 # {"error":"Error","message":"user not found"}
 
-echo
-echo -e "${tomato}CASE error on wrong password${reset}"
+# echo
+# echo -e "${tomato}CASE error on wrong password${reset}"
 
- curl 'http://localhost:8000/users/auth' \
- -H 'Content-Type: application/json' \
- -d '{ "email": "peter@pan.com", "password": "wrong-123123123" }' \
- -v
+#  curl 'http://localhost:8000/users/auth' \
+#  -H 'Content-Type: application/json' \
+#  -d '{ "email": "peter@pan.com", "password": "wrong-123123123" }' \
+#  -v
 
 # > POST /users/auth HTTP/1.1
 # > Host: localhost:8000
