@@ -7,8 +7,9 @@ export default (req, res) => {
 
         const { newEmail, newEmailConfirm, password } = req.body
 
-        logic.changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
-            if (error) {
+        logic.changeUserEmail(userId, newEmail, newEmailConfirm, password)
+            .then(() => res.status(204).send())
+            .catch(error => {
                 let status = 500
 
                 if (error instanceof CredentialsError)
@@ -21,13 +22,7 @@ export default (req, res) => {
                     status = 406
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
-
-                return
-            }
-
-            res.status(204).send()
-        })
-
+            })
     } catch (error) {
         let status = 500
 

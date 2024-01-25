@@ -1,19 +1,25 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import mongoose from 'mongoose'
 
 import createPost from './createPost.js'
+import { Post, User } from '../data/models.js'
 
-mongoose.connect(process.env.MONGODB_URL)
-    .then(() => {
+mongoose.connect(process.env.MONGODB_TEST)
+    .then(() => Post.deleteMany())
+    .then(() => User.create({ name: 'Peter Pan', email: 'peter@pan.com', password: '123123123' }))
+    .then(user => {
         try {
-            createPost('658f0f0ff58499e7aacac4f6', 'https://media.istockphoto.com/id/181072765/es/foto/lechuga-aislado.jpg?s=612x612&w=0&k=20&c=7spdLdTK_iyTUdpdp6cjdHkDE9dCkahoTtnOvQYY8mE=', 'what a fresh day', error => {
-                if (error) {
-                    console.error(error)
-
-                    return
-                }
-
-                console.log('post created')
-            })
+            createPost(user.id, 'https://image.com/image', 'peter pan post 1')
+                .then(() => console.log('post created'))
+                .catch(error => console.error(error))
+            createPost(user.id, 'https://image.com/image2', 'peter pan post 2')
+                .then(() => console.log('post created'))
+                .catch(error => console.error(error))
+            createPost(user.id, 'https://image.com/image3', 'peter pan post 3')
+                .then(() => console.log('post created'))
+                .catch(error => console.error(error))
         } catch (error) {
             console.error(error)
         }

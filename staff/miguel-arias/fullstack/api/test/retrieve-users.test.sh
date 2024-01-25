@@ -1,6 +1,6 @@
 source colors.sh
 
-echo -e "${blue}TEST retrieve-user${reset}"
+echo -e "${blue}TEST retrieve-users${reset}"
 
 echo
 echo -e "${green}CASE success on correct user id${reset}"

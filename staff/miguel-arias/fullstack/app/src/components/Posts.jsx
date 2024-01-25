@@ -25,7 +25,7 @@ function Posts({ loadPosts, stamp }) {
     }
 
     useEffect(() => {
-        console.log('Post effect')
+        console.log('Posts effect')
 
         refreshPosts()
     }, [stamp])

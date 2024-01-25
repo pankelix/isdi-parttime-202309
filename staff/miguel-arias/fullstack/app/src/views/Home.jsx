@@ -64,6 +64,10 @@ function Home(props) {
         setView(null)
     }
 
+    function handleChangeUserData() {
+        setView(null)
+    }
+
     function handleNewPostPublish() {
         setStamp(Date.now())
         setView(null)
@@ -89,11 +93,11 @@ function Home(props) {
         </header>
 
         <main>
-            {view === 'profile' && <Profile onSuccess={setView} />}
+            {view === 'profile' && <Profile onSuccess={handleChangeUserData} />}
 
             {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
 
-            {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic) } />}
+            {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic)} />}
         </main>
 
         <footer>

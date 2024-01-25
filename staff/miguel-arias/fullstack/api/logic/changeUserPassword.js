@@ -2,39 +2,30 @@ import { User } from '../data/models.js'
 import validate from './helpers/validate.js'
 import { ContentError, NotFoundError, CredentialsError, SystemError } from './errors.js'
 
-function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
+function changeUserPassword(userId, password, newPassword, newPasswordConfirm) {
     validate.id(userId, 'user id')
     validate.password(password)
     validate.password(newPassword, 'new password')
     validate.password(newPasswordConfirm, 'new password confirmation')
-    validate.function(callback, 'callback')
 
-    if (newPassword !== newPasswordConfirm) {
-        callback(new ContentError('new password and its confirmation do not match'))
+    if (newPassword !== newPasswordConfirm)
+        throw new ContentError('new password and its confirmation do not match')
 
-        return
-    }
-
-    User.findById(userId)
+    return User.findById(userId)
+        .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) {
-                callback(new NotFoundError('user not found'))
+            if (!user)
+                throw new NotFoundError('user not found')
 
-                return
-            }
-
-            if (user.password !== password) {
-                callback(new CredentialsError('wrong password'))
-
-                return
-            }
+            if (user.password !== password)
+                throw new CredentialsError('wrong password')
 
             user.password = newPassword
-            user.save()
 
-            callback(null)
+            return user.save()
+                .catch(error => { throw new SystemError(error.message) })
+                .then(() => { })
         })
-        .catch(error => callback(new SystemError(error.message)))
 }
 
 export default changeUserPassword

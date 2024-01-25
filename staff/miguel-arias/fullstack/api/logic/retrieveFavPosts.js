@@ -1,20 +1,21 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { User, Post } from '../data/models.js'
 import validate from './helpers/validate.js'
 import { NotFoundError, SystemError } from './errors.js'
 
-function retrieveFavPosts(userId, callback) {
+function retrieveFavPosts(userId) {
     validate.id(userId, 'user id')
-    validate.function(callback, 'callback')
 
-    User.findById(userId).lean()
+    return User.findById(userId).lean()
+        .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) {
-                callback(new NotFoundError('user not found'))
+            if (!user)
+                throw new NotFoundError('user not found')
 
-                return
-            }
-
-            Post.find({ _id: { $in: user.favs } }).populate('author', 'name').lean() //me busca los posts que este user tenga en favs
+            return Post.find({ _id: { $in: user.favs } }).populate('author', 'name').lean() //me busca los posts que este user tenga en favs
+                .catch(error => { throw new SystemError(error.message) })
                 .then(posts => {
                     posts.forEach(post => {
                         post.id = post._id.toString()
@@ -33,11 +34,9 @@ function retrieveFavPosts(userId, callback) {
                         post.fav = user.favs.some(postObjectId => postObjectId.toString() === post.id)
                     })
 
-                    callback(null, posts)
+                    return posts
                 })
-                .catch(error => callback(new SystemError(error.message)))
         })
-        .catch(error => callback(new SystemError(error.message)))
 }
 
 export default retrieveFavPosts

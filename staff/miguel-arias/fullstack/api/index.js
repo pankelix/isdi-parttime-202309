@@ -20,7 +20,7 @@ import {
     updatePostTextHandler
 } from './handlers/index.js'
 
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_API)
     .then(() => {
         const server = express()
 
@@ -37,7 +37,6 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.use(cors())
 
-        
         server.post('/users', jsonBodyParser, registerUserHandler)
 
         server.post('/users/auth', jsonBodyParser, authenticateUserHandler)

@@ -3,7 +3,7 @@ import context from './context'
 
 function retrievePosts(callback) {
     validate.function(callback, 'callback')
-    
+
     const req = {
         method: 'GET',
         headers: {
@@ -15,7 +15,7 @@ function retrievePosts(callback) {
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => console.log(new Error(body.message)))
+                    .then(body => callback(new Error(body.message)))
                     .catch(error => callback(error))
 
                 return

@@ -2,23 +2,19 @@ import { User } from '../data/models.js'
 import validate from './helpers/validate.js'
 import { SystemError, NotFoundError } from './errors.js'
 
-function retrieveUser(userId, callback) {
+function retrieveUser(userId) {
     validate.id(userId, 'user id')
-    validate.function(callback, 'callback')
 
-    User.findById(userId, 'name').lean() //en el findById le digo que me busque por userId pero que me devuelva solo name (y el _id, que siempre lo devuelve)
+    return User.findById(userId, 'name').lean() //en el findById le digo que me busque por userId pero que me devuelva solo name (y el _id, que siempre lo devuelve)
+        .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) {
-                callback(new NotFoundError('user not found'))
-
-                return
-            }
+            if (!user)
+                throw new NotFoundError('user not found')
 
             delete user._id
 
-            callback(null, user) //al haber usado el lean y borrado user._id, el user es un objeto que envuelve el nombre
+            return user //al haber usado el lean y borrado user._id, el user es un objeto que envuelve el nombre
         })
-        .catch(error => callback(new SystemError(error.message)))
 }
 
 export default retrieveUser

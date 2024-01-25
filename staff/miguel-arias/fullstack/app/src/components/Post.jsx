@@ -93,8 +93,8 @@ function Post(props) {
 
                     return
                 }
+                props.onEditSuccess()
             })
-            props.onEditSuccess()
             setEdit('null')
         } catch (error) {
             alert(error.message)

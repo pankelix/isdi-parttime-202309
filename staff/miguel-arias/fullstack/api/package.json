@@ -8,7 +8,9 @@
     "watch": "node --watch .",
     "inspect": "node --inspect-brk .",
     "test": "mocha logic/*.spec.js",
-    "test-inspect": "mocha --inspect-brk logic/*.spec.js "
+    "test-inspect": "mocha --inspect-brk logic/*.spec.js",
+    "test-single": "mocha",
+    "test-single-inspect": "mocha --inspect-brk"
   },
   "keywords": [],
   "author": "",

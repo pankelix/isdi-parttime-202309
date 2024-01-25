@@ -20,10 +20,10 @@ function Profile(props) {
 
                     return
                 }
+                props.onSuccess()
+                
+                alert('Email changed successfully')
             })
-            alert('Email changed successfully')
-
-            props.onSuccess(event)
         } catch (error) {
             alert(error.message)
         }
@@ -43,10 +43,10 @@ function Profile(props) {
 
                     return
                 }
+                props.onSuccess()
+                
+                alert('Password changed successfully')
             })
-            alert('Password changed successfully')
-
-            props.onSuccess(event)
         } catch (error) {
             alert(error.message)
         }

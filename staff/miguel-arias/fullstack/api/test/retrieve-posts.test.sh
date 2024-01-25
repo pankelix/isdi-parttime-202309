@@ -3,10 +3,10 @@ source colors.sh
 echo -e "${blue}TEST retrieve-posts${reset}"
 
 echo
-echo -e "${green}CASE success on correct post id${reset}"
+echo -e "${green}CASE success on correct user id${reset}"
 
 curl 'http://localhost:8000/posts' \
--H 'Authorization: Bearer 658f397b09527317a285ddfe' \
+-H 'Authorization: Bearer 65b19fbb858416f45b3ccd5f' \
 -v
 
 # > GET /posts HTTP/1.1
