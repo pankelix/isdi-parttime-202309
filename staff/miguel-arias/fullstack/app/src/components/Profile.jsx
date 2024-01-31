@@ -1,10 +1,13 @@
 import logic from "../logic"
-import context from "../logic/context"
+
+import { useContext } from "../hooks"
 
 import { Container, Form, Input, Button } from "../library/index"
 
 function Profile(props) {
     console.log('profile')
+
+    const context = useContext()
 
     function handleChangeEmailSubmit(event) {
         event.preventDefault()
@@ -14,9 +17,9 @@ function Profile(props) {
         const password = event.target.querySelector('#password-input').value
 
         try {
-            logic.changeUserEmail(context.sessionUserId, newEmail, newEmailConfirm, password, error => {
+            logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
                 if (error) {
-                    alert(error.message)
+                    context.handleError(error)
 
                     return
                 }
@@ -25,7 +28,7 @@ function Profile(props) {
                 alert('Email changed successfully')
             })
         } catch (error) {
-            alert(error.message)
+            context.handleError(error)
         }
     }
 
@@ -37,9 +40,9 @@ function Profile(props) {
         const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
 
         try {
-            logic.changeUserPassword(context.sessionUserId, password, newPassword, newPasswordConfirm, error => {
+            logic.changeUserPassword(password, newPassword, newPasswordConfirm, error => {
                 if (error) {
-                    alert(error.message)
+                    context.handleError(error)
 
                     return
                 }
@@ -48,7 +51,7 @@ function Profile(props) {
                 alert('Password changed successfully')
             })
         } catch (error) {
-            alert(error.message)
+            context.handleError(error)
         }
     }
 

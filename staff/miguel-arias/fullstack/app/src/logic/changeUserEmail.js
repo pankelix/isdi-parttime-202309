@@ -1,7 +1,7 @@
-import validate from "./helpers/validate"
+import session from './session'
+import { validate, errors } from 'com'
 
-function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) {
-    validate.id(userId, 'user id')
+function changeUserEmail(newEmail, newEmailConfirm, password, callback) {
     validate.email(newEmail, 'new email')
     validate.email(newEmailConfirm, 'new email confirm')
     validate.password(password, 'password')
@@ -15,11 +15,11 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password, callback) 
         body: JSON.stringify({ newEmail, newEmailConfirm, password })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/email`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/${session.token}/email`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
                 return

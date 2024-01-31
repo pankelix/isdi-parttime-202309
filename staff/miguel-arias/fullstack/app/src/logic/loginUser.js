@@ -1,5 +1,5 @@
-import validate from "./helpers/validate"
-import context from './context'
+import { validate, errors } from 'com'
+import session from './session'
 
 function loginUser(email, password, callback) {
     validate.email(email)
@@ -18,7 +18,7 @@ function loginUser(email, password, callback) {
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
                 return
@@ -36,9 +36,9 @@ function loginUser(email, password, callback) {
                     const userId = payload.sub
                     // el id
 
-                    context.sessionUserId = userId
+                    session.sessionUserId = userId
+                    session.token = token
                     callback(null)
-                    context.token = token
                 })
                 .catch(error => callback(error))
         })

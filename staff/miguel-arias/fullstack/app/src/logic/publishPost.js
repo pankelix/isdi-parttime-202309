@@ -1,7 +1,7 @@
-import validate from "./helpers/validate"
+import { validate, errors } from 'com'
+import session from './session'
 
-function publishPost(userId, image, text, callback) {
-    validate.id(userId, 'user id')
+function publishPost(image, text, callback) {
     validate.text(image, 'image')
     validate.text(text)
     validate.function(callback, 'callback')
@@ -9,7 +9,7 @@ function publishPost(userId, image, text, callback) {
     const req = {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${userId}`,
+            Authorization: `Bearer ${session.token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ image, text })
@@ -19,10 +19,10 @@ function publishPost(userId, image, text, callback) {
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
-                    return
+                return
             }
 
             callback(null)

@@ -1,14 +1,14 @@
-import validate from "./helpers/validate"
+import session from './session'
+import { validate, errors } from 'com'
 
-function deletePost(userId, postId, callback) {
-    validate.id(userId, 'user id')
+function deletePost(postId, callback) {
     validate.id(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${userId}`
+            Authorization: `Bearer ${session.token}`
         }
     }
 
@@ -16,7 +16,7 @@ function deletePost(userId, postId, callback) {
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
                 return

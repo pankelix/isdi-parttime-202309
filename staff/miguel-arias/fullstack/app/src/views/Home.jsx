@@ -2,11 +2,15 @@ import { useState, useEffect } from "react"
 
 import logic from "../logic"
 
+import { useContext } from "../hooks"
+
 import { Button, Link, } from "../library/index"
 import { Profile, Posts, NewPost } from "../components/index"
 
 function Home(props) {
     console.log('Home')
+
+    const context = useContext()
 
     const [view, setView] = useState(null)
     const [name, setName] = useState(null)
@@ -15,7 +19,7 @@ function Home(props) {
     function handleLogoutClick() {
         logic.logoutUser(error => {
             if (error) {
-                alert(error.message)
+                context.handleError(error)
 
                 return
             }
@@ -30,7 +34,7 @@ function Home(props) {
         try {
             logic.retrieveUser((error, user) => {
                 if (error) {
-                    alert(error.message)
+                    context.handleError(error)
 
                     return
                 }
@@ -95,9 +99,9 @@ function Home(props) {
         <main>
             {view === 'profile' && <Profile onSuccess={handleChangeUserData} />}
 
-            {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
+            {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts} stamp={stamp} />}
 
-            {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic)} />}
+            {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts} />}
         </main>
 
         <footer>

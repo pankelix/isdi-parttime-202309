@@ -1,10 +1,10 @@
-import validate from "./helpers/validate"
-import context from './context'
+import { validate, errors } from 'com'
+import session from './session'
 
 function logoutUser(callback) {
     validate.function(callback, 'callback')
     
-    context.sessionUserId = null
+    session.token = null
 
     callback(null)
 }

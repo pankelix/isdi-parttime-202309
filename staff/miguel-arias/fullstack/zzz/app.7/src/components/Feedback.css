@@ -1,0 +1,30 @@
+.Feedback {
+  position: absolute;
+  width: 97.5%;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  padding-bottom: 17px;
+  z-index: 10;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 5px 10px;
+}
+.Feedback--debug {
+  color: yellowgreen;
+}
+.Feedback--info {
+  color: dodgerblue;
+}
+.Feedback--warn {
+  color: gold;
+}
+.Feedback--error {
+  color: orange;
+}
+.Feedback--fatal {
+  color: red;
+}
+
+/*# sourceMappingURL=Feedback.css.map */

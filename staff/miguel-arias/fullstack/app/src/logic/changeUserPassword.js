@@ -1,7 +1,7 @@
-import validate from "./helpers/validate"
+import session from './session'
+import { validate, errors } from 'com'
 
-function changeUserPassword(userId, password, newPassword, newPasswordConfirm, callback) {
-    validate.id(userId, 'user id')
+function changeUserPassword(password, newPassword, newPasswordConfirm, callback) {
     validate.password(password, 'password')
     validate.password(newPassword, 'new password')
     validate.password(newPasswordConfirm, 'new password confirm')
@@ -15,11 +15,11 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm, c
         body: JSON.stringify({ password, newPassword, newPasswordConfirm })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}/password`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/${session.token}/password`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
                 return

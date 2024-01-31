@@ -1,5 +1,5 @@
-import context from "./context"
-import validate from "./helpers/validate"
+import session from './session'
+import { validate, errors } from 'com'
 
 function updatePostText(postId, text, callback) {
     validate.id(postId, 'post id')
@@ -9,7 +9,7 @@ function updatePostText(postId, text, callback) {
     const req = {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${context.sessionUserId}`,
+            Authorization: `Bearer ${session.token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ text })
@@ -19,7 +19,7 @@ function updatePostText(postId, text, callback) {
         .then(res => {
             if (!res.ok) {
                 res.json()
-                    .then(body => callback(new Error(body.message)))
+                    .then(body => callback(new errors[body.error](body.message)))
                     .catch(error => callback(error))
 
                 return
