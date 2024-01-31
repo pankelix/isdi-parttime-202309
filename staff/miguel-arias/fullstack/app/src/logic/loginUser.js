@@ -36,7 +36,7 @@ function loginUser(email, password, callback) {
                     const userId = payload.sub
                     // el id
 
-                    session.sessionUserId = userId
+                    session.userId = userId
                     session.token = token
                     callback(null)
                 })

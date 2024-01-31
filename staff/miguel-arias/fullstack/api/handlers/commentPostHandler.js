@@ -4,7 +4,7 @@ import { errors } from 'com'
 const { JsonWebTokenError } = jwt
 
 import logic from '../logic/index.js'
-const { NotFoundError, ContentError, CredentialsError, TokenError } = errors
+const { NotFoundError, ContentError, TokenError } = errors
 
 export default (req, res) => {
     try {
@@ -12,21 +12,17 @@ export default (req, res) => {
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         const userId = payload.sub
 
-        const { password, newPassword, newPasswordConfirm } = req.body
+        const { postId } = req.params
 
-        logic.changeUserPassword(userId, password, newPassword, newPasswordConfirm)
-            .then(() => res.status(204).send())
+        const { textToComment } = req.body
+
+        logic.commentPost(userId, postId, textToComment)
+            .then(name => res.json(name))
             .catch(error => {
-                let status = 500
-
-                if (error instanceof ContentError)
-                    status = 406
+                let status = 505
 
                 if (error instanceof NotFoundError)
                     status = 404
-
-                if (error instanceof CredentialsError)
-                    status = 401
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             })

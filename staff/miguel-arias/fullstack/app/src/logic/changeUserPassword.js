@@ -10,12 +10,13 @@ function changeUserPassword(password, newPassword, newPasswordConfirm, callback)
     const req = {
         method: 'PATCH',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.token}`
         },
         body: JSON.stringify({ password, newPassword, newPasswordConfirm })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${session.token}/password`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/password`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()

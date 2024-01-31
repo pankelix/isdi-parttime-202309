@@ -17,7 +17,8 @@ import {
     retrieveFavPostsHandler,
     toggleLikePostHandler,
     toggleFavPostHandler,
-    updatePostTextHandler
+    updatePostTextHandler,
+    commentPostHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_API)
@@ -43,9 +44,9 @@ mongoose.connect(process.env.MONGODB_API)
 
         server.get('/users', retrieveUserHandler)
 
-        server.patch('/users/:userId/email', jsonBodyParser, changeUserEmailHandler)
+        server.patch('/users/email', jsonBodyParser, changeUserEmailHandler)
 
-        server.patch('/users/:userId/password', jsonBodyParser, changeUserPasswordHandler)
+        server.patch('/users/password', jsonBodyParser, changeUserPasswordHandler)
 
         server.post('/posts', jsonBodyParser, createPostHandler)
 
@@ -60,6 +61,8 @@ mongoose.connect(process.env.MONGODB_API)
         server.patch('/posts/:postId/favs', toggleFavPostHandler)
 
         server.patch('/posts/:postId/text', jsonBodyParser, updatePostTextHandler)
+
+        server.patch('/posts/:postId/comment', jsonBodyParser, commentPostHandler)
 
         const date = new Date()
 

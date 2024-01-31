@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Image, Button, Input } from "../library/index"
+import { Image, Button, Input, Form, Field } from "../library/index"
 import logic from "../logic"
 import session from "../logic/session"
 import { useContext } from '../hooks/index'
@@ -104,6 +104,42 @@ function Post(props) {
         }
     }
 
+
+
+    function handleCommentSubmit(event) {
+        event.preventDefault()
+        const textToComment = document.querySelector(`#textToComment${post.id}`).value
+        try {
+            logic.commentPost(session.userId, post.id, textToComment, error => {
+                if (error) {
+                    context.handleError(error)
+
+                    return
+                }
+
+                props.onCommentSuccess()
+            })
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
+    function handleDeleteComment() {
+        try {
+            logic.deleteComment(session.userId, comments._id, error => {
+                if (error) {
+                    context.handleError(error)
+
+                    return
+                }
+
+                props.onCommentDeletion()
+            })
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
     return <article className="post">
         <h3>{post.author.name}</h3>
         <Image src={post.image} />
@@ -117,8 +153,17 @@ function Post(props) {
         <aside>
             <h4>{post.author.name}</h4>
             <p>{post.text}</p>
-            {post.author.id == session.userId && <Button className="edit-button" onClick={handleToggleEditClick}>✏</Button>}
+            {post.author.id == session.userId && <Button className="other-button" onClick={handleToggleEditClick}>✏</Button>}
             {edit === 'edit' && <div> <Input id="textToEdit"></Input> <Button onClick={handleEditConfirmClick}>✅</Button> </div>}
+        </aside>
+        <aside className="comments">
+            {post.comments && post.comments.map(comment => <div>▶<h5>{comment.name}</h5> <h6>{comment.text}</h6> {/* <Button onClick={() => handleDeleteComment(comment.id)}>💥</Button> */}</div>)}
+        </aside>
+        <aside className="comments">
+            <Form onSubmit={handleCommentSubmit}>
+                <Input id={`textToComment${post.id}`} type="text" placeholder="Add a comment">Add a comment</Input>
+                <Button className="other-button" type="submit">Publish</Button>
+            </Form>
         </aside>
     </article>
 }

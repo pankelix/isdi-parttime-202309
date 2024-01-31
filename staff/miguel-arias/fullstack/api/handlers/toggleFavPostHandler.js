@@ -8,11 +8,11 @@ const { NotFoundError, ContentError, TokenError } = errors
 
 export default (req, res) => {
     try {
-        const { postId } = req.params
-
         const token = req.headers.authorization.substring(7)
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         const userId = payload.sub
+        
+        const { postId } = req.params
 
         logic.toggleFavPost(postId, userId)
             .then(() => res.status(204).send())

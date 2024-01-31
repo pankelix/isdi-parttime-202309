@@ -15,7 +15,6 @@ body {
   gap: 25px;
   margin: 5rem 0 3rem;
 }
-
 .container article {
   box-sizing: border-box;
   background-color: white;
@@ -142,9 +141,33 @@ header nav a {
 .post aside button:hover {
   opacity: 0.6;
 }
-.post .edit-button {
+.post .other-button {
   background-color: rgb(100, 198, 237);
   color: white;
+}
+
+.comments div {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+.comments h5 {
+  font-size: 13px;
+  color: rgb(58, 58, 58);
+}
+.comments h6 {
+  font-weight: 100;
+  font-size: 11px;
+  color: rgb(95, 95, 95);
+}
+.comments form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+}
+.comments form input {
+  width: 75%;
 }
 
 footer {

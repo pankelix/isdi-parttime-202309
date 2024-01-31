@@ -51,13 +51,22 @@ class SystemError extends Error {
     }
 }
 
+class TypeError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
 export {
     CredentialsError,
     TokenError,
     NotFoundError,
     ContentError,
     DuplicityError,
-    SystemError
+    SystemError,
+    TypeError
 }
 
 const errors = {
@@ -66,7 +75,8 @@ const errors = {
     NotFoundError,
     ContentError,
     DuplicityError,
-    SystemError
+    SystemError,
+    TypeError
 }
 
 export default errors

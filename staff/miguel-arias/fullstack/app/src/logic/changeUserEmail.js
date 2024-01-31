@@ -10,12 +10,13 @@ function changeUserEmail(newEmail, newEmailConfirm, password, callback) {
     const req = {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`
         },
         body: JSON.stringify({ newEmail, newEmailConfirm, password })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${session.token}/email`, req)
+    fetch(`${import.meta.env.VITE_API_URL}/users/email`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
