@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Image, Button, Input, Form, Field } from "../library/index"
+import { useNavigate } from "react-router-dom"
+import { Image, Button, Input, Form, Link } from "../library/index"
 import logic from "../logic"
 import session from "../logic/session"
 import { useContext } from '../hooks/index'
@@ -10,6 +11,7 @@ function Post(props) {
     const [edit, setEdit] = useState(null)
 
     const context = useContext()
+    const navigate = useNavigate()
 
     function handleToggleLikeClick() {
         try {
@@ -104,8 +106,6 @@ function Post(props) {
         }
     }
 
-
-
     function handleCommentSubmit(event) {
         event.preventDefault()
         const textToComment = document.querySelector(`#textToComment${post.id}`).value
@@ -124,7 +124,7 @@ function Post(props) {
         }
     }
 
-    function handleDeleteComment() {
+    /* function handleDeleteComment() {
         try {
             logic.deleteComment(session.userId, comments._id, error => {
                 if (error) {
@@ -138,10 +138,14 @@ function Post(props) {
         } catch (error) {
             context.handleError(error)
         }
+    } */
+
+    const handleUserClick = event => {
+        navigate(`/users/${post.author.id}`)
     }
 
     return <article className="post">
-        <h3>{post.author.name}</h3>
+        <h3><Link onClick={handleUserClick}>{post.author.name}</Link></h3>
         <Image src={post.image} />
 
         <aside>

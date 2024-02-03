@@ -15,8 +15,6 @@ import logic from './logic'
 function App() {
     console.log('App')
 
-    const [view, setView] = useState('login')
-    // [<current-state>, <setter-for-next-state>]
     const [level, setLevel] = useState(null)
     const [message, setMessage] = useState(null)
 
@@ -42,18 +40,22 @@ function App() {
 
     const handleError = error => {
         let level = 'fatal'
+        let message = error.message
 
         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
             level = 'warn'
         else if (error instanceof DuplicityError || error instanceof NotFoundError)
             level = 'error'
-        else if (error instanceof TokenError)
+        else if (error instanceof TokenError) {
             logic.logoutUser(() => navigate('/login')) //que haga logout y LUEGO navegue a login
+
+            message = 'Session expired'
+        }
 
         setLevel(level)
         console2.log(error.message, level)
 
-        setMessage(error.message)
+        setMessage(message)
     }
 
     const handleFeedbackAccepted = () => {
@@ -67,7 +69,7 @@ function App() {
             <Routes>
                 <Route path='/login' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
                 <Route path='/register' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
-                <Route path='/' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} /> : <Navigate to='/login' />} />
+                <Route path='/*' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} /> : <Navigate to='/login' />} />
             </Routes>
         </Context.Provider>
     </>

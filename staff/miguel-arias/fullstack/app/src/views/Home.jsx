@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react"
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 
 import logic from "../logic"
 
 import { useContext } from "../hooks"
 
 import { Button, Link, } from "../library/index"
-import { Profile, Posts, NewPost } from "../components/index"
+import { Profile, Posts, NewPost, UserPosts } from "../components/index"
 
 function Home(props) {
     console.log('Home')
 
     const context = useContext()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const [view, setView] = useState(null)
     const [name, setName] = useState(null)
@@ -49,7 +52,7 @@ function Home(props) {
     function handleProfileClick(event) {
         event.preventDefault()
 
-        setView('profile')
+        navigate('/profile')
     }
 
     function handleHomeClick(event) {
@@ -57,7 +60,7 @@ function Home(props) {
 
         window.scrollTo(0, 0)
 
-        setView(null)
+        navigate('/')
     }
 
     function handleNewPostClick() {
@@ -69,7 +72,7 @@ function Home(props) {
     }
 
     function handleChangeUserData() {
-        setView(null)
+        navigate('/')
     }
 
     function handleNewPostPublish() {
@@ -82,7 +85,7 @@ function Home(props) {
     function handleFavPostsClick(event) {
         event.preventDefault()
 
-        setView('favs')
+        navigate('/favs')
     }
 
     return <>
@@ -96,18 +99,17 @@ function Home(props) {
             </nav>
         </header>
 
-        <main>
-            {view === 'profile' && <Profile onSuccess={handleChangeUserData} />}
-
-            {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts} stamp={stamp} />}
-
-            {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts} />}
-        </main>
+        <Routes>
+            <Route path='/profile' element={<Profile onSuccess={handleChangeUserData} />}/>
+            <Route path='/favs' element={<Posts loadPosts={logic.retrieveFavPosts} />} />
+            <Route path='/users/:userId' element={<UserPosts />} />
+            <Route path='/' element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
+        </Routes>
 
         <footer>
             {view === 'new-post' && <NewPost onSuccess={handleNewPostPublish} onCancel={handleNewPostCancel} />}
 
-            {view !== 'new-post' && <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>}
+            {view !== 'new-post' && location.pathname !== '/profile' && location.pathname !== '/favs' && <Button className="new-post-button" onClick={handleNewPostClick}>➕</Button>}
         </footer>
     </>
 }
