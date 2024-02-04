@@ -102,7 +102,7 @@ function Home(props) {
         <Routes>
             <Route path='/profile' element={<Profile onSuccess={handleChangeUserData} />}/>
             <Route path='/favs' element={<Posts loadPosts={logic.retrieveFavPosts} />} />
-            <Route path='/users/:userId' element={<UserPosts />} />
+            <Route path='/users/:userId' element={<UserPosts loadPosts={logic.retrieveUserPosts} stamp={stamp}/>} />
             <Route path='/' element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
         </Routes>
 

@@ -141,6 +141,7 @@ function Post(props) {
     } */
 
     const handleUserClick = event => {
+        event.preventDefault()
         navigate(`/users/${post.author.id}`)
     }
 
@@ -161,7 +162,7 @@ function Post(props) {
             {edit === 'edit' && <div> <Input id="textToEdit"></Input> <Button onClick={handleEditConfirmClick}>✅</Button> </div>}
         </aside>
         <aside className="comments">
-            {post.comments && post.comments.map(comment => <div>▶<h5>{comment.name}</h5> <h6>{comment.text}</h6> {/* <Button onClick={() => handleDeleteComment(comment.id)}>💥</Button> */}</div>)}
+            {post.comments && post.comments.map(comment => <div >▶<h5>{comment.name}</h5> <h6>{comment.text}</h6> {/* <Button onClick={() => handleDeleteComment(comment.id)}>💥</Button> */}</div>)}
         </aside>
         <aside className="comments">
             <Form onSubmit={handleCommentSubmit}>

@@ -3,6 +3,10 @@
 .test.sh -> con el server abierto -> ./archivo
 .spec -> con el server abierto -> npm test logic/archivo
 
+show databases
+use test
+use api
+
 npm run start
 npm run watch
 npm run inspect

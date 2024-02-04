@@ -11,6 +11,7 @@ import toggleLikePostHandler from './toggleLikePostHandler.js'
 import toggleFavPostHandler from './toggleFavPostHandler.js'
 import updatePostTextHandler from './updatePostTextHandler.js'
 import commentPostHandler from './commentPostHandler.js'
+import retrieveUserPostsHandler from './retrieveUserPostsHandler.js'
 
 export {
     registerUserHandler,
@@ -25,5 +26,6 @@ export {
     toggleLikePostHandler,
     toggleFavPostHandler,
     updatePostTextHandler,
-    commentPostHandler
+    commentPostHandler,
+    retrieveUserPostsHandler
 }

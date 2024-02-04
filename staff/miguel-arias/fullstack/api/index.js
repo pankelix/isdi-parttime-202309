@@ -19,6 +19,7 @@ import {
     toggleFavPostHandler,
     updatePostTextHandler,
     commentPostHandler,
+    retrieveUserPostsHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_API)
@@ -51,10 +52,12 @@ mongoose.connect(process.env.MONGODB_API)
         server.post('/posts', jsonBodyParser, createPostHandler)
 
         server.post('/posts/:postId/delete', deletePostHandler)
-        
+
         server.get('/posts', retrievePostsHandler)
-        
+
         server.get('/posts/favs', retrieveFavPostsHandler)
+
+        server.get('/users/:userId', retrieveUserPostsHandler)
 
         server.patch('/posts/:postId/likes', toggleLikePostHandler)
 
