@@ -52,7 +52,7 @@ function Login(props) {
 
                 <Input id="password-input" type="password" placeholder="Password">Password</Input>
 
-                <Button className="entrance-button" type="submit">Log In</Button>
+                <Button type="submit">Log In</Button>
 
                 <nav>
                     <p>Don't have an account?</p>

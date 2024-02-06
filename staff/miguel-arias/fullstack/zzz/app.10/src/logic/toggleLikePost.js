@@ -1,14 +1,18 @@
 import { validate, errors } from 'com'
+import session from './session'
 
-function retrieveUserPosts(userId, callback) {
-    validate.id(userId, 'user id')
+function toggleLikePost(postId, callback) {
+    validate.id(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET'
+        method: 'PATCH',
+        headers: {
+            Authorization: `Bearer ${session.token}`
+        }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, req) // /posts
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/likes`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -18,12 +22,9 @@ function retrieveUserPosts(userId, callback) {
                 return
             }
 
-            res.json()
-                .then(posts => callback(null, posts))
-                .catch(error => callback(error))
-
+            callback(null)
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUserPosts
+export default toggleLikePost

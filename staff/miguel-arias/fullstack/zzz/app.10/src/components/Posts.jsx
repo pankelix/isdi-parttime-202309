@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import Post from "./Post"
-import { useParams } from 'react-router-dom'
-import { useContext } from '../hooks'
+import { useContext } from "../hooks"
 
-function UserPosts(props) {
-    const params = useParams()
-    console.log(`${params.userId} Posts`)
+function Posts(props) {
+    console.log('Posts')
 
     const context = useContext()
 
@@ -13,7 +11,7 @@ function UserPosts(props) {
 
     const refreshPosts = () => {
         try {
-            props.loadPosts(params.userId, (error, posts) => { //traer retrieveuserposts directamente
+            props.loadPosts((error, posts) => {
                 if (error) {
                     context.handleError(error)
 
@@ -40,4 +38,4 @@ function UserPosts(props) {
     </div>
 }
 
-export default UserPosts
+export default Posts

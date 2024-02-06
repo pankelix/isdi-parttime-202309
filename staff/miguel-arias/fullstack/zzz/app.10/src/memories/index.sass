@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap')
+
+$m-size: 768px
+
+*
+    font-family: Inter
+
+body
+    background: linear-gradient(90deg, rgb(246, 249, 254), rgb(232, 236, 244))
+    scroll-behavior: smooth
+
+.container
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
+    justify-items: center
+    gap: 25px
+    margin: 5rem 0 3rem
+
+    & article
+        box-sizing: border-box
+        background-color: white
+        border-radius: 7px
+        width: 360px
+        height: 460px
+        max-width: 400px
+        margin-top: 40px
+        padding: 100px 70px
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 10px
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 5px 10px
+
+button
+    cursor: pointer
+    padding: 5px
+    color: white
+    background-color: rgb(100, 198, 237)
+    border: none
+    border-radius: 5px
+
+form
+    user-select: none
+    width: 260px
+    display: flex
+    flex-direction: column
+    gap: 10px
+    position: relative
+
+    & input
+        background-color: rgb(246, 248, 251)
+        border: none
+        border-radius: 5px
+        height: 30px
+
+        &::placeholder
+            padding-left: 10px
+
+    & nav
+        font-size: 12px
+        display: flex
+        justify-content: center
+        align-items: baseline
+        gap: 4px
+        position: absolute
+        top: 190px
+        width: 100%
+
+header
+    position: fixed
+    top: 0
+    background-color: white
+    display: flex
+    align-items: center
+    padding-left: 20px
+    justify-content: space-between
+    width: 100%
+    z-index: 1
+
+    & h1 a
+        text-decoration: none
+        font-weight: 900
+        color: rgb(100, 198, 237)
+
+    & nav
+        margin-right: 3.5rem
+        display: flex
+        align-items: baseline
+        gap: 15px
+
+        & a
+            text-decoration: none
+
+.header-text::after
+    content: 'H'
+
+@media (min-width: 424px)
+    .header-text::after
+        content: 'Home'
+
+.profile-view,
+.posts
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
+    justify-items: center
+    gap: 25px
+    margin: 5rem 0 3rem
+
+.post
+    background-color: white
+    border-radius: 7px
+    margin: 20px
+    padding: 10px 0 10px
+    display: flex
+    flex-direction: column
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 5px 10px
+
+    & img
+        max-width: 400px
+        padding-bottom: 15px
+
+    & h3
+        margin-left: 30px
+
+    & aside
+        width: auto
+        margin-left: 20px
+        display: flex
+        align-items: center
+        gap: 15px
+
+    & aside button
+        background-color: white
+        color: black
+
+        &:hover
+            opacity: .6
+
+    & .other-button
+        background-color: rgb(100, 198, 237)
+        color: white
+
+.comments
+    & div
+        display: flex
+        align-items: baseline
+        gap: 15px
+    & h5
+        font-size: 13px
+        color: rgb(58, 58, 58)
+    & h6
+        font-weight: 100
+        font-size: 11px
+        color: rgb(95, 95, 95)
+    & form
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        width: 95%
+        & input
+            width: 75%
+
+footer
+    background-color: white
+    display: flex
+    justify-content: center
+    position: fixed
+    bottom: 0
+    width: 100%
+    min-height: 2rem
+    z-index: 1

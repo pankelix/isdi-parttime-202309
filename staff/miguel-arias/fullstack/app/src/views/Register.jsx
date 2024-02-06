@@ -55,7 +55,7 @@ function Register(props) {
 
                 <Input id="password-input" type="password" placeholder="Password">Password</Input>
 
-                <Button type="submit">Register</Button>
+                <Button className="entrance-button" type="submit">Register</Button>
 
                 <nav>
                     <p>Already have an account?</p>

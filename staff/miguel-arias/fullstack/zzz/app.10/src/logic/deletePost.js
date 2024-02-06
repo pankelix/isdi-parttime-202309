@@ -1,14 +1,18 @@
+import session from './session'
 import { validate, errors } from 'com'
 
-function retrieveUserPosts(userId, callback) {
-    validate.id(userId, 'user id')
+function deletePost(postId, callback) {
+    validate.id(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
-        method: 'GET'
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${session.token}`
+        }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, req) // /posts
+    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/delete`, req)
         .then(res => {
             if (!res.ok) {
                 res.json()
@@ -18,12 +22,9 @@ function retrieveUserPosts(userId, callback) {
                 return
             }
 
-            res.json()
-                .then(posts => callback(null, posts))
-                .catch(error => callback(error))
-
+            callback(null)
         })
         .catch(error => callback(error))
 }
 
-export default retrieveUserPosts
+export default deletePost

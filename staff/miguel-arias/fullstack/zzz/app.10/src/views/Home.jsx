@@ -90,7 +90,7 @@ function Home(props) {
 
     return <>
         <header>
-            <h1><Link onClick={handleHomeClick}></Link></h1>
+            <h1><Link className="header-text" onClick={handleHomeClick}></Link></h1>
 
             <nav>
                 <Link onClick={handleProfileClick}>{name}</Link>

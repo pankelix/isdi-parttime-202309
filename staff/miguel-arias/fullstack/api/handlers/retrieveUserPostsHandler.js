@@ -8,7 +8,8 @@ import logic from '../logic/index.js'
 
 export default (req, res) => {
     try {
-        const { userId } = req.params
+        //verificar token
+        const { userId } = req.params //targetUserId
 
         logic.retrieveUserPosts(userId)
             .then(posts => res.json(posts))

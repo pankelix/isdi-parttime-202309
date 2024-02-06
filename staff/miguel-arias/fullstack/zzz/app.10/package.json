@@ -13,7 +13,6 @@
     "sass-watch": "sass src --watch"
   },
   "dependencies": {
-    "classnames": "^2.5.1",
     "com": "link:..\\com",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

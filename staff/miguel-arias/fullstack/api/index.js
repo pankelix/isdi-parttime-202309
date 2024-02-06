@@ -57,7 +57,7 @@ mongoose.connect(process.env.MONGODB_API)
 
         server.get('/posts/favs', retrieveFavPostsHandler)
 
-        server.get('/users/:userId', retrieveUserPostsHandler)
+        server.get('/users/:userId', retrieveUserPostsHandler) // /posts
 
         server.patch('/posts/:postId/likes', toggleLikePostHandler)
 

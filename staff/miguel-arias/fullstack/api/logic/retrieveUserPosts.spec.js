@@ -29,10 +29,10 @@ describe('retrieveUserPosts', () => {
                     .then(([post1, post2, post3]) => {
                         return retrieveUserPosts(user1.id)
                             .then(posts => {
-                                debugger
                                 expect(posts).to.exist
                                 expect(posts).to.be.instanceOf(Array)
                                 expect(posts).to.have.lengthOf(2)
+                                //cada post tiene la información que he dictado arriba?
                             })
                     })
             })
