@@ -1,11 +1,11 @@
 import { validate, errors } from 'com'
+const { SystemError } = errors
 import session from './session'
 
-function commentPost(userId, postId, textToComment, callback) {
+function commentPost(userId, postId, textToComment) {
     validate.id(userId, 'user id')
     validate.id(postId, 'post id')
     validate.text(textToComment, 'text to comment')
-    validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',
@@ -16,19 +16,15 @@ function commentPost(userId, postId, textToComment, callback) {
         body: JSON.stringify({ textToComment })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/comment`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/comment`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
-
-            callback(null)
         })
-        .catch(error => callback(error))
 }
 
 export default commentPost

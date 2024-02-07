@@ -94,6 +94,10 @@
     @apply bg-sky-400 text-white
   }
 
+  .post .comments {
+    @apply flex flex-col items-start
+  }
+
   .comments div {
     @apply flex items-baseline gap-[15px]
   }
@@ -103,7 +107,15 @@
   }
 
   .comments h6 {
-    @apply font-thin text-xs text-slate-500
+    @apply font-thin text-xs text-slate-500 ml-[25px]
+  }
+
+  .comments div {
+    @apply flex flex-col w-full
+  }
+
+  .comments li {
+    @apply flex flex-col
   }
 
   .comments form {

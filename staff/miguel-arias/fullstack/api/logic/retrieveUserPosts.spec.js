@@ -32,7 +32,9 @@ describe('retrieveUserPosts', () => {
                                 expect(posts).to.exist
                                 expect(posts).to.be.instanceOf(Array)
                                 expect(posts).to.have.lengthOf(2)
-                                //cada post tiene la información que he dictado arriba?
+                                expect(post1.author.toString()).to.equal(user1.id)
+                                expect(post2.author.toString()).to.not.equal(user1.id)
+                                expect(post3.author.toString()).to.equal(user1.id)
                             })
                     })
             })

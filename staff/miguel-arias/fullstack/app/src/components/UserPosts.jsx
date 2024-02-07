@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Post from "./Post"
 import { useParams } from 'react-router-dom'
 import { useContext } from '../hooks'
+import logic from "../logic"
 
 function UserPosts(props) {
     const params = useParams()
@@ -13,17 +14,12 @@ function UserPosts(props) {
 
     const refreshPosts = () => {
         try {
-            props.loadPosts(params.userId, (error, posts) => { //traer retrieveuserposts directamente
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                posts.reverse()
-
-                setPosts(posts)
-            })
+            logic.retrieveUserPosts(params.userId)
+                .then(posts => {
+                    posts.reverse()
+                    setPosts(posts)
+                })
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }
@@ -36,7 +32,7 @@ function UserPosts(props) {
     }, [props.stamp])
 
     return <div className="posts">
-        {posts.map(post => <Post key={post.id} post={post} onLikeSuccess={refreshPosts} onDeleteSuccess={refreshPosts} onFavSuccess={refreshPosts} onEditSuccess={refreshPosts} onCommentSuccess={refreshPosts} onCommentDeletion={refreshPosts}/>)}
+        {posts.map(post => <Post key={post.id} post={post} onLikeSuccess={refreshPosts} onDeleteSuccess={refreshPosts} onFavSuccess={refreshPosts} onEditSuccess={refreshPosts} onCommentSuccess={refreshPosts} onCommentDeletion={refreshPosts} />)}
     </div>
 }
 

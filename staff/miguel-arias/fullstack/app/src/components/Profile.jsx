@@ -17,16 +17,12 @@ function Profile(props) {
         const password = event.target.querySelector('#password-input').value
 
         try {
-            logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-                props.onSuccess()
-                
-                alert('Email changed successfully')
-            })
+            logic.changeUserEmail(newEmail, newEmailConfirm, password)
+                .then(() => {
+                    props.onSuccess()
+                    alert('Email changed successfully')
+                })
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }
@@ -40,16 +36,12 @@ function Profile(props) {
         const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
 
         try {
-            logic.changeUserPassword(password, newPassword, newPasswordConfirm, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-                props.onSuccess()
-                
-                alert('Password changed successfully')
-            })
+            logic.changeUserPassword(password, newPassword, newPasswordConfirm)
+                .then(() => {
+                    props.onSuccess()
+                    alert('Password changed successfully')
+                })
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }

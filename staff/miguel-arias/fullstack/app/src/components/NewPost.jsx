@@ -15,15 +15,9 @@ function NewPost(props) {
         const text = event.target.text.value
 
         try {
-            logic.publishPost(image, text, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                props.onSuccess()
-            })
+            logic.publishPost(image, text)
+                .then(() => props.onSuccess())
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }

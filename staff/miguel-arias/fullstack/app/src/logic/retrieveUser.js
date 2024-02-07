@@ -1,9 +1,9 @@
-import { validate, errors } from 'com'
+import { errors } from 'com'
+const { SystemError } = errors
+
 import session from './session'
 
-function retrieveUser(callback) {
-    validate.function(callback, 'callback')
-
+function retrieveUser() {
     const req = {
         method: 'GET',
         headers: {
@@ -11,21 +11,19 @@ function retrieveUser(callback) {
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
 
-            res.json()
-                .then(user => callback(null, user))
-                .catch(error => callback(error))
+            return res.json()
+                .catch(error => { throw new SystemError(error.message) })
+                .then(user => user)
         })
-        .catch(error => callback(error))
 }
 
 export default retrieveUser

@@ -20,17 +20,9 @@ function Login(props) {
 
         // console.log(email, password)
         try {
-            logic.loginUser(email, password, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                props.onSuccess()
-                // setTimeout(() => props.onSuccess(), 2000)
-            })
-
+            logic.loginUser(email, password)
+                .then(() => props.onSuccess())
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }

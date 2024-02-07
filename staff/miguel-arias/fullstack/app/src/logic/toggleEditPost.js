@@ -1,10 +1,9 @@
 import { validate, errors } from 'com'
 
-function toggleEditPost(postId, callback) {
+function toggleEditPost(postId) {
     validate.id(postId, 'post id')
-    validate.function(callback, 'callback')
 
-    callback(null)
+    return
 }
 
 export default toggleEditPost

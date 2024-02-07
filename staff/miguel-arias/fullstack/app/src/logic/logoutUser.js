@@ -1,12 +1,9 @@
-import { validate } from 'com'
 import session from './session'
 
-function logoutUser(callback) {
-    validate.function(callback, 'callback')
-
+function logoutUser() {
     session.token = null
 
-    callback(null)
+    return
 }
 
 export default logoutUser

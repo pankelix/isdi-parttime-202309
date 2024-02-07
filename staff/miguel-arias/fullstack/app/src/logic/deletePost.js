@@ -1,9 +1,9 @@
-import session from './session'
 import { validate, errors } from 'com'
+const { SystemError } = errors
+import session from './session'
 
-function deletePost(postId, callback) {
+function deletePost(postId) {
     validate.id(postId, 'post id')
-    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',
@@ -12,19 +12,15 @@ function deletePost(postId, callback) {
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/delete`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/delete`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
-
-            callback(null)
         })
-        .catch(error => callback(error))
 }
 
 export default deletePost

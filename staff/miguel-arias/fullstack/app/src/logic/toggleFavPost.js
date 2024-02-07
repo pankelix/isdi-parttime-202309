@@ -1,9 +1,9 @@
 import { validate, errors } from 'com'
+const { SystemError } = errors
 import session from './session'
 
-function toggleFavPost(postId, callback) {
+function toggleFavPost(postId) {
     validate.id(postId, 'post id')
-    validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',
@@ -12,19 +12,15 @@ function toggleFavPost(postId, callback) {
         }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/favs`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/posts/${postId}/favs`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
-
-            callback(null)
         })
-        .catch(error => callback(error))
 }
 
 export default toggleFavPost

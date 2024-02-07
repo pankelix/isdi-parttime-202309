@@ -1,10 +1,10 @@
 import { validate, errors } from 'com'
+const { SystemError } = errors
 import session from './session'
 
-function loginUser(email, password, callback) {
+function loginUser(email, password) {
     validate.email(email)
     validate.password(password)
-    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',
@@ -14,17 +14,17 @@ function loginUser(email, password, callback) {
         body: JSON.stringify({ email, password })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
 
-            res.json()
+            return res.json()
+                .catch(error => { throw new SystemError(error.message) })
                 .then(token => {
                     // 325435435345.345435345345345.345345345345
                     const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
@@ -38,11 +38,8 @@ function loginUser(email, password, callback) {
 
                     session.userId = userId
                     session.token = token
-                    callback(null)
                 })
-                .catch(error => callback(error))
         })
-        .catch(error => callback(error))
 }
 
 export default loginUser

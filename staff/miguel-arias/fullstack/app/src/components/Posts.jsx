@@ -11,17 +11,12 @@ function Posts(props) {
 
     const refreshPosts = () => {
         try {
-            props.loadPosts((error, posts) => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                posts.reverse()
-
-                setPosts(posts)
-            })
+            props.loadPosts()
+                .then(posts => {
+                    posts.reverse()
+                    setPosts(posts)
+                })
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }
@@ -34,7 +29,7 @@ function Posts(props) {
     }, [props.stamp])
 
     return <div className="posts">
-        {posts.map(post => <Post key={post.id} post={post} onLikeSuccess={refreshPosts} onDeleteSuccess={refreshPosts} onFavSuccess={refreshPosts} onEditSuccess={refreshPosts} onCommentSuccess={refreshPosts} onCommentDeletion={refreshPosts}/>)}
+        {posts.map(post => <Post key={post.id} post={post} onLikeSuccess={refreshPosts} onDeleteSuccess={refreshPosts} onFavSuccess={refreshPosts} onEditSuccess={refreshPosts} onCommentSuccess={refreshPosts} onCommentDeletion={refreshPosts} />)}
     </div>
 }
 

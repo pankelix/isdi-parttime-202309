@@ -1,29 +1,30 @@
 import { validate, errors } from 'com'
+const { SystemError } = errors
+import session from './session'
 
-function retrieveUserPosts(userId, callback) {
-    validate.id(userId, 'user id')
-    validate.function(callback, 'callback')
+function retrieveUserPosts(targetUserId) {
+    validate.id(targetUserId, 'target user id')
 
     const req = {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${session.token}`
+        }
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, req) // /posts
+    return fetch(`${import.meta.env.VITE_API_URL}/users/${targetUserId}/posts`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
 
-            res.json()
-                .then(posts => callback(null, posts))
-                .catch(error => callback(error))
-
+            return res.json()
+                .catch(error => { throw new SystemError(error.message) })
+                .then(posts => posts)
         })
-        .catch(error => callback(error))
 }
 
 export default retrieveUserPosts

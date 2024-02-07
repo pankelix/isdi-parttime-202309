@@ -8,10 +8,13 @@ import logic from '../logic/index.js'
 
 export default (req, res) => {
     try {
-        //verificar token
-        const { userId } = req.params //targetUserId
+        const token = req.headers.authorization.substring(7)
+        const payload = jwt.verify(token, process.env.JWT_SECRET)
+        const userId = payload.sub
 
-        logic.retrieveUserPosts(userId)
+        const { targetUserId } = req.params
+
+        logic.retrieveUserPosts(userId, targetUserId)
             .then(posts => res.json(posts))
             .catch(error => {
                 let status = 500

@@ -1,10 +1,10 @@
 import { validate, errors } from 'com'
+const { SystemError } = errors
 
-function registerUser(name, email, password, callback) {
+function registerUser(name, email, password) {
     validate.text(name, 'name')
     validate.email(email, 'email')
     validate.password(password, 'password')
-    validate.function(callback, 'callback')
 
     const req = {
         method: 'POST',
@@ -14,19 +14,15 @@ function registerUser(name, email, password, callback) {
         body: JSON.stringify({ name, email, password })
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+    return fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+        .catch(error => { throw new SystemError(error.message) })
         .then(res => {
             if (!res.ok) {
-                res.json()
-                    .then(body => callback(new errors[body.error](body.message)))
-                    .catch(error => callback(error))
-
-                return
+                return res.json()
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(body => { throw new errors[body.error](body.message) })
             }
-
-            callback(null)
         })
-        .catch(error => callback(error))
 }
 
 export default registerUser

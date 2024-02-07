@@ -20,32 +20,22 @@ function Home(props) {
     const [stamp, setStamp] = useState(null)
 
     function handleLogoutClick() {
-        logic.logoutUser(error => {
-            if (error) {
-                context.handleError(error)
-
-                return
-            }
-        })
-
-        props.onLogoutClick()
+        try {
+            logic.logoutUser()
+            props.onLogoutClick()
+        } catch (error) {
+            context.handleError(error)
+        }
     }
 
     useEffect(() => {
         console.log('Home -> effect (name)')
-
         try {
-            logic.retrieveUser((error, user) => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-                setName(user.name)
-            })
-
+            logic.retrieveUser()
+                .then(user => setName(user.name))
+                .catch(error => context.handleError(error))
         } catch (error) {
-            alert(error.message)
+            context.handleError(error)
         }
     }, []) //el array vacío al final sirve para que sólo se active la primera vez
 
@@ -100,9 +90,9 @@ function Home(props) {
         </header>
 
         <Routes>
-            <Route path='/profile' element={<Profile onSuccess={handleChangeUserData} />}/>
+            <Route path='/profile' element={<Profile onSuccess={handleChangeUserData} />} />
             <Route path='/favs' element={<Posts loadPosts={logic.retrieveFavPosts} />} />
-            <Route path='/users/:userId' element={<UserPosts loadPosts={logic.retrieveUserPosts} stamp={stamp}/>} />
+            <Route path='/users/:userId/posts' element={<UserPosts stamp={stamp} />} />
             <Route path='/' element={<Posts loadPosts={logic.retrievePosts} stamp={stamp} />} />
         </Routes>
 

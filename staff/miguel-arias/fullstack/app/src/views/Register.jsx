@@ -23,15 +23,9 @@ function Register(props) {
         // console.log(name, email, password)
 
         try {
-            logic.registerUser(name, email, password, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                props.onSuccess()
-            })
+            logic.registerUser(name, email, password)
+                .then(() => props.onSuccess())
+                .catch(error => context.handleError(error))
         } catch (error) {
             context.handleError(error)
         }
