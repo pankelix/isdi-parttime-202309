@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs'
+
 import { User } from '../data/models.js'
 import { validate, errors } from 'com'
 const { NotFoundError, CredentialsError, ContentError, SystemError } = errors
@@ -11,21 +13,35 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password) {
     if (newEmail !== newEmailConfirm)
         throw new ContentError('new email and its confirmation do not match')
 
-    return User.findById(userId)
-        .catch(error => { throw new SystemError(error.message) })
-        .then(user => {
-            if (!user)
-                throw new NotFoundError('user not found')
+    return (async () => {
+        let user
+        try {
+            user = await User.findById(userId)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
-            if (user.password !== password)
-                throw new CredentialsError('wrong password')
+        if (!user)
+            throw new NotFoundError('user not found')
 
-            user.email = newEmail
+        let match
+        try {
+            match = await bcrypt.compare(password, user.password)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
-            return user.save()
-                .catch(error => { throw new SystemError(error.message) })
-                .then(() => { })
-        })
+        if (!match)
+            throw new CredentialsError('wrong password')
+
+        user.email = newEmail
+
+        try {
+            await user.save()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+    })()
 }
 
 export default changeUserEmail

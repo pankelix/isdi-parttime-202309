@@ -12,38 +12,38 @@ import { errors } from 'com'
 const { NotFoundError } = errors
 
 describe('retrieveUser', () => {
-    before(() => mongoose.connect(process.env.MONGODB_TEST))
+    before(async () => await mongoose.connect(process.env.MONGODB_TEST))
 
-    beforeEach(() => User.deleteMany())
+    beforeEach(async () => await User.deleteMany())
 
-    it('succeeds on existing user', () => {
+    it('succeeds on existing user', async () => {
         const name = random.name()
         const email = random.email()
         const password = random.password()
 
-        return User.create({ name, email, password })
-            .then(user => {
-                return retrieveUser(user.id)
-                    .then(user => {
-                        expect(user.name).to.be.a('string')
-                        expect(user.name).to.equal(name)
-                        expect(user.id).to.be.undefined
-                        expect(user.email).to.be.undefined
-                        expect(user.password).to.be.undefined
-                    })
-            })
+        const newUser = await User.create({ name, email, password })
+
+        user = await retrieveUser(newUser.id)
+
+        expect(user.name).to.be.a('string')
+        expect(user.name).to.equal(name)
+        expect(user.id).to.be.undefined
+        expect(user.email).to.be.undefined
+        expect(user.password).to.be.undefined
     })
 
-    it('fails on non-existing user', () => {
+    it('fails on non-existing user', async () => {
         const id = random.id()
 
-        return retrieveUser(id)
-            .then(user => 'should not reach this point')
-            .catch(error => {
-                expect(error).to.be.instanceOf(NotFoundError)
-                expect(error.message).to.equal('user not found')
-            })
+        try {
+            await retrieveUser(id)
+
+            throw new Error('should not reach this point')
+        } catch (error) {
+            expect(error).to.be.instanceOf(NotFoundError)
+            expect(error.message).to.equal('user not found')
+        }
     })
 
-    after(() => mongoose.disconnect())
+    after(async () => await mongoose.disconnect())
 })

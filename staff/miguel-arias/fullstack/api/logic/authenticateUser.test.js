@@ -5,16 +5,14 @@ import mongoose from 'mongoose'
 
 import authenticateUser from './authenticateUser.js'
 
-mongoose.connect(process.env.MONGODB_TEST)
-    .then(() => {
-        try {
-            authenticateUser('le@chuga.com', '123123123')
-                .then(userId => {
-                    console.log('user authenticated', userId)
-                })
-                .catch(error => console.error(error))
-        } catch (error) {
-            console.error(error)
-        }
-    })
-    .catch(error => console.error(error))
+(async () => {
+    await mongoose.connect(process.env.MONGODB_TEST)
+
+    try {
+        const userId = await authenticateUser('le@chuga.com', '123123123')
+
+        console.log('user authenticated', userId)
+    } catch (error) {
+        console.error(error)
+    }
+})()

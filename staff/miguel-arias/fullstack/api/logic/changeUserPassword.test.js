@@ -5,20 +5,13 @@ import mongoose from 'mongoose'
 
 import changeUserPassword from './changeUserPassword.js'
 
-mongoose.connect(process.env.MONGODB_TEST)
-    .then(() => {
-        try {
-            changeUserPassword('658f0f0ff58499e7aacac4f6', '123123123', '345345345', '345345345', error => {
-                if (error) {
-                    console.error(error)
+(async () => {
+    await mongoose.connect(process.env.MONGODB_TEST)
 
-                    return
-                }
-
-                console.log('password changed')
-            })
-        } catch (error) {
-            console.error(error)
-        }
-    })
-    .catch(error => console.error(error))
+    try {
+        await changeUserPassword('658f0f0ff58499e7aacac4f6', '123123123', '345345345', '345345345')
+        console.log('password changed')
+    } catch (error) {
+        console.error(error)
+    }
+})()

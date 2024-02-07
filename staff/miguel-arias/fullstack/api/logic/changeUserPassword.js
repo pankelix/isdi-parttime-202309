@@ -13,29 +13,32 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm) {
     if (newPassword !== newPasswordConfirm)
         throw new ContentError('new password and its confirmation do not match')
 
-    return User.findById(userId)
-        .catch(error => { throw new SystemError(error.message) })
-        .then(user => {
-            if (!user)
-                throw new NotFoundError('user not found')
+    return (async () => {
+        let user
+        let match
+        let hash
+        try {
+            user = await User.findById(userId)
+            match = await bcrypt.compare(password, user.password)
+            hash = await bcrypt.hash(newPassword, 2)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
-            return bcrypt.compare(password, user.password)
-                .catch(error => { throw new SystemError(error.message) })
-                .then(match => {
-                    if (!match)
-                        throw new CredentialsError('wrong password')
+        if (!user)
+            throw new NotFoundError('user not found')
 
-                    return bcrypt.hash(newPassword, 2)
-                        .catch(error => { throw new SystemError(error.message) })
-                        .then(hash => {
-                            user.password = hash
+        if (!match)
+            throw new CredentialsError('wrong password')
 
-                            return user.save()
-                                .catch(error => { throw new SystemError(error.message) })
-                                .then(() => { })
-                        })
-                })
-        })
+        user.password = hash
+
+        try {
+            await user.save()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+    })()
 }
 
 export default changeUserPassword

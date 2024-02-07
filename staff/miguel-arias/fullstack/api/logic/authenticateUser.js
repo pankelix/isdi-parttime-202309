@@ -7,7 +7,26 @@ function authenticateUser(email, password) {
     validate.email(email)
     validate.password(password)
 
-    return User.findOne({ email })
+    return (async () => {
+        let user
+        let match
+        try {
+            user = await User.findOne({ email })
+            match = await bcrypt.compare(password, user.password)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!user)
+            throw new NotFoundError('user not found')
+
+        if (!match)
+            throw new CredentialsError('wrong password')
+
+        return user.id
+    })()
+
+    /* return User.findOne({ email })
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
@@ -21,7 +40,7 @@ function authenticateUser(email, password) {
 
                     return user.id
                 })
-        })
+        }) */
 }
 
 export default authenticateUser

@@ -9,19 +9,18 @@ function registerUser(name, email, password) {
     validate.email(email)
     validate.password(password)
 
-    return bcrypt.hash(password, 2)
-        .catch(error => { throw new SystemError(error.mesage) })
-        .then(hash => {
-            return User.create({ name, email, password: hash }) // guardar el hash en la propiedad password de este nuevo user
-                .catch(error => {
-                    if (error.code === 11000) {
-                        throw new DuplicityError('user already exists')
-                    }
+    return (async () => {
+        try {
+            const hash = await bcrypt.hash(password, 2)
 
-                    throw new SystemError(error.message)
-                })
-                .then(user => { })
-        })
+            await User.create({ name, email, password: hash })
+        } catch (error) {
+            if (error.code === 11000)
+                throw new DuplicityError('user already exists')
+
+            throw new SystemError(error.mesage)
+        }
+    })()
 }
 
 export default registerUser

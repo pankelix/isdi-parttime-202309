@@ -13,55 +13,57 @@ import { errors } from 'com'
 const { NotFoundError, CredentialsError } = errors
 
 describe('authenticateUser', () => {
-    before(() => mongoose.connect(process.env.MONGODB_TEST))
+    asbefore(async () => await mongoose.connect(process.env.MONGODB_TEST))
 
-    beforeEach(() => User.deleteMany())
+    beforeEach(async () => await User.deleteMany())
 
-    it('succeeds on correct credentials', () => {
+    it('succeeds on correct credentials', async () => {
         const name = random.name()
         const email = random.email()
         const password = random.password()
 
-        return bcrypt.hash(password, 2)
-            .then(hash => User.create({ name, email, password: hash }))
-            .then(user => {
-                return authenticateUser(email, password)
-                    .then(userId => {
-                        expect(userId).to.be.a('string')
-                        expect(userId).to.have.lengthOf(24)
-                        expect(userId).to.equal(user.id)
-                    })
+        const hash = await bcrypt.hash(password, 2)
 
-            })
+        const user = await User.create({ name, email, password: hash })
+
+        const userId = await authenticateUser(email, password)
+
+        expect(userId).to.be.a('string')
+        expect(userId).to.have.lengthOf(24)
+        expect(userId).to.equal(user.id)
     })
 
-    it('fails on wrong email', () => {
-        const email = random.email()
-        const password = random.password()
+})
 
-        return authenticateUser(email, password)
-            .then(() => { throw new Error('should not reach this point') })
-            .catch(error => {
-                expect(error).to.be.instanceOf(NotFoundError)
-                expect(error.message).to.equal('user not found')
-            })
-    })
+it('fails on wrong email', async () => {
+    const email = random.email()
+    const password = random.password()
 
-    it('fails on wrong password', () => {
-        const name = random.name()
-        const email = random.email()
-        const password = random.password()
+    try {
+        await authenticateUser(email, password)
 
-        return User.create({ name, email, password })
-            .then(user => {
-                return authenticateUser(email, password + '-wrong')
-                    .then(() => { throw new Error('should not reach this point') })
-                    .catch(error => {
-                        expect(error).to.be.instanceOf(CredentialsError)
-                        expect(error.message).to.equal('wrong password')
-                    })
-            })
-    })
+        throw new Error('should not reach this point')
+    } catch (error) {
+        expect(error).to.be.instanceOf(NotFoundError)
+        expect(error.message).to.equal('user not found')
+    }
+})
+
+it('fails on wrong password', async () => {
+    const name = random.name()
+    const email = random.email()
+    const password = random.password()
+
+    const user = await User.create({ name, email, password })
+
+    try {
+        await authenticateUser(email, password + '-wrong')
+
+        throw new Error('should not reach this point')
+    } catch (error) {
+        expect(error).to.be.instanceOf(CredentialsError)
+        expect(error.message).to.equal('wrong password')
+    }
 
     after(() => mongoose.disconnect())
 })
