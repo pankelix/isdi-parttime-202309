@@ -77,8 +77,8 @@ function Post(props) {
 
     function handleCommentSubmit(event) {
         event.preventDefault()
-        const textToComment = document.querySelector(`#textToComment${post.id}`).value
         try {
+            const textToComment = document.querySelector(`#textToComment${post.id}`).value
             logic.commentPost(session.userId, post.id, textToComment)
                 .then(() => props.onCommentSuccess())
                 .catch(error => context.handleError(error))
@@ -125,7 +125,7 @@ function Post(props) {
             {edit === 'edit' && <div> <Input id="textToEdit"></Input> <Button onClick={handleEditConfirmClick}>✅</Button> </div>}
         </aside>
         <aside className="comments">
-            {post.comments && post.comments.map(comment => <li><h5>💭 {comment.name}</h5> <h6>{comment.text}</h6> {/* <Button onClick={() => handleDeleteComment(comment.id)}>💥</Button> */}</li>)}
+            {post.comments && post.comments.map(comment => <li key={comment.id}><h5>💭  {comment.name}</h5> <h6>{comment.text}</h6> {/* <Button onClick={() => handleDeleteComment(comment.id)}>💥</Button> */}</li>)}
         </aside>
         <aside className="comments">
             <Form onSubmit={handleCommentSubmit}>

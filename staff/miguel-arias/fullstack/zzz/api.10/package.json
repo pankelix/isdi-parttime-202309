@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "com": "link:..\\com",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
