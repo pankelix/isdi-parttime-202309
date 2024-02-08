@@ -9,16 +9,21 @@ function authenticateUser(email, password) {
 
     return (async () => {
         let user
-        let match
         try {
             user = await User.findOne({ email })
-            match = await bcrypt.compare(password, user.password)
         } catch (error) {
             throw new SystemError(error.message)
         }
 
         if (!user)
             throw new NotFoundError('user not found')
+
+        let match
+        try {
+            match = await bcrypt.compare(password, user.password)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
         if (!match)
             throw new CredentialsError('wrong password')

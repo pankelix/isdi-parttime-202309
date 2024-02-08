@@ -14,15 +14,23 @@ function registerUser(name, email, password) {
         body: JSON.stringify({ name, email, password })
     }
 
-    return fetch(`${import.meta.env.VITE_API_URL}/users`, req)
-        .catch(error => { throw new SystemError(error.message) })
-        .then(res => {
-            if (!res.ok) {
-                return res.json()
-                    .catch(error => { throw new SystemError(error.message) })
-                    .then(body => { throw new errors[body.error](body.message) })
+    return (async () => {
+        let res
+        try {
+            res = await fetch(`${import.meta.env.VITE_API_URL}/users`, req)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!res.ok) {
+            try {
+                const body = res.json()
+                throw new errors[body.error](body.message)
+            } catch (error) {
+                throw new SystemError(error.message)
             }
-        })
+        }
+    })
 }
 
 export default registerUser

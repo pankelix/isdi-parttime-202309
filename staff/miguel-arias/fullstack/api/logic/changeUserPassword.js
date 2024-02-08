@@ -15,12 +15,8 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm) {
 
     return (async () => {
         let user
-        let match
-        let hash
         try {
             user = await User.findById(userId)
-            match = await bcrypt.compare(password, user.password)
-            hash = await bcrypt.hash(newPassword, 2)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -28,8 +24,22 @@ function changeUserPassword(userId, password, newPassword, newPasswordConfirm) {
         if (!user)
             throw new NotFoundError('user not found')
 
+        let match
+        try {
+            match = await bcrypt.compare(password, user.password)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
         if (!match)
             throw new CredentialsError('wrong password')
+
+        let hash
+        try {
+            hash = await bcrypt.hash(newPassword, 2)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
         user.password = hash
 
