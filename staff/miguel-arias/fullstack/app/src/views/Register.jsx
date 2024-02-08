@@ -22,13 +22,14 @@ function Register(props) {
 
         // console.log(name, email, password)
 
-        try {
-            logic.registerUser(name, email, password)
-                .then(() => props.onSuccess())
-                .catch(error => context.handleError(error))
-        } catch (error) {
-            context.handleError(error)
-        }
+        return (async () => {
+            try {
+                await logic.registerUser(name, email, password)
+                props.onSuccess()
+            } catch (error) {
+                context.handleError(error)
+            }
+        })()
     }
 
     function handleLoginClick(event) {

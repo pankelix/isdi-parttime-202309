@@ -24,13 +24,13 @@ function registerUser(name, email, password) {
 
         if (!res.ok) {
             try {
-                const body = res.json()
+                const body = await res.json()
                 throw new errors[body.error](body.message)
             } catch (error) {
                 throw new SystemError(error.message)
             }
         }
-    })
+    })()
 }
 
 export default registerUser

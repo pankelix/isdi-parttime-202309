@@ -40,7 +40,7 @@ function loginUser(email, password) {
 
         session.userId = userId
         session.token = token
-    })
+    })()
 }
 
 export default loginUser

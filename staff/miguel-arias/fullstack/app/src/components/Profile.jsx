@@ -16,16 +16,15 @@ function Profile(props) {
         const newEmailConfirm = event.target.querySelector('#new-email-confirm-input').value
         const password = event.target.querySelector('#password-input').value
 
-        try {
-            logic.changeUserEmail(newEmail, newEmailConfirm, password)
-                .then(() => {
-                    props.onSuccess()
-                    alert('Email changed successfully')
-                })
-                .catch(error => context.handleError(error))
-        } catch (error) {
-            context.handleError(error)
-        }
+        return (async () => {
+            try {
+                await logic.changeUserEmail(newEmail, newEmailConfirm, password)
+                props.onSuccess()
+                alert('Email changed successfully')
+            } catch (error) {
+                context.handleError(error)
+            }
+        })()
     }
 
     function handleChangePasswordSubmit(event) {
@@ -35,16 +34,15 @@ function Profile(props) {
         const newPassword = event.target.querySelector('#new-password-input').value
         const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
 
-        try {
-            logic.changeUserPassword(password, newPassword, newPasswordConfirm)
-                .then(() => {
-                    props.onSuccess()
-                    alert('Password changed successfully')
-                })
-                .catch(error => context.handleError(error))
-        } catch (error) {
-            context.handleError(error)
-        }
+        return (async () => {
+            try {
+                await logic.changeUserPassword(password, newPassword, newPasswordConfirm)
+                props.onSuccess()
+                alert('Password changed successfully')
+            } catch (error) {
+                context.handleError(error)
+            }
+        })()
     }
 
     return <>
