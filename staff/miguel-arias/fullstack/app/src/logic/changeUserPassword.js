@@ -25,12 +25,14 @@ function changeUserPassword(password, newPassword, newPasswordConfirm) {
         }
 
         if (!res.ok) {
+            let body
             try {
-                const body = await res.json()
-                throw new errors[body.error](body.message)
+                body = await res.json()
             } catch (error) {
                 throw new SystemError(error.message)
             }
+
+            throw new errors[body.error](body.message)
         }
     })()
 }
