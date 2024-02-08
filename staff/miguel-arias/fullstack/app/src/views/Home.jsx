@@ -29,14 +29,17 @@ function Home(props) {
     }
 
     useEffect(() => {
-        console.log('Home -> effect (name)')
-        try {
-            logic.retrieveUser()
-                .then(user => setName(user.name))
-                .catch(error => context.handleError(error))
-        } catch (error) {
-            context.handleError(error)
-        }
+        console.log('Home -> effect (name)') //necesario este punto y coma para separar estas sentencias, lo pongo en la sent. problemática
+
+            ; (async () => {
+                try {
+                    const user = await logic.retrieveUser()
+
+                    setName(user.name)
+                } catch (error) {
+                    context.handleError(error)
+                }
+            })()
     }, []) //el array vacío al final sirve para que sólo se active la primera vez
 
     function handleProfileClick(event) {
