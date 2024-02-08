@@ -34,15 +34,19 @@ function loginUser(email, password) {
             throw new errors[body.error](body.message)
         }
 
-        const token = await res.json()
+        try {
+            const token = await res.json()
 
-        const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
-        const payloadJson = atob(payloadB64)
-        const payload = JSON.parse(payloadJson)
-        const userId = payload.sub
+            const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
+            const payloadJson = atob(payloadB64)
+            const payload = JSON.parse(payloadJson)
+            const userId = payload.sub
 
-        session.userId = userId
-        session.token = token
+            session.userId = userId
+            session.token = token
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
     })()
 }
 
