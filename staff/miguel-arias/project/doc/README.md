@@ -1,22 +1,37 @@
-# Pepito App
+# House organization App
 
 ## Intro
 
+An app to help with the organization of the house chores
+
 ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjk5ZXEzejNiam91aDd0N3g4YXdkYjNodHcwOWllaXhxMTk2dXRidCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NV4cSrRYXXwfUcYnua/giphy.gif)
 
-#### Una aplicación para facilitar la organización de las tareas del hogar
+Create a Home group, with several users that live inside the same house
+
+Different profiles with different permissions (admin/user/home/child)
 
 ## Functional Description
 
 ### Use Cases
 
-* Reunir varios usuarios en un hogar
-* Distintos permisos
-* Invitación sencilla
-* Ver y filtrar tareas
-* Crear nuevas tareas y asignarlas a distintos usuarios
-* Notificaciones push con recordatorios
-* Listas de la compra lógicas
+* Register House (all house members share account)
+* Manage House
+    - Create profile (basic role by default)
+        - Assign name & pincode
+    - Manage profiles
+        - Assign role to profile (admin)
+        - Delete own profile (admin can all profiles)
+        - Change picture (gallery/photo)
+        - Change color
+* Manage tasks
+    - See and filter tasks
+    - Create new tasks
+    - React to tasks
+        - Assign this task (user to self, admin to all) (pincode needed)
+        - Complete this task (pincode needed)
+        - Delay this task (pincode needed)
+        - Edit task (admin) (pincode needed)
+        - Delete task (admin) (pincode needed)
 <!-- Cosas que el usuario podrá hacer en la aplicación (cosas que aporten valor, cosas tipo Login, Register... sobran)
 * search socks
 * add socks to cart
@@ -28,135 +43,112 @@
 * ...
 * ... -->
 
-##### Tareas del hogar
+### Views
 
-* Crear un grupo de hogar, con varios usuarios que habiten dentro de la misma vivienda
+#### House registration
 
-* Poder otorgar distintos perfiles con distintos permisos (admin/user/hogar). (Hogar es la tablet que tiene la familia para que los niños actuen, con muy pocos permisos, ya que los niños no tienen móviles)
+* House creation
+    - Name
+    - Rooms
+    - Email & password
 
-#### Vista 1 manejo usuarios
+#### Home view
 
-* Crear código de invitación admin/user/hogar (botón rápido de copia)
-    - Primera vez en la app
-        - Nombre
-        - Elegir foto
-        - Elegir color de asignación (mostrar los ya usados tachados)
-        - Me gustaría no pedir email ni contraseña, ¿es posible?
+* Tasks feed
+    - Default: Calendar since actual day (vertical infinite scroll)
+    - Filter
+        - Date range
+        - Room
+        - Assigned person
+        - Points granted
+    - Tasks (go to **Task templates**)
+    - Stats (go to **Stats**)
+    - Profile (go to **Profile views**)
+    - Click on task (go to **Task reaction**)
+    - New task (+)
+        - Create new task (goto **Task templates**)
+        - Propose task (status active)
 
-* Lista con los usuarios de la vivienda
-    - Eliminar usuario
-    - Editar usuario
-        - Cambiar foto
-        - Cambiar color de asignación
+#### Profile views
 
-##### Vista 2 principal
+* Profile creation
+    - Admin
+        - Change profile role
+        - Delete all profiles
+    - User
+        - Change picture
+        - Change color
+        - Delete profile
 
-* Ver todas las tareas
-    - Default: Calendario desde actual (scroll infinito vertical)
-    - Filtrado
-        - Por rango de fechas
-        - Por habitación
-        - Por persona asignada
-    - Proponer tarea (+)
-        - Elegir una tarea de las creadas
-        - Crear una nueva (lleva a vista 3)
-        - Asignar tarea (opcional)
+#### Task reaction
 
-* Reaccionar a tarea creada
-    - Asignar esta tarea
-        - Admin: asigna a propio, a admin y a user
-        - User: asigna a propio
-        - Hogar: no asigna nada
-    - Completar esta tarea
-        - Fecha de compleción (de base hoy)
-        - Si es periódica, se recalcula el nuevo deadline
-        - Se entregan puntos (si los tiene)
-    - Editar esta tarea
-    - Eliminar esta tarea
+* Assign this task
+    - Pincode needed
+    - To self (user), to another users (admin)
+* Complete this task
+    - Pincode needed
+    - Completion date (today by default)
+    - If it's a periodic task, it renovates automatically
+    - Points assignation
+* Delay task (delay counter)
+* Edit this task (admin)
+* Delete this task (admin)
 
-##### Vista 3 tareas
+#### Task templates
 
-* Habitación
-    - Crear tarea
-        - Nombre de la tarea
-        - Temporalidad: puntual, diaria, semanal (cada miércoles), mensual (cada día 23) o elegir (cada x días)
-        - Habitación a la que pertenece (de base en la que estás)
-        - Puntos que vale completarla (opcional)
-    - Editar tarea
-    - Archivar tarea
-    - Eliminar tarea
+* See all task templates
+* Filter task templates
+    - By room
+    - By points awarded
+* Edit task
+* Store task
+* Delete task
+* Create task (status unactive)
+    - Task name
+    - Temporality: punctual, daily, weekly (every wednesday), monthly (every day 23) or choose (every x days)
+    - Room
+    - Points awarded for completion (optional)
 
-* Notificaciones push diarias:
-    - Tareas de hoy asignadas
-    - Tareas de hoy aun libres
+#### Stats
 
-##### Vista 4 Lista de la compra
-
-* Ver distintas listas creadas
-
-* Crear nueva lista (+)
-    - Lista en blanco / Elegir entre las plantillas
-    - Todos los usuarios pueden añadir a estas listas
-    - Asignar a una tarea (opcional)
-
-* En la lista
-    - Guardar como plantilla
-    - Activar modo comprar
-        - Ya no se puede añadir nada
-        - Aparece el modo check y el modo "no encontrado"
-        - Los objetos que no se han encontrado pasan directamente a la siguiente lista
-        - Lógica para el orden en que se hace check (las próximas veces se propondrá este orden para facilitar la compra)
-        - Opción de finalizar, donde se puede añadir el ticket
-
-
-
-
-
-## A futuro (proximas versiones):
-
-* Compatibilidad con asistentes como Siri, Google assistant o Alexa
-* Cada habitación que tenga un % de limpieza, según las tareas por hacer vs las tareas hechas
-
-* Transformador de foto de ticket en ticket digital de texto para ahorro de datos y para manejar "presupuestos"
-
-##### Vista nueva: puntuación (opcional)
-
-* Ranking de puntos
-* Estadísticas
-* Crear premios
-
-##### Vista nueva: citas
-
-* Citas (médico tal dia para user1, cena tal otro dia para users 1 y 2)
-* Sugerencias de tareas prehechas según la cita (por ejemplo si hay cena en casa, recoger salón / limpiar cocina / hacer compra)
-* Opción de adjuntar tickets
-
-* Notificaciones push diarias:
-    - citas de hoy
+* Ranking of points
+* Stats about cleaning
 
 ## Technical Description
 
 ### Data Model
 
-User
+Home
 * id (string)
 * name (string)
 * email (string)
 * password (string)
+* rooms (array of strings)
+
+Room
+* id (string)
+* name (string)
+* home (Home.id)
+
+Profile
+* id (string)
+* name (string)
+* pincode (string)
+* color (string)
+* role (string)
+
+Template
+* id (string)
+* name (string)
+* rooms ([Room.id])
+* periodicity (string)
+* points (number)
 
 Task
 * id (string)
-* name (string)
-* periodical (string)
+* template(Template.id)
 * done (boolean)
-* points?? (number)
-* Comments
-
-Shopping list
-* id (string)
-* items (array)
-
-...
+* date(Date)
 
 <!-- Sock
 * id (string)
@@ -175,3 +167,41 @@ Order
 * id (string)
 * date (Date
 * items ([socks.id])) -->
+
+## Future versions will include:
+
+##### Shopping list (version 2)
+
+* See different shopping lists
+
+* Create new list (+)
+    - Blank list / Choose from templates
+    - All users can add things to this list
+    - Assign TO a task (optional)
+
+* On the list
+    - Save as a template
+    - Activate shopping mode
+        - No more additions
+        - For every item choose between "checked" or "not found"
+        - Not found items go directly to a new list
+        - Lógica para el orden en que se hace check (las próximas veces se propondrá este orden para facilitar la compra)
+        - Finalize (and add a picture of the ticket)
+
+##### Push notifications (version 2)
+
+* Today's assigned to me tasks
+* Today's free tasks
+
+##### Quality of life (version 2)
+
+* Compatibility with assistants like Siri, Google assistant o Alexa
+* Transform a picture of the ticket to text, this way budgets can be done
+
+##### Appointments
+
+* Addition of appointments (medical, travels, leisure...)
+* Pre-made tasks according to the appointment (for example if there's a dinner at home clean living room / do groceries / clean kitchen ...)
+* Ticket adding
+* Notificaciones push diarias:
+    - citas de hoy
