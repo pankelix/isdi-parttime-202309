@@ -6,7 +6,7 @@ import registerHome from './registerHome.js'
 
 (async () => {
     try {
-        await mongoose.connect(process.env.TEST_MONGODB_URL)
+        await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
         await registerHome('Man Sion', 'man@sion.com', '123123123')
         console.log('home registered')

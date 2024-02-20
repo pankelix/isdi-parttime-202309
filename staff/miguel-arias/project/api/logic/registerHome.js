@@ -19,7 +19,7 @@ function registerHome(name, email, password) {
             if (error.code === 11000)
                 throw new DuplicityError('home already exists')
 
-            throw new SystemError('error.message')
+            throw new SystemError(error.message)
         }
     })()
 }
