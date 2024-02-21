@@ -23,7 +23,7 @@ function authenticateHome(email, password) {
 
         let match
         try {
-            match = bcrypt.compare(password, home.password)
+            match = await bcrypt.compare(password, home.password)
         } catch (error) {
             throw new SystemError(error.message)
         }

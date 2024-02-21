@@ -28,7 +28,7 @@ const room = new Schema({
         required: true,
         unique: true
     },
-    home: {
+    homeRef: {
         type: ObjectId,
         ref: 'home'
     }
@@ -53,7 +53,7 @@ const profile = new Schema({
         type: String,
         default: 'user'
     },
-    home: {
+    homeRef: {
         type: ObjectId,
         ref: 'home'
     }
@@ -77,7 +77,7 @@ const template = new Schema({
 })
 
 const task = new Schema({
-    template: {
+    templateRef: {
         type: ObjectId,
         ref: 'template'
     },

@@ -9,7 +9,7 @@ function retrieveTask(taskId) {
     return (async () => {
         let task
         try {
-            task = await Task.findById(taskId, 'name').lean()
+            task = await Task.findById(taskId).populate('templateRef').lean()
         } catch (error) {
             throw new SystemError(error.message)
         }

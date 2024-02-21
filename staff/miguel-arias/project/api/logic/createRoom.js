@@ -9,7 +9,7 @@ function createRoom(name, homeId) {
 
     return (async () => {
         try {
-            const room = await Room.create({ name, home: homeId })
+            const room = await Room.create({ name, homeRef: homeId })
 
             return room
         } catch (error) {

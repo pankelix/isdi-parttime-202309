@@ -9,7 +9,7 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
 
 (async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/test')
+        await mongoose.connect('mongodb://127.0.0.1:27017/project')
         await Home.deleteMany()
         await Room.deleteMany()
         await Profile.deleteMany()

@@ -11,7 +11,7 @@ function createTask(templateId, assigneeId/* , done, date */) {
 
     return (async () => {
         try {
-            const task = await Task.create({ template: templateId, assignee: assigneeId/*, done, date  */ })
+            const task = await Task.create({ templateRef: templateId, assignee: assigneeId/*, done, date  */ })
 
             return task
         } catch (error) {

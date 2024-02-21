@@ -13,7 +13,7 @@ function registerProfile(name, pincode, color, role, homeId ) {
         try {
             const hash = await bcrypt.hash(pincode, 8)
 
-            const profile = await Profile.create({ name, pincode: hash, color, role, home: homeId })
+            const profile = await Profile.create({ name, pincode: hash, color, role, homeRef: homeId })
 
             return profile
         } catch (error) {
