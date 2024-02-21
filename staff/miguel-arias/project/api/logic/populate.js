@@ -10,11 +10,11 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
-        /* await Home.deleteMany()
+        await Home.deleteMany()
         await Room.deleteMany()
         await Profile.deleteMany()
         await Template.deleteMany()
-        await Task.deleteMany() */
+        await Task.deleteMany()
 
         //Home
         let mansion
