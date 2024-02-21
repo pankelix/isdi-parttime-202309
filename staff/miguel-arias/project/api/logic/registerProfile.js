@@ -5,7 +5,7 @@ const { SystemError, DuplicityError } = errors
 
 import { Profile } from '../data/models.js'
 
-function registerProfile(name, pincode, color, role ) {
+function registerProfile(name, pincode, color, role, homeId ) {
     validate.text(name, 'name')
     validate.pincode(pincode, 'pincode')
 
@@ -13,7 +13,9 @@ function registerProfile(name, pincode, color, role ) {
         try {
             const hash = await bcrypt.hash(pincode, 8)
 
-            await Profile.create({ name, pincode: hash, color, role })
+            const profile = await Profile.create({ name, pincode: hash, color, role, home: homeId })
+
+            return profile
         } catch (error) {
             if (error.code === 11000)
                 throw new DuplicityError('home already exists')

@@ -11,7 +11,9 @@ function createTemplate(name, rooms, periodicity, points) {
 
     return (async () => {
         try {
-            await Template.create({ name, rooms, periodicity, points })
+            const template = await Template.create({ name, rooms, periodicity, points })
+
+            return template
         } catch (error) {
             throw new SystemError(error.message)
         }

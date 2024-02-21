@@ -50,7 +50,12 @@ const profile = new Schema({
         unique: true
     },
     role: {
-        type: String
+        type: String,
+        default: 'user'
+    },
+    home: {
+        type: ObjectId,
+        ref: 'home'
     }
 })
 
@@ -76,11 +81,17 @@ const task = new Schema({
         type: ObjectId,
         ref: 'template'
     },
+    assignee: {
+        type: ObjectId,
+        ref: 'profile'
+    },
     done: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     date: {
-        type: Date
+        type: Date,
+        default: new Date()
     }
 })
 
