@@ -33,13 +33,35 @@ function password(password, explain = 'password') {
     if (password.length < 8) throw new RangeError(`${explain} length is lower than 8 characters`)
 }
 
+function pincode(password, explain = 'pincode') {
+    text(password, explain)
+
+    if (password.length !== 4) throw new RangeError(`${explain} pincode must be 4 characters long`)
+}
+
+function array(array, explain) {
+    if (!Array.isArray(array)) throw new TypeError(`${explain} is not an array`)
+}
+
+function date(date, explain) {
+    if (!(date instanceof Date)) throw new TypeError(`${explain} is not a date`)
+}
+
+function boolean(boolean, explain) {
+    if (typeof boolean !== 'boolean') throw new TypeError(`${explain} is not a boolean`)
+}
+
 const validate = {
     text,
     email,
     number,
     function: funktion,
     id,
-    password
+    password,
+    pincode,
+    array,
+    date,
+    boolean
 }
 
 export default validate

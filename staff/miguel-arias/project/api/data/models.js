@@ -25,7 +25,8 @@ const home = new Schema({
 const room = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     home: {
         type: ObjectId,
@@ -56,15 +57,14 @@ const profile = new Schema({
 const template = new Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     rooms: [{
         type: ObjectId,
         ref: 'room'
     }],
     periodicity: {
-        type: String
+        type: Number
     },
     points: {
         type: Number

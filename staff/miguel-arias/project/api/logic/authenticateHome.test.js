@@ -6,7 +6,7 @@ import authenticateHome from './authenticateHome.js'
 
 (async () => {
     try {
-        await mongoose.connect(process.env.TEST_MONGODB_URL)
+        await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
         const homeId = await authenticateHome('man@sion.com', '123123123')
         console.log('home authenticated', homeId)
