@@ -12,9 +12,9 @@ import registerProfile from './registerProfile.js'
         console.log('profile registered')
         await registerProfile('Wendy Darling', '1234', 'blue', 'admin')
         console.log('profile registered')
-        await registerProfile('Michael Darling', '1234', 'white', 'user')
+        await registerProfile('Michael Darling', '1234', 'white')
         console.log('profile registered')
-        await registerProfile('John Darling', '1234', 'pink', 'user')
+        await registerProfile('John Darling', '1234', 'pink')
         console.log('profile registered')
 
         await mongoose.disconnect()

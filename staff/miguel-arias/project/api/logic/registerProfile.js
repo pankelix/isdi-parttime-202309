@@ -13,7 +13,9 @@ function registerProfile(name, pincode, color, role ) {
         try {
             const hash = await bcrypt.hash(pincode, 8)
 
-            await Profile.create({ name, pincode: hash, color, role })
+            const profile = await Profile.create({ name, pincode: hash, color, role })
+
+            return profile
         } catch (error) {
             if (error.code === 11000)
                 throw new DuplicityError('home already exists')

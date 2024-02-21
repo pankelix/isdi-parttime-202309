@@ -3,14 +3,17 @@ const { SystemError } = errors
 
 import { Task } from '../data/models.js'
 
-function createTask(templateId, done, date) {
+function createTask(templateId, assigneeId/* , done, date */) {
     validate.id(templateId, 'template id')
-    validate.boolean(done, 'done')
-    validate.date(date, 'date')
+    validate.id(assigneeId, 'assignee id')
+    /* validate.boolean(done, 'done')
+    validate.date(date, 'date') */
 
     return (async () => {
         try {
-            await Task.create({ templateId, done, date })
+            const task = await Task.create({ templateId, assigneeId, /* done, date  */ })
+
+            return task
         } catch (error) {
             throw new SystemError(error.message)
         }

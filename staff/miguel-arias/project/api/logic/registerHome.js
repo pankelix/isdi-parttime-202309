@@ -14,7 +14,9 @@ function registerHome(name, email, password) {
         try {
             const hash = await bcrypt.hash(password, 8)
 
-            await Home.create({ name, email, password: hash })
+            const home = await Home.create({ name, email, password: hash })
+
+            return home
         } catch (error) {
             if (error.code === 11000)
                 throw new DuplicityError('home already exists')

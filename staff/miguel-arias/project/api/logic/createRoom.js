@@ -9,7 +9,9 @@ function createRoom(name, homeId) {
 
     return (async () => {
         try {
-            await Room.create({ name, home: homeId })
+            const room = await Room.create({ name, home: homeId })
+
+            return room
         } catch (error) {
             throw new SystemError(error.message)
         }
