@@ -7,6 +7,8 @@ function Task(props) {
     const task = props.task
     const assigneeName = props.profileName
 
+    const context = useContext()
+
     const arrangeText = (text) => {
         let capital = text[0].toUpperCase()
         let newText = capital + text.slice(1)

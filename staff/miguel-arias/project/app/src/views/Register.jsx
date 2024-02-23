@@ -1,9 +1,13 @@
-import logic from '../logic'
+import { useContext } from '../hooks'
 
 import { Container, Form, Link, Input, Button } from '../library'
 
+import logic from '../logic'
+
 function Register(props) {
     console.log('register')
+
+    const context = useContext()
 
     const handleSubmit = async event => {
         event.preventDefault()
@@ -17,7 +21,7 @@ function Register(props) {
             props.onSuccess()
             alert('user registered')
         } catch (error) {
-            alert(error)
+            context.handleError(error)
         }
     }
 
