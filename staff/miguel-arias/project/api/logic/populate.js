@@ -43,17 +43,18 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let adultsBedroom
         let office
         try {
-            kidsBathroom = await createRoom('kids-bathroom', mansion.id)
-            adultsBathroom = await createRoom('adults-bathroom', mansion.id)
-            livingRoom = await createRoom('living-room', mansion.id)
-            terrace = await createRoom('terrace', mansion.id)
-            yard = await createRoom('yard', mansion.id)
-            kitchen = await createRoom('kitchen', mansion.id)
-            diningRoom = await createRoom('dining-room', mansion.id)
-            hall = await createRoom('hall', mansion.id)
-            kidsBedroom = await createRoom('kids-bedroom', mansion.id)
-            adultsBedroom = await createRoom('adults-bedroom', mansion.id)
-            office = await createRoom('office', mansion.id)
+            debugger
+            kidsBathroom = await createRoom(mansion.id, 'kids-bathroom')
+            adultsBathroom = await createRoom(mansion.id, 'adults-bathroom')
+            livingRoom = await createRoom(mansion.id, 'living-room')
+            terrace = await createRoom(mansion.id, 'terrace')
+            yard = await createRoom(mansion.id, 'yard')
+            kitchen = await createRoom(mansion.id, 'kitchen')
+            diningRoom = await createRoom(mansion.id, 'dining-room')
+            hall = await createRoom(mansion.id, 'hall')
+            kidsBedroom = await createRoom(mansion.id, 'kids-bedroom')
+            adultsBedroom = await createRoom(mansion.id, 'adults-bedroom')
+            office = await createRoom(mansion.id, 'office')
         } catch (error) {
             console.log(error)
         }
@@ -64,10 +65,10 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let michael
         let john
         try {
-            peter = await registerProfile('Peter Pan', '1234', 'green', 'admin', mansion.id)
-            wendy = await registerProfile('Wendy Darling', '1234', 'blue', 'admin', mansion.id)
-            michael = await registerProfile('Michael Darling', '1234', 'white', mansion.id)
-            john = await registerProfile('John Darling', '1234', 'pink', mansion.id)
+            peter = await registerProfile(mansion.id, 'Peter Pan', '1234', 'green', 'admin')
+            wendy = await registerProfile(mansion.id, 'Wendy Darling', '1234', 'blue', 'admin')
+            michael = await registerProfile(mansion.id, 'Michael Darling', '1234', 'white')
+            john = await registerProfile(mansion.id, 'John Darling', '1234', 'pink')
         } catch (error) {
             console.log(error)
         }
@@ -81,26 +82,26 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let changeSheets2
         let cleanOven
         try {
-            cleanShower = await createTemplate('clean-shower', [kidsBathroom.id, adultsBathroom.id], 14, 15)
-            dust = await createTemplate('dust', [livingRoom.id, hall.id, office.id], 4, 5)
-            doDishes = await createTemplate('do-dishes', [kitchen.id], 1, 2)
-            lawnRaking = await createTemplate('lawn-raking', [terrace.id, yard.id], 28, 15)
-            changeSheets = await createTemplate('change-sheets', [kidsBedroom.id], 7, 2)
-            changeSheets2 = await createTemplate('change-sheets', [adultsBedroom.id], 7, 2)
-            cleanOven = await createTemplate('clean-oven', [kitchen.id], 21, 10)
+            cleanShower = await createTemplate(mansion.id, 'clean-shower', [kidsBathroom.id, adultsBathroom.id], 14, 15)
+            dust = await createTemplate(mansion.id, 'dust', [livingRoom.id, hall.id, office.id], 4, 5)
+            doDishes = await createTemplate(mansion.id, 'do-dishes', [kitchen.id], 1, 2)
+            lawnRaking = await createTemplate(mansion.id, 'lawn-raking', [terrace.id, yard.id], 28, 15)
+            changeSheets = await createTemplate(mansion.id, 'change-sheets', [kidsBedroom.id], 7, 2)
+            changeSheets2 = await createTemplate(mansion.id, 'change-sheets', [adultsBedroom.id], 7, 2)
+            cleanOven = await createTemplate(mansion.id, 'clean-oven', [kitchen.id], 21, 10)
         } catch (error) {
             console.log(error)
         }
 
         //Task
 
-        await createTask(cleanShower.id, peter.id)
-        await createTask(dust.id, wendy.id)
-        await createTask(doDishes.id, michael.id)
-        await createTask(lawnRaking.id, john.id)
-        await createTask(changeSheets.id, michael.id)
-        await createTask(changeSheets2.id, peter.id)
-        await createTask(cleanOven.id, wendy.id)
+        await createTask(mansion.id, cleanShower.id, peter.id)
+        await createTask(mansion.id, dust.id, wendy.id)
+        await createTask(mansion.id, doDishes.id, michael.id)
+        await createTask(mansion.id, lawnRaking.id, john.id)
+        await createTask(mansion.id, changeSheets.id, michael.id)
+        await createTask(mansion.id, changeSheets2.id, peter.id)
+        await createTask(mansion.id, cleanOven.id, wendy.id)
 
         console.log('database populated')
 

@@ -47,7 +47,7 @@ describe('authenticateHome', () => {
         const password = random.password()
 
         await Home.create({ name, email, password })
-        debugger
+
         try {
             await authenticateHome(email, password + '-wrong')
             throw new Error('should not reach this point')
@@ -57,5 +57,5 @@ describe('authenticateHome', () => {
         }
     })
 
-    after(async () => await mongoose.disconnect('mongodb://127.0.0.1:27017/test'))
+    after(async () => await mongoose.disconnect())
 })

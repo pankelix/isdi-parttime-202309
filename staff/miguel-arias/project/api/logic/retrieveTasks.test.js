@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 
-import retrieveTask from './retrieveTask.js'
+import retrieveTasks from './retrieveTasks.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
-        debugger
-        const task = await retrieveTask('65d61642509a026d6e3e2138')
+
+        const task = await retrieveTasks('65d79ed33377222a975829fa')
         console.log('task retrieved', task)
 
         await mongoose.disconnect()

@@ -123,15 +123,15 @@ Home
 * name (string)
 * email (string)
 * password (string)
-* rooms (array of strings)
 
 Room
 * id (string)
-* name (string)
 * home (Home.id)
+* name (string)
 
 Profile
 * id (string)
+* home (Home.id)
 * name (string)
 * pincode (string)
 * color (string)
@@ -139,6 +139,7 @@ Profile
 
 Template
 * id (string)
+* home(Home.id)
 * name (string)
 * rooms ([Room.id])
 * periodicity (string)
@@ -146,7 +147,9 @@ Template
 
 Task
 * id (string)
+* home(Home.id)
 * template(Template.id)
+* assignee(Profile.id)
 * done (boolean)
 * date(Date)
 

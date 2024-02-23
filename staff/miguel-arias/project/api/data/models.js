@@ -16,25 +16,26 @@ const home = new Schema({
         type: String,
         required: true,
         minlength: 8
-    },
-    rooms: [{
-        type: String
-    }]
+    }
 })
 
 const room = new Schema({
+    home: {
+        type: ObjectId,
+        ref: 'Home'
+    },
     name: {
         type: String,
         required: true,
         unique: true
-    },
-    homeRef: {
-        type: ObjectId,
-        ref: 'home'
     }
 })
 
 const profile = new Schema({
+    home: {
+        type: ObjectId,
+        ref: 'Home'
+    },
     name: {
         type: String,
         required: true,
@@ -51,22 +52,22 @@ const profile = new Schema({
     },
     role: {
         type: String,
-        default: 'user'
-    },
-    homeRef: {
-        type: ObjectId,
-        ref: 'home'
+        default: 'User'
     }
 })
 
 const template = new Schema({
+    home: {
+        type: ObjectId,
+        ref: 'Home'
+    },
     name: {
         type: String,
         required: true
     },
     rooms: [{
         type: ObjectId,
-        ref: 'room'
+        ref: 'Room'
     }],
     periodicity: {
         type: Number
@@ -77,13 +78,17 @@ const template = new Schema({
 })
 
 const task = new Schema({
-    templateRef: {
+    home: {
         type: ObjectId,
-        ref: 'template'
+        ref: 'Home'
+    },
+    template: {
+        type: ObjectId,
+        ref: 'Template'
     },
     assignee: {
         type: ObjectId,
-        ref: 'profile'
+        ref: 'Profile'
     },
     done: {
         type: Boolean,

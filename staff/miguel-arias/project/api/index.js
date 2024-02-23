@@ -9,6 +9,8 @@ import {
     registerHomeHandler,
     authenticateHomeHandler,
     retrieveHomeHandler,
+    retrieveTasksHandler,
+    retrieveProfilesHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -23,6 +25,10 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
         server.get('/homes', retrieveHomeHandler)
+
+        server.get('/tasks', retrieveTasksHandler)
+
+        server.get('/profiles', retrieveProfilesHandler)
 
         const date = new Date()
         server.listen(process.env.PORT, () => console.log(`Server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} in port ${process.env.PORT}`))

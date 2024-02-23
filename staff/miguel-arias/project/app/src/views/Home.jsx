@@ -1,14 +1,23 @@
+import { useState, useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
+
 import logic from '../logic'
 
-import { useState, useEffect } from 'react'
+import { useContext } from '../hooks'
+
+import { Button } from '../library'
+import { Calendar } from '../components'
 /* import { Button, Container } from '../library' */
 
 function Home(props) {
 
+    const context = useContext()
+
     const [name, setName] = useState(null)
+    const [stamp, setStamp] = useState(null)
 
     function handleLogoutClick() {
-        logic.logoutUser(error => {
+        logic.logoutHome(error => {
             if (error) {
                 context.handleError(error)
 
@@ -26,17 +35,22 @@ function Home(props) {
 
                 setName(home.name)
             } catch (error) {
-                alert(error)
+                context.handleError(error)
             }
         })()
     }, [])
 
     return <>
         <header>
-            <h1>Hello world, your home is {name}</h1>
+            <nav>
+                <Button onClick={handleLogoutClick}>Logout</Button>
+                <h1>Hello world, your home is {name}</h1>
+            </nav>
         </header>
+
         <Routes>
-            <Route path='/profiles' element={<Profiles />} />
+            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} stamp={stamp} />} />
+            <Route path='/profiles' /* element={<Profiles />} */ />
         </Routes>
     </>
 }
