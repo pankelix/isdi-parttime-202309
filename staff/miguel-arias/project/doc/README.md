@@ -173,6 +173,11 @@ Order
 
 ## Future versions will include:
 
+##### Alternatives to pincode (version 2)
+
+* Fingerprint
+* Face scan
+
 ##### Shopping list (version 2)
 
 * See different shopping lists

@@ -1,14 +1,14 @@
 const session = {
-    set sessionUserId(userId) {
-        if (userId) // session.userId = '123' entrará aqui
-            sessionStorage.userId = userId
-        else // si pongo session.userId = null, entrará aqui
-            delete sessionStorage.userId
+    set HomeId(homeId) {
+        if (homeId) // session.homeId = '123' entrará aqui
+            sessionStorage.homeId = homeId
+        else // si pongo session.homeId = null, entrará aqui
+            delete sessionStorage.homeId
     },
 
-    get sessionUserId() {
-        // sessionStorage.userId
-        return sessionStorage.userId ? sessionStorage.userId : null
+    get HomeId() {
+        // sessionStorage.homeId
+        return sessionStorage.homeId ? sessionStorage.homeId : null
     },
 
     set token(token) {
@@ -21,6 +21,30 @@ const session = {
     get token() {
         // sessionStorage.token
         return sessionStorage.token ? sessionStorage.token : null
+    },
+
+    set ProfileId(profileId) {
+        if (profileId) // session.profileId = '123' entrará aqui
+            sessionStorage.profileId = profileId
+        else // si pongo session.profileId = null, entrará aqui
+            delete sessionStorage.profileId
+    },
+
+    get ProfileId() {
+        // sessionStorage.profileId
+        return sessionStorage.profileId ? sessionStorage.profileId : null
+    },
+
+    set profileToken(profileToken) {
+        if (profileToken) // session.profileToken = '123' entrará aqui
+            sessionStorage.profileToken = profileToken
+        else // si pongo session.profileToken = null, entrará aqui
+            delete sessionStorage.profileToken
+    },
+
+    get profileToken() {
+        // sessionStorage.profileToken
+        return sessionStorage.profileToken ? sessionStorage.profileToken : null
     },
 }
 

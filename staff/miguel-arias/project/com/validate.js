@@ -33,10 +33,10 @@ function password(password, explain = 'password') {
     if (password.length < 8) throw new RangeError(`${explain} length is lower than 8 characters`)
 }
 
-function pincode(password, explain = 'pincode') {
-    text(password, explain)
+function pincode(pincode, explain = 'pincode') {
+    text(pincode, explain)
 
-    if (password.length !== 4) throw new RangeError(`${explain} pincode must be 4 characters long`)
+    if (pincode.length !== 4) throw new RangeError(`${explain} pincode must be 4 characters long`)
 }
 
 function array(array, explain) {

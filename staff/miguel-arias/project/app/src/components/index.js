@@ -1,9 +1,17 @@
 import Calendar from './Calendar.jsx'
 import Task from './Task.jsx'
 import Feedback from './Feedback.jsx'
+import Profiles from './Profiles.jsx'
+import Profile from  './Profile.jsx'
+import Templates from './Templates.jsx'
+import Template from './Template.jsx'
 
 export {
     Calendar,
     Task,
-    Feedback
+    Feedback,
+    Profiles,
+    Profile,
+    Templates,
+    Template
 }

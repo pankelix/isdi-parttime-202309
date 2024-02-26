@@ -10,7 +10,10 @@ import {
     authenticateHomeHandler,
     retrieveHomeHandler,
     retrieveTasksHandler,
-    retrieveProfilesHandler
+    retrieveProfilesHandler,
+    retrieveTemplatesHandler,
+    authenticateProfileHandler,
+    retrieveRoleHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -24,11 +27,17 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
+        server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
+
         server.get('/homes', retrieveHomeHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 
         server.get('/profiles', retrieveProfilesHandler)
+
+        server.get('/profiles/role', retrieveRoleHandler)
+
+        server.get('/templates', retrieveTemplatesHandler)
 
         const date = new Date()
         server.listen(process.env.PORT, () => console.log(`Server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} in port ${process.env.PORT}`))

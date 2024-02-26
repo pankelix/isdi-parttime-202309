@@ -5,6 +5,9 @@ import isUserLoggedIn from './isUserLoggedIn.js'
 import logoutHome from './logoutHome.js'
 import retrieveTasks from './retrieveTasks.js'
 import retrieveProfiles from './retrieveProfiles.js'
+import retrieveTemplates from './retrieveTemplates.js'
+import loginProfile from './loginProfile.js'
+import retrieveRole from './retrieveRole.js'
 
 const logic = {
     registerHome,
@@ -13,7 +16,10 @@ const logic = {
     isUserLoggedIn,
     logoutHome,
     retrieveTasks,
-    retrieveProfiles
+    retrieveProfiles,
+    retrieveTemplates,
+    loginProfile,
+    retrieveRole,
 }
 
 export default logic

@@ -1,5 +1,5 @@
 import logic from '../logic'
-import { Container } from '../library'
+import { Button, Container } from '../library'
 
 import { useContext } from '../hooks'
 
@@ -16,14 +16,18 @@ function Task(props) {
     }
 
     const arrangeDate = (date) => {
-        let month = date.slice(5,7)
-        let day = date.slice(8,10)
+        let month = date.slice(5, 7)
+        let day = date.slice(8, 10)
         return `${day} ${month}`
     }
 
-    return <article>
-        <h3>{arrangeText(task.template.name)}</h3><h3>{arrangeDate(task.date)}</h3><h3>{assigneeName}</h3>
-    </article>
+    return <Container>
+        <Button>
+            {arrangeText(task.template.name)}
+            {arrangeDate(task.date)}
+            {assigneeName}
+        </Button>
+    </Container>
 }
 
 export default Task
