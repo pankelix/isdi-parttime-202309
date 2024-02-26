@@ -1,0 +1,38 @@
+import bcrypt from 'bcryptjs'
+
+import { validate, errors } from 'com'
+const { SystemError, CredentialsError, NotFoundError } = errors
+
+import { Profile } from '../data/models.js'
+
+
+function authenticateProfile(name, pincode) {
+    validate.text(name, 'name')
+    validate.pincode(pincode)
+
+    return (async () => {
+        let profile
+        try {
+            profile = await Profile.findOne({ name })
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!profile)
+            throw new NotFoundError('profile not found')
+
+        let match
+        try {
+            match = await bcrypt.compare(pincode, profile.pincode)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!match)
+            throw new CredentialsError('wrong pincode')
+
+        return profile.id
+    })()
+}
+
+export default authenticateProfile
