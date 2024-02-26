@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { Login, Register, Home } from './views'
-import Context from './Context'
 import logic from './logic'
+
+import Context from './Context'
 
 import { errors } from 'com'
 const { ContentError, DuplicityError, NotFoundError, TokenError } = errors

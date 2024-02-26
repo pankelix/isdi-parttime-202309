@@ -36,10 +36,10 @@ function Profiles(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        let digit1 = document.getElementById('digit1').value
-        let digit2 = document.getElementById('digit2').value
-        let digit3 = document.getElementById('digit3').value
-        let digit4 = document.getElementById('digit4').value
+        let digit1 = event.target.digit1.value
+        let digit2 = event.target.digit2.value
+        let digit3 = event.target.digit3.value
+        let digit4 = event.target.digit4.value
 
         let pincode = digit1 + digit2 + digit3 + digit4
 
@@ -49,9 +49,9 @@ function Profiles(props) {
                 setPinCode(null)
                 const role = await logic.retrieveRole()
                 if (role === 'admin')
-                    props.onAdmin()
+                    context.handleRole('admin')
                 else
-                    props.onUser()
+                    context.handleRole('user')
             } catch (error) {
                 context.handleError(error)
             }

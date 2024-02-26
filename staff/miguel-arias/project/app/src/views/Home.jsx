@@ -3,6 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import logic from '../logic'
 
+import Context from '../Context'
+
 import { useContext } from '../hooks'
 
 import { Button, Container } from '../library'
@@ -47,12 +49,8 @@ function Home(props) {
         navigate('/stats')
     }
 
-    function activateAdmin() {
-        setRole('admin')
-    }
-
-    function activateUser() {
-        setRole('user')
+    const handleRole = role => {
+        setRole(role)
     }
 
     useEffect(() => {
@@ -68,25 +66,27 @@ function Home(props) {
     }, [])
 
     return <>
-        <header>
-            <nav>
-                <Button onClick={handleLogoutClick}>Logout</Button>
-                <Button onClick={handleHomeClick}>Home</Button>
-                <Button onClick={handleTasksClick}>Tasks</Button>
-                <Button onClick={handleStatsClick}>Stats</Button>
-                <Button onClick={handleProfilesClick}>Profile</Button>
-                <h1>Hello world, your home is {name}</h1>
-            </nav>
-        </header>
+        <Context.Provider value={{ handleRole }}>
+            <header>
+                <nav>
+                    <Button onClick={handleLogoutClick}>Logout</Button>
+                    <Button onClick={handleHomeClick}>Home</Button>
+                    <Button onClick={handleTasksClick}>Tasks</Button>
+                    <Button onClick={handleStatsClick}>Stats</Button>
+                    <Button onClick={handleProfilesClick}>Profile</Button>
+                    <h1>Hello world, your home is {name}</h1>
+                </nav>
+            </header>
 
-        <Routes>
-            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role}/>} />
-            <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} onAdmin={activateAdmin} onUser={activateUser} role={role} />} />
-            <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
-        </Routes>
-        <footer>
+            <Routes>
+                <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
+                <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} role={role} />} />
+                <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
+            </Routes>
+            <footer>
 
-        </footer >
+            </footer >
+        </Context.Provider>
     </>
 }
 
