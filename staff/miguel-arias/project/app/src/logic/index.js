@@ -8,6 +8,7 @@ import retrieveProfiles from './retrieveProfiles.js'
 import retrieveTemplates from './retrieveTemplates.js'
 import loginProfile from './loginProfile.js'
 import retrieveRole from './retrieveRole.js'
+import createTask from './createTask.js'
 
 const logic = {
     registerHome,
@@ -20,6 +21,7 @@ const logic = {
     retrieveTemplates,
     loginProfile,
     retrieveRole,
+    createTask,
 }
 
 export default logic

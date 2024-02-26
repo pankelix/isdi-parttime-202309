@@ -13,7 +13,8 @@ import {
     retrieveProfilesHandler,
     retrieveTemplatesHandler,
     authenticateProfileHandler,
-    retrieveRoleHandler
+    retrieveRoleHandler,
+    createTaskHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -25,11 +26,13 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/homes', jsonBodyParser, registerHomeHandler)
 
+        server.get('/homes', retrieveHomeHandler)
+
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
-        server.get('/homes', retrieveHomeHandler)
+        server.post('/tasks', jsonBodyParser, createTaskHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 

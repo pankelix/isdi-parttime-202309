@@ -76,19 +76,16 @@ function Home(props) {
                 <Button onClick={handleStatsClick}>Stats</Button>
                 <Button onClick={handleProfilesClick}>Profile</Button>
                 <h1>Hello world, your home is {name}</h1>
-                <Button>Filter</Button>
             </nav>
         </header>
 
         <Routes>
-            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} stamp={stamp} />} />
+            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role}/>} />
             <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} onAdmin={activateAdmin} onUser={activateUser} role={role} />} />
-            <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role}/>} />
+            <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
         </Routes>
         <footer>
-            <Button>
-                ➕
-            </Button>
+
         </footer >
     </>
 }

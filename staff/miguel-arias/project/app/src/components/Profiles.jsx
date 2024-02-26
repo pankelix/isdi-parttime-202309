@@ -66,6 +66,9 @@ function Profiles(props) {
 
     return <Container>
         <h1>Profiles</h1>
+
+        <Button>Filter</Button>
+
         {profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile._id} profile={profile} />)}
 
         {pinCode === 'pinCode' && <Container>
@@ -77,9 +80,16 @@ function Profiles(props) {
                 <Button type='submit'>Submit</Button>
             </Form>
         </Container>}
+
         <Container>
             {role === 'admin' ? <Button>Manage profiles</Button> : ''}
             {role !== null ? <Button>Edit your profile</Button> : ''}
+        </Container>
+
+        <Container>
+            <Button>
+                ➕
+            </Button>
         </Container>
     </Container>
 }

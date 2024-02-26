@@ -1,7 +1,7 @@
 import { useContext } from '../hooks'
 import { useState, useEffect } from 'react'
 import { Template } from '../components'
-import { Container } from '../library'
+import { Container, Button } from '../library'
 
 function Templates(props) {
 
@@ -28,7 +28,16 @@ function Templates(props) {
 
     return <Container>
         <h1>Templates</h1>
-        {templates.map(template => <Template key={template._id} template={template} role={props.role}/>)}
+
+        <Button>Filter</Button>
+
+        {templates.map(template => <Template key={template._id} template={template} role={props.role} />)}
+
+        <Container>
+            <Button>
+                ➕
+            </Button>
+        </Container>
     </Container>
 }
 

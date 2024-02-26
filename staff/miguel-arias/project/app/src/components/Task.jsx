@@ -1,7 +1,8 @@
-import logic from '../logic'
 import { Button, Container } from '../library'
 
 import { useContext } from '../hooks'
+
+import logic from '../logic'
 
 function Task(props) {
     const task = props.task
@@ -21,8 +22,12 @@ function Task(props) {
         return `${day} ${month}`
     }
 
+    const handleTaskClick = () => {
+        props.onTaskClick(task._id)
+    }
+
     return <Container>
-        <Button>
+        <Button onClick={handleTaskClick}>
             {arrangeText(task.template.name)}
             {arrangeDate(task.date)}
             {assigneeName}

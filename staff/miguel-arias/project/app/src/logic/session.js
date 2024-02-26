@@ -1,12 +1,12 @@
 const session = {
-    set HomeId(homeId) {
+    set homeId(homeId) {
         if (homeId) // session.homeId = '123' entrará aqui
             sessionStorage.homeId = homeId
         else // si pongo session.homeId = null, entrará aqui
             delete sessionStorage.homeId
     },
 
-    get HomeId() {
+    get homeId() {
         // sessionStorage.homeId
         return sessionStorage.homeId ? sessionStorage.homeId : null
     },
@@ -23,14 +23,14 @@ const session = {
         return sessionStorage.token ? sessionStorage.token : null
     },
 
-    set ProfileId(profileId) {
+    set profileId(profileId) {
         if (profileId) // session.profileId = '123' entrará aqui
             sessionStorage.profileId = profileId
         else // si pongo session.profileId = null, entrará aqui
             delete sessionStorage.profileId
     },
 
-    get ProfileId() {
+    get profileId() {
         // sessionStorage.profileId
         return sessionStorage.profileId ? sessionStorage.profileId : null
     },

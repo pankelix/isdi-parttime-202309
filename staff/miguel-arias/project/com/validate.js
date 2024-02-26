@@ -43,7 +43,7 @@ function array(array, explain) {
     if (!Array.isArray(array)) throw new TypeError(`${explain} is not an array`)
 }
 
-function date(date, explain) {
+function date(date, explain = 'date') {
     if (!(date instanceof Date)) throw new TypeError(`${explain} is not a date`)
 }
 
