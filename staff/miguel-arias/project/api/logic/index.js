@@ -8,6 +8,7 @@ import authenticateProfile from './authenticateProfile.js'
 import retrieveRole from './retrieveRole.js'
 import createTask from './createTask.js'
 import assignTask from './assignTask.js'
+import delayTask from './delayTask.js'
 
 const logic = {
     registerHome,
@@ -20,6 +21,7 @@ const logic = {
     retrieveRole,
     createTask,
     assignTask,
+    delayTask,
 }
 
 export default logic

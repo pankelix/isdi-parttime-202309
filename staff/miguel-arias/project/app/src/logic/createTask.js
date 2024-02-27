@@ -4,7 +4,7 @@ const { SystemError } = errors
 import session from './session'
 
 const createTask = (templateId, date) => {
-    validate.id(templateId, 'templateId')
+    validate.id(templateId, 'template id')
     validate.date(date)
 
     const req = {

@@ -8,6 +8,7 @@ import authenticateProfileHandler from './authenticateProfileHandler.js'
 import retrieveRoleHandler from './retrieveRoleHandler.js'
 import createTaskHandler from './createTaskHandler.js'
 import assignTaskHandler from './assignTaskHandler.js'
+import delayTaskHandler from './delayTaskHandler.js'
 
 export {
     registerHomeHandler,
@@ -20,4 +21,5 @@ export {
     retrieveRoleHandler,
     createTaskHandler,
     assignTaskHandler,
+    delayTaskHandler,
 }

@@ -3,25 +3,22 @@ const { SystemError } = errors
 
 import session from './session'
 
-const assignTask = (taskId, profileId) => {
-    if (profileId !== null)
-        validate.id(profileId, 'profile id')
-
+const delayTask = (taskId, date) => {
     validate.id(taskId, 'task id')
 
     const req = {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.profileToken}`
+            /* Authorization: `Bearer ${session.profileToken}` */
         },
-        body: JSON.stringify({ taskId, profileId })
+        body: JSON.stringify({ taskId, date })
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/delay`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -40,4 +37,4 @@ const assignTask = (taskId, profileId) => {
     })()
 }
 
-export default assignTask
+export default delayTask

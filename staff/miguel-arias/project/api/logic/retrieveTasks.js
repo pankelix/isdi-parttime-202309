@@ -20,7 +20,7 @@ function retrieveTasks(homeId) {
 
         let tasks
         try {
-            tasks = await Task.find({ home: homeId }).populate('template', '-__v').select('-__v').lean()
+            tasks = await Task.find({ home: homeId }).populate('template', '-__v').select('-__v').sort({ date: 1 }).lean()
         } catch (error) {
             throw new SystemError(error.message)
         }

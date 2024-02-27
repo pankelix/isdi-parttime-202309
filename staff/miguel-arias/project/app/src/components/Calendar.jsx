@@ -46,6 +46,7 @@ function Calendar(props) {
     const refreshTasks = async () => {
         try {
             const tasks = await props.loadTasks()
+            // tasks = await logic.orderTasks(tasks)
             setTasks(tasks)
         } catch (error) {
             context.handleError(error)
@@ -65,7 +66,7 @@ function Calendar(props) {
         setView('react-to-task-view')
     }
 
-    const onCloseClick = () => {
+    const onCancelClick = () => {
         setView(null)
     }
 
@@ -97,10 +98,6 @@ function Calendar(props) {
     }
 
     const handleAssignThisTask = async (taskId, profileId) => {
-        /* if (typeof profileId !== 'string')
-            profileId = null
-        if (typeof taskId !== 'string')
-            taskId = null */
         try {
             await logic.assignTask(taskId, profileId)
             refreshTasks()
@@ -114,6 +111,26 @@ function Calendar(props) {
         setView('assign-task-view')
     }
 
+    const onDelayTaskClick = () => {
+        setView('delay-task-view')
+    }
+
+    const handleDelaySubmit = async (event) => {
+        event.preventDefault()
+        const date = event.target.delayDate.value
+        const dateObject = date ? new Date(date) : null
+
+        const taskId = event.nativeEvent.submitter.value
+        try {
+            await logic.delayTask(taskId, dateObject)
+            refreshTasks()
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+
+    }
+
     return <Container>
         <h1>Tasks</h1>
 
@@ -125,14 +142,22 @@ function Calendar(props) {
             {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Assign this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
             {role !== null && <Button>Complete this task</Button>}
-            {role !== null && <Button>Delay this task</Button>}
+            {role !== null && <Button onClick={onDelayTaskClick}>Delay this task</Button>}
             {role === 'admin' && <Button>Edit this task</Button>}
             {role === 'admin' && <Button>Delete this task</Button>}
-            {role !== null && <Button onClick={onCloseClick}>Close</Button>}
+            {role !== null && <Button onClick={onCancelClick}>Cancel</Button>}
         </Container>}
 
         {view === 'assign-task-view' && <Container>
             {profiles.map(profile => <Button onClick={() => handleAssignThisTask(task, profile.id)}>{profile.name}</Button>)}
+        </Container>}
+
+        {view === 'delay-task-view' && <Container>
+            <Form onSubmit={handleDelaySubmit}>
+                <Input id='delayDate' type={'date'} required={true}></Input>
+                <Button type='submit' value={task}>Delay</Button>
+                <Button onClick={onCancelClick}>Cancel</Button>
+            </Form>
         </Container>}
 
         {view === 'new-task-view' && <Container>
@@ -142,7 +167,7 @@ function Calendar(props) {
 
         {view === 'propose-task' && <Container>
             <Form onSubmit={handleProposeTaskSubmit}>
-                <Input id='date' type={'date'} placeholder={'Date'} required={true}></Input>
+                <Input id='date' type={'date'} required={true}></Input>
                 {templates.map(template => <Button name='template' type='submit' value={template.id}><Template key={template.id} template={template} /></Button>)}
             </Form>
         </Container>}

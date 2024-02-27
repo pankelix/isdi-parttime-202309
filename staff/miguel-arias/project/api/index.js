@@ -16,6 +16,7 @@ import {
     retrieveRoleHandler,
     createTaskHandler,
     assignTaskHandler,
+    delayTaskHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -36,6 +37,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/tasks', jsonBodyParser, createTaskHandler)
 
         server.patch('/tasks', jsonBodyParser, assignTaskHandler)
+
+        server.patch('/tasks/delay', jsonBodyParser, delayTaskHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 
