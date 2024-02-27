@@ -95,21 +95,39 @@ function Calendar(props) {
         }
     }
 
+    const handleAssignThisTask = async (profileId) => {
+        if (typeof profileId !== 'string')
+            profileId = null
+        try {
+            await logic.assignTask(profileId)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
+    const handleAssignThisTaskTo = () => {
+        setView('assign-task-view')
+    }
+
     return <Container>
         <h1>Tasks</h1>
 
         <Button>Filter</Button>
 
-        {tasks.map(task => <Task key={task._id} task={task} profileName={profiles.map(profile => task.assignee === profile._id ? profile.name : '')} onTaskClick={openModal} />)}
+        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={openModal} />)}
 
         {view === 'react-to-task-view' && <Container>
-            {role !== 'null' && <Button>Assign this task</Button>}
-            {role === 'admin' && <Button>Assign this task to...</Button>}
-            {role !== 'null' && <Button>Complete this task</Button>}
-            {role !== 'null' && <Button>Delay this task</Button>}
+            {role !== null && <Button onClick={handleAssignThisTask}>Assign this task</Button>}
+            {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
+            {role !== null && <Button>Complete this task</Button>}
+            {role !== null && <Button>Delay this task</Button>}
             {role === 'admin' && <Button>Edit this task</Button>}
             {role === 'admin' && <Button>Delete this task</Button>}
-            {role !== 'null' && <Button onClick={closeModal}>Close</Button>}
+            {role !== null && <Button onClick={closeModal}>Close</Button>}
+        </Container>}
+
+        {view === 'assign-task-view' && <Container>
+            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
         </Container>}
 
         {view === 'new-task-view' && <Container>
@@ -120,7 +138,7 @@ function Calendar(props) {
         {view === 'propose-task' && <Container>
             <Form onSubmit={handleProposeTaskSubmit}>
                 <Input id='date' type={'date'} placeholder={'Date'} required={true}></Input>
-                {templates.map(template => <Button name='template' type='submit' value={template._id}><Template key={template._id} template={template} role={props.role} /></Button>)}
+                {templates.map(template => <Button name='template' type='submit' value={template.id}><Template key={template.id} template={template} /></Button>)}
             </Form>
         </Container>}
 

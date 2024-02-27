@@ -7,6 +7,7 @@ function retrieveTemplates(homeId) {
     validate.id(homeId)
 
     return (async () => {
+        debugger
         let home
         try {
             home = await Home.findById(homeId).lean()
@@ -19,7 +20,7 @@ function retrieveTemplates(homeId) {
 
         let templates
         try {
-            templates = await Template.find({ home: homeId }).populate({ path: 'rooms', select: 'name' }).lean()
+            templates = await Template.find({ home: homeId }).populate({ path: 'rooms', select: 'name' }).select('-__v').lean()
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -27,7 +28,24 @@ function retrieveTemplates(homeId) {
         if (!templates)
             throw new NotFoundError('templates not found')
 
-        delete templates.id
+        templates.forEach(template => {
+            template.id = template._id.toString()
+            delete template._id
+
+            /* if (template.home._id) {
+                template.home.id = template.home._id.toString()
+                delete template.home._id
+            } */
+
+            /* if (template.rooms.length >= 1) {
+                template.rooms.forEach(room => {
+                    if (room._id) {
+                        room.id = room._id.toString()
+                        delete room._id
+                    }
+                })
+            } */
+        })
 
         return templates
     })()

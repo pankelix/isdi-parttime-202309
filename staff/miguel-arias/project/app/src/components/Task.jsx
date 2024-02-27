@@ -23,7 +23,7 @@ function Task(props) {
     }
 
     const handleTaskClick = () => {
-        props.onTaskClick(task._id)
+        props.onTaskClick(task.id)
     }
 
     return <Container>

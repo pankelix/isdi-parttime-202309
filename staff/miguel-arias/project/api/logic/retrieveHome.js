@@ -7,6 +7,7 @@ function retrieveHome(homeId) {
     validate.id(homeId)
 
     return (async () => {
+        debugger
         let home
         try {
             home = await Home.findById(homeId, 'name').lean()
@@ -17,7 +18,8 @@ function retrieveHome(homeId) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        delete home.id
+        home.id = home._id.toString()
+        delete home._id
 
         return home
     })()

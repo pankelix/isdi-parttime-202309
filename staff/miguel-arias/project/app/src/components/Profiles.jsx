@@ -69,7 +69,7 @@ function Profiles(props) {
 
         <Button>Filter</Button>
 
-        {profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile._id} profile={profile} />)}
+        {profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />)}
 
         {pinCode === 'pinCode' && <Container>
             <Form onSubmit={handleSubmit}>

@@ -1,15 +1,12 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 import mongoose from 'mongoose'
 
 import retrieveHome from './retrieveHome.js'
 
 (async () => {
     try {
-        await mongoose.connect(process.env.TEST_MONGODB_URL)
+        await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        const home = await retrieveHome('65ce71afd41bf127058a2821')
+        const home = await retrieveHome('65d79ed33377222a975829fa')
         console.log('home retrieved', home)
 
         await mongoose.disconnect()

@@ -31,7 +31,7 @@ function Templates(props) {
 
         <Button>Filter</Button>
 
-        {templates.map(template => <Template key={template._id} template={template} role={props.role} />)}
+        {templates.map(template => <Template key={template.id} template={template} role={props.role} />)}
 
         <Container>
             <Button>
