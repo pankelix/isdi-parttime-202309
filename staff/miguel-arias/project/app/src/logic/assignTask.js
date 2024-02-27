@@ -3,39 +3,41 @@ const { SystemError } = errors
 
 import session from './session'
 
-const createTask = (templateId, date) => {
-    validate.id(templateId, 'templateId')
-    validate.date(date)
+const assignTask = (taskId, profileId) => {
+    if (profileId !== null)
+        validate.id(profileId, 'profileId')
+
+    validate.id(taskId, 'taskId')
 
     const req = {
-        method: 'POST', // PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATCHHHHHH!!
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.token}`
+            Authorization: `Bearer ${session.profileToken}`
         },
-        body: JSON.stringify({ templateId, date })
+        body: JSON.stringify({ taskId, profileId })
     }
 
-     return (async () => {
-         let res
-         try {
-             res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, req)
-         } catch (error) {
-             throw new SystemError(error.message)
-         }
+    return (async () => {
+        let res
+        try {
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, req)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
-         if (!res.ok) {
-             let body
+        if (!res.ok) {
+            let body
 
-             try {
-                 body = await res.json()
-             } catch (error) {
-                 throw new SystemError(error.message)
-             }
+            try {
+                body = await res.json()
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
 
-             throw new errors[body.error](body.message)
-         }
-     })()
+            throw new errors[body.error](body.message)
+        }
+    })()
 }
 
-export default createTask
+export default assignTask

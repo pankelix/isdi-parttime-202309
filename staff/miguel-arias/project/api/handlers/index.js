@@ -7,6 +7,7 @@ import retrieveTemplatesHandler from './retrieveTemplatesHandler.js'
 import authenticateProfileHandler from './authenticateProfileHandler.js'
 import retrieveRoleHandler from './retrieveRoleHandler.js'
 import createTaskHandler from './createTaskHandler.js'
+import assignTaskHandler from './assignTaskHandler.js'
 
 export {
     registerHomeHandler,
@@ -17,5 +18,6 @@ export {
     retrieveTemplatesHandler,
     authenticateProfileHandler,
     retrieveRoleHandler,
-    createTaskHandler
+    createTaskHandler,
+    assignTaskHandler,
 }
