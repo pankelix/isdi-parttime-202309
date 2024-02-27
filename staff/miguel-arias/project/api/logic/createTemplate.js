@@ -1,7 +1,7 @@
 import { validate, errors } from 'com'
-const { SystemError } = errors
+const { SystemError, NotFoundError } = errors
 
-import { Template } from '../data/models.js'
+import { Template, Home } from '../data/models.js'
 
 function createTemplate(homeId, name, rooms, periodicity, points) {
     validate.id(homeId, 'home id')
@@ -11,6 +11,16 @@ function createTemplate(homeId, name, rooms, periodicity, points) {
     validate.number(points, 'points')
 
     return (async () => {
+        let home
+        try {
+            home = await Home.findById(homeId).lean()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!home)
+            throw new NotFoundError('home not found')
+
         try {
             const template = await Template.create({ home: homeId, name, rooms, periodicity, points })
 
