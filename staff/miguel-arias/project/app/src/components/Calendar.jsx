@@ -60,12 +60,12 @@ function Calendar(props) {
         refreshTemplates()
     }, [props.stamp])
 
-    const openModal = (taskId) => {
+    const handleOnTaskClick = (taskId) => {
         setTask(taskId)
         setView('react-to-task-view')
     }
 
-    const closeModal = () => {
+    const onCloseClick = () => {
         setView(null)
     }
 
@@ -90,16 +90,21 @@ function Calendar(props) {
         try {
             await logic.createTask(templateId, dateObject)
             refreshTasks()
+            setView(null)
         } catch (error) {
             context.handleError(error)
         }
     }
 
-    const handleAssignThisTask = async (profileId) => {
-        if (typeof profileId !== 'string')
+    const handleAssignThisTask = async (taskId, profileId) => {
+        /* if (typeof profileId !== 'string')
             profileId = null
+        if (typeof taskId !== 'string')
+            taskId = null */
         try {
-            await logic.assignTask(profileId)
+            await logic.assignTask(taskId, profileId)
+            refreshTasks()
+            setView(null)
         } catch (error) {
             context.handleError(error)
         }
@@ -114,20 +119,20 @@ function Calendar(props) {
 
         <Button>Filter</Button>
 
-        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={openModal} />)}
+        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)}
 
         {view === 'react-to-task-view' && <Container>
-            {role !== null && <Button onClick={handleAssignThisTask}>Assign this task</Button>}
+            {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Assign this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
             {role !== null && <Button>Complete this task</Button>}
             {role !== null && <Button>Delay this task</Button>}
             {role === 'admin' && <Button>Edit this task</Button>}
             {role === 'admin' && <Button>Delete this task</Button>}
-            {role !== null && <Button onClick={closeModal}>Close</Button>}
+            {role !== null && <Button onClick={onCloseClick}>Close</Button>}
         </Container>}
 
         {view === 'assign-task-view' && <Container>
-            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
+            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(task, profile.id)}>{profile.name}</Button>)}
         </Container>}
 
         {view === 'new-task-view' && <Container>

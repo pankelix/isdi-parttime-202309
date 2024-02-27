@@ -14,7 +14,8 @@ import {
     retrieveTemplatesHandler,
     authenticateProfileHandler,
     retrieveRoleHandler,
-    createTaskHandler
+    createTaskHandler,
+    assignTaskHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -33,6 +34,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
+
+        server.patch('/tasks', jsonBodyParser, assignTaskHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 
