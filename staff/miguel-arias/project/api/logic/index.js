@@ -9,6 +9,7 @@ import retrieveRole from './retrieveRole.js'
 import createTask from './createTask.js'
 import assignTask from './assignTask.js'
 import delayTask from './delayTask.js'
+import deleteTask from './deleteTask.js'
 
 const logic = {
     registerHome,
@@ -22,6 +23,7 @@ const logic = {
     createTask,
     assignTask,
     delayTask,
+    deleteTask
 }
 
 export default logic

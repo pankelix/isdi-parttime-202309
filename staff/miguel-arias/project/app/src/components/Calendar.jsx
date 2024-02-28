@@ -6,7 +6,7 @@ import helper from '../logic/helpers'
 import { useContext } from '../hooks'
 
 import { useState, useEffect } from 'react'
-import { Container, Button, Form, Input } from '../library'
+import { Container, Button, Form, Input, Label } from '../library'
 
 import { Task, Template } from '../components'
 
@@ -131,13 +131,35 @@ function Calendar(props) {
         }
     }
 
-    const handleEditTaskClick = () => {
-        setView('edit-task-view')
+    const handleDeleteClick = async () => {
+        if (confirm('Are you sure you want to delete this task?'))
+            try {
+                await logic.deleteTask(task.id)
+                refreshTasks()
+                setView(null)
+            } catch (error) {
+                context.handleError(error)
+            }
     }
 
-    const handleDeleteClick = async () => {
+    const handleCompleteTaskClick = () => {
+        setView('pin-code-view')
+    }
+
+    const handleCompleteSubmit = async (event) => {
+        event.preventDefault()
+        const date = event.target.completionDate.value
+        const dateObject = date ? new Date(date) : null
+
+        let digit1 = event.target.digit1.value
+        let digit2 = event.target.digit2.value
+        let digit3 = event.target.digit3.value
+        let digit4 = event.target.digit4.value
+
+        let pincode = digit1 + digit2 + digit3 + digit4
+
         try {
-            await logic.deleteTask(task.id)
+            await completeTask(task.id, pincode, dateObject)
         } catch (error) {
             context.handleError(error)
         }
@@ -148,23 +170,35 @@ function Calendar(props) {
 
         <Button>Filter</Button>
 
-        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)}
+        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)} {/* TODO move map to find */}
 
         {view === 'react-to-task-view' && <Container>
             {<h3>{helper.arrangeText(task.template.name)}</h3>}
             {<h3>{helper.arrangeDate(task.date)}</h3>}
             <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>
-            {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Assign this task</Button>}
+            {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Take this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
-            {role !== null && <Button>Complete this task</Button>}
+            {role !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}
             {role !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
-            {role === 'admin' && <Button onClick={handleEditTaskClick}>Edit this task</Button>}
             {role === 'admin' && <Button onClick={handleDeleteClick}>Delete this task</Button>}
             {role !== null && <Button onClick={handleCancelClick}>Cancel</Button>}
         </Container>}
 
         {view === 'assign-task-view' && <Container>
             {profiles.map(profile => <Button onClick={() => handleAssignThisTask(task, profile.id)}>{profile.name}</Button>)}
+        </Container>}
+
+        {view === 'pin-code-view' && <Container>
+            <Form onSubmit={handleCompleteSubmit}>
+                <Label for='completionDate'>Completion date</Label>
+                <Input id='completionDate' type={'date'} required={true}></Input>
+                <p>Pin Code</p>
+                <Input id='digit1' placeholder='-'></Input>
+                <Input id='digit2' placeholder='-'></Input>
+                <Input id='digit3' placeholder='-'></Input>
+                <Input id='digit4' placeholder='-'></Input>
+                <Button type='submit'>Submit</Button>
+            </Form>
         </Container>}
 
         {view === 'delay-task-view' && <Container>
@@ -180,14 +214,13 @@ function Calendar(props) {
             <Button onClick={handleProposeTaskClick}>Propose task</Button>
         </Container>}
 
-        {view === 'edit-task-view' && <Container>
-            <Input></Input>
-        </Container>}
-
         {view === 'propose-task' && <Container>
             <Form onSubmit={handleProposeTaskSubmit}>
                 <Input id='date' type={'date'} required={true}></Input>
-                {templates.map(template => <Button name='template' type='submit' value={template.id}><Template key={template.id} template={template} /></Button>)}
+                {templates.map(template => <Button key={template.id} name='template' type='submit' value={template.id}>
+                    <Template template={template} />
+                </Button>)}
+                {<Button onClick={handleCancelClick}>Cancel</Button>}
             </Form>
         </Container>}
 

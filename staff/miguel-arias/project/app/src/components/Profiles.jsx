@@ -73,6 +73,7 @@ function Profiles(props) {
 
         {pinCode === 'pinCode' && <Container>
             <Form onSubmit={handleSubmit}>
+                <p>Pin code</p>
                 <Input id='digit1' placeholder='-'></Input>
                 <Input id='digit2' placeholder='-'></Input>
                 <Input id='digit3' placeholder='-'></Input>

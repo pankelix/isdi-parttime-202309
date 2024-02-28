@@ -19,7 +19,6 @@ function Home(props) {
     const [name, setName] = useState(null)
     const [stamp, setStamp] = useState(null)
     const [view, setView] = useState(null)
-    const [role, setRole] = useState(null)
 
     function handleLogoutClick() {
         logic.logoutHome(error => {
@@ -49,10 +48,6 @@ function Home(props) {
         navigate('/stats')
     }
 
-    const handleRole = role => {
-        setRole(role)
-    }
-
     useEffect(() => {
         (async () => {
             try {
@@ -66,27 +61,24 @@ function Home(props) {
     }, [])
 
     return <>
-        <Context.Provider value={{ handleRole }}>
-            <header>
-                <nav>
-                    <Button onClick={handleLogoutClick}>Logout</Button>
-                    <Button onClick={handleHomeClick}>Home</Button>
-                    <Button onClick={handleTasksClick}>Tasks</Button>
-                    <Button onClick={handleStatsClick}>Stats</Button>
-                    <Button onClick={handleProfilesClick}>Profile</Button>
-                    <h1>Hello world, your home is {name}</h1>
-                </nav>
-            </header>
+        <header>
+            <h1>Hello world, your home is {name}</h1>
+        </header>
 
-            <Routes>
-                <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
-                <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} role={role} />} />
-                <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={role} />} />
-            </Routes>
-            <footer>
-
-            </footer >
-        </Context.Provider>
+        <Routes>
+            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={props.role} />} />
+            <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} role={props.role} />} />
+            <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={props.role} />} />
+        </Routes>
+        <footer>
+            <nav>
+                <Button onClick={handleLogoutClick}>Logout</Button>
+                <Button onClick={handleHomeClick}>Home</Button>
+                <Button onClick={handleTasksClick}>Tasks</Button>
+                <Button onClick={handleStatsClick}>Stats</Button>
+                <Button onClick={handleProfilesClick}>Profile</Button>
+            </nav>
+        </footer >
     </>
 }
 

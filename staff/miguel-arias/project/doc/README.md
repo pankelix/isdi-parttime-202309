@@ -136,6 +136,7 @@ Profile
 * pincode (string)
 * color (string)
 * role (string)
+* points (number)
 
 Template
 * id (string)

@@ -17,6 +17,7 @@ import {
     createTaskHandler,
     assignTaskHandler,
     delayTaskHandler,
+    deleteTaskHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -39,6 +40,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/tasks', jsonBodyParser, assignTaskHandler)
 
         server.patch('/tasks/delay', jsonBodyParser, delayTaskHandler)
+
+        server.post('/tasks/delete', jsonBodyParser, deleteTaskHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 

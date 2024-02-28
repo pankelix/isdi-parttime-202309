@@ -53,6 +53,10 @@ const profile = new Schema({
     role: {
         type: String,
         default: 'User'
+    },
+    points: {
+        type: Number,
+        default: 0
     }
 })
 
