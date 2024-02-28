@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.17",
     "classnames": "^2.5.1",
     "com": "link:..\\com",
     "react": "^18.2.0",

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import logic from '../logic'
+import helper from '../logic/helpers'
 
 import { useContext } from '../hooks'
 
@@ -19,7 +20,7 @@ function Calendar(props) {
 
     const [tasks, setTasks] = useState([])
     const [task, setTask] = useState(null)
-    const [profiles, setProfile] = useState([])
+    const [profiles, setProfiles] = useState([])
     const [templates, setTemplates] = useState([])
     const [view, setView] = useState(null)
 
@@ -27,7 +28,7 @@ function Calendar(props) {
         try {
             const profiles = await logic.retrieveProfiles()
             console.log(profiles)
-            setProfile(profiles)
+            setProfiles(profiles)
         } catch (error) {
             context.handleError(error)
         }
@@ -61,12 +62,12 @@ function Calendar(props) {
         refreshTemplates()
     }, [props.stamp])
 
-    const handleOnTaskClick = (taskId) => {
-        setTask(taskId)
+    const handleOnTaskClick = (task) => {
+        setTask(task)
         setView('react-to-task-view')
     }
 
-    const onCancelClick = () => {
+    const handleCancelClick = () => {
         setView(null)
     }
 
@@ -111,7 +112,7 @@ function Calendar(props) {
         setView('assign-task-view')
     }
 
-    const onDelayTaskClick = () => {
+    const handleDelayTaskClick = () => {
         setView('delay-task-view')
     }
 
@@ -128,7 +129,18 @@ function Calendar(props) {
         } catch (error) {
             context.handleError(error)
         }
+    }
 
+    const handleEditTaskClick = () => {
+        setView('edit-task-view')
+    }
+
+    const handleDeleteClick = async () => {
+        try {
+            await logic.deleteTask(task.id)
+        } catch (error) {
+            context.handleError(error)
+        }
     }
 
     return <Container>
@@ -139,13 +151,16 @@ function Calendar(props) {
         {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)}
 
         {view === 'react-to-task-view' && <Container>
+            {<h3>{helper.arrangeText(task.template.name)}</h3>}
+            {<h3>{helper.arrangeDate(task.date)}</h3>}
+            <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>
             {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Assign this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
             {role !== null && <Button>Complete this task</Button>}
-            {role !== null && <Button onClick={onDelayTaskClick}>Delay this task</Button>}
-            {role === 'admin' && <Button>Edit this task</Button>}
-            {role === 'admin' && <Button>Delete this task</Button>}
-            {role !== null && <Button onClick={onCancelClick}>Cancel</Button>}
+            {role !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
+            {role === 'admin' && <Button onClick={handleEditTaskClick}>Edit this task</Button>}
+            {role === 'admin' && <Button onClick={handleDeleteClick}>Delete this task</Button>}
+            {role !== null && <Button onClick={handleCancelClick}>Cancel</Button>}
         </Container>}
 
         {view === 'assign-task-view' && <Container>
@@ -156,13 +171,17 @@ function Calendar(props) {
             <Form onSubmit={handleDelaySubmit}>
                 <Input id='delayDate' type={'date'} required={true}></Input>
                 <Button type='submit' value={task}>Delay</Button>
-                <Button onClick={onCancelClick}>Cancel</Button>
+                <Button onClick={handleCancelClick}>Cancel</Button>
             </Form>
         </Container>}
 
         {view === 'new-task-view' && <Container>
             <Button onClick={handleNewTaskClick}>Create new task</Button>
             <Button onClick={handleProposeTaskClick}>Propose task</Button>
+        </Container>}
+
+        {view === 'edit-task-view' && <Container>
+            <Input></Input>
         </Container>}
 
         {view === 'propose-task' && <Container>
