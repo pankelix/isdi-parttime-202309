@@ -1,6 +1,6 @@
 import { Profile, Task } from '../data/models.js'
 import { validate, errors } from 'com'
-const { SystemError, NotFoundError } = errors
+const { SystemError, NotFoundError, PermissionError } = errors
 
 function deleteTask(profileId, taskId) {
     validate.id(profileId, 'profile id')
@@ -16,6 +16,9 @@ function deleteTask(profileId, taskId) {
 
         if (!profile)
             throw new NotFoundError('profile not found')
+
+        if (profile.role !== 'admin')
+            throw new PermissionError('profile is not admin')
 
         let task
         try {

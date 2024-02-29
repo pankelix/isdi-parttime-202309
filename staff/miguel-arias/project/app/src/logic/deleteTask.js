@@ -11,14 +11,13 @@ const deleteTask = (taskId) => {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.profileToken}`
-        },
-        body: JSON.stringify({ taskId })
+        }
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/delete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/delete`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }

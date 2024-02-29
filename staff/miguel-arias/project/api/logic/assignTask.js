@@ -1,9 +1,10 @@
 import { validate, errors } from 'com'
-const { SystemError, NotFoundError } = errors
+const { SystemError, NotFoundError, PermissionError } = errors
 
 import { Task, Profile } from '../data/models.js'
 
-function assignTask(taskId, profileId) {
+function assignTask(sessionProfileId, taskId, profileId) {
+    validate.id(sessionProfileId, 'session profile id')
     validate.id(taskId, 'task id')
     validate.id(profileId, 'profile id')
 
@@ -19,6 +20,10 @@ function assignTask(taskId, profileId) {
             throw new NotFoundError('task not found')
 
         let profile
+
+        if (profileId === null)
+            profile = sessionProfileId
+
         try {
             profile = await Profile.findById(profileId).lean()
         } catch (error) {
@@ -28,7 +33,10 @@ function assignTask(taskId, profileId) {
         if (!profile)
             throw new NotFoundError('profile not found')
 
-        task.assignee = profileId
+        if (profile.role !== 'admin')
+            throw new PermissionError('profile is not admin')
+
+            task.assignee = profileId
 
         try {
             await task.save()

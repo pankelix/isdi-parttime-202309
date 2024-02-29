@@ -21,8 +21,8 @@ function completeTask(profileId, taskId, pincode, date) {
         if (!profile)
             throw new NotFoundError('profile not found')
 
-        if (!profile.role !== 'admin')
-            throw new CredentialsError('this profile is not admin')
+        if (profile.role !== 'admin')
+            throw new CredentialsError('profile is not admin')
 
         let match
         try {

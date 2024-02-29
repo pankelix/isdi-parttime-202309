@@ -15,6 +15,14 @@ class TokenError extends Error {
     }
 }
 
+class PermissionError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
 // 404
 class NotFoundError extends Error {
     constructor(message) {
@@ -66,7 +74,8 @@ export {
     ContentError,
     DuplicityError,
     SystemError,
-    TypeError
+    TypeError,
+    PermissionError
 }
 
 const errors = {
@@ -76,7 +85,8 @@ const errors = {
     ContentError,
     DuplicityError,
     SystemError,
-    TypeError
+    TypeError,
+    PermissionError
 }
 
 export default errors

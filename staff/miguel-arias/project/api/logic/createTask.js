@@ -3,10 +3,9 @@ const { SystemError, NotFoundError } = errors
 
 import { Task, Home } from '../data/models.js'
 
-function createTask(homeId, templateId, date/*,  assigneeId */) {
+function createTask(homeId, templateId, date) {
     validate.id(homeId, 'home id')
     validate.id(templateId, 'template id')
-    /* validate.id(assigneeId, 'assignee id') */
 
     return (async () => {
         let home
@@ -20,7 +19,7 @@ function createTask(homeId, templateId, date/*,  assigneeId */) {
             throw new NotFoundError('home not found')
 
         try {
-            const task = await Task.create({ home: homeId, template: templateId, date: date/*,  assignee: assigneeId */ })
+            const task = await Task.create({ home: homeId, template: templateId, date: date })
 
             return task
         } catch (error) {

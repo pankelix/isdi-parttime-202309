@@ -14,7 +14,7 @@ const retrieveRole = () => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/role`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${session.profileId}/role`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }

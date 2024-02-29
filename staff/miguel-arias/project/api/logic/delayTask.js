@@ -3,10 +3,21 @@ const { SystemError, NotFoundError } = errors
 
 import { Task } from '../data/models.js'
 
-function assignTask(taskId, date) {
+function delayTask(profileId, taskId, date) {
+    validate.id(profileId, 'profile id')
     validate.id(taskId, 'task id')
 
     return (async () => {
+        let profile
+        try {
+            profile = await Profile.findById(profileId).lean()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!profile)
+            throw new NotFoundError('profile not found')
+
         let task
         try {
             task = await Task.findById(taskId)
@@ -27,4 +38,4 @@ function assignTask(taskId, date) {
     })()
 }
 
-export default assignTask
+export default delayTask

@@ -98,18 +98,18 @@ function Calendar(props) {
         }
     }
 
-    const handleAssignThisTask = async (taskId, profileId) => {
+    const handleAssignThisTaskTo = () => {
+        setView('assign-task-view')
+    }
+
+    const handleAssignThisTask = async (profileId) => {
         try {
-            await logic.assignTask(taskId, profileId)
+            await logic.assignTask(task.id, profileId)
             refreshTasks()
             setView(null)
         } catch (error) {
             context.handleError(error)
         }
-    }
-
-    const handleAssignThisTaskTo = () => {
-        setView('assign-task-view')
     }
 
     const handleDelayTaskClick = () => {
@@ -176,7 +176,7 @@ function Calendar(props) {
             {<h3>{helper.arrangeText(task.template.name)}</h3>}
             {<h3>{helper.arrangeDate(task.date)}</h3>}
             <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>
-            {role !== null && <Button onClick={() => handleAssignThisTask(task, null)}>Take this task</Button>}
+            {role !== null && <Button onClick={() => handleAssignThisTask(null)}>Take this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
             {role !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}
             {role !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
@@ -185,7 +185,7 @@ function Calendar(props) {
         </Container>}
 
         {view === 'assign-task-view' && <Container>
-            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(task, profile.id)}>{profile.name}</Button>)}
+            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
         </Container>}
 
         {view === 'pin-code-view' && <Container>

@@ -37,17 +37,17 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
 
-        server.patch('/tasks', jsonBodyParser, assignTaskHandler)
+        server.patch('/tasks/:taskId/assign/:profileId', assignTaskHandler)
 
-        server.patch('/tasks/delay', jsonBodyParser, delayTaskHandler)
+        server.patch('/tasks/:taskId/delay', jsonBodyParser, delayTaskHandler)
 
-        server.post('/tasks/delete', jsonBodyParser, deleteTaskHandler)
+        server.post('/tasks/:taskId/delete', deleteTaskHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 
         server.get('/profiles', retrieveProfilesHandler)
 
-        server.get('/profiles/role', retrieveRoleHandler)
+        server.get('/profiles/:profileId/role', retrieveRoleHandler)
 
         server.get('/templates', retrieveTemplatesHandler)
 

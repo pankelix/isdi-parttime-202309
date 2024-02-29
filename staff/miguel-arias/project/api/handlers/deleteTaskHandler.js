@@ -7,11 +7,11 @@ import logic from '../logic/index.js'
 const { NotFoundError, ContentError, TokenError } = errors
 
 export default async (req, res) => {
-    const { taskId } = req.body
-
     const token = req.headers.authorization.substring(7)
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     const profileId = payload.sub
+
+    const { taskId } = req.params
 
     try {
         await logic.deleteTask(profileId, taskId)
