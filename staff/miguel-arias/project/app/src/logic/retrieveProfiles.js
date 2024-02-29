@@ -21,7 +21,7 @@ function retrieveProfiles() {
         if (!res.ok) {
             let body
             try {
-                body = await res.json
+                body = await res.json()
             } catch (error) {
                 throw new SystemError(error.message)
             }

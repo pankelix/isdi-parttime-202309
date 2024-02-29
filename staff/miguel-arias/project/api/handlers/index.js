@@ -11,6 +11,8 @@ import assignTaskHandler from './assignTaskHandler.js'
 import delayTaskHandler from './delayTaskHandler.js'
 import deleteTaskHandler from './deleteTaskHandler.js'
 import completeTaskHandler from './completeTaskHandler.js'
+import retrieveRoomsHandler from './retrieveRoomsHandler.js'
+import createTemplateHandler from './createTemplateHandler.js'
 
 export {
     registerHomeHandler,
@@ -26,4 +28,6 @@ export {
     delayTaskHandler,
     deleteTaskHandler,
     completeTaskHandler,
+    retrieveRoomsHandler,
+    createTemplateHandler,
 }

@@ -7,17 +7,20 @@ import cors from 'cors'
 
 import {
     registerHomeHandler,
-    authenticateHomeHandler,
     retrieveHomeHandler,
-    retrieveTasksHandler,
+    authenticateHomeHandler,
     retrieveProfilesHandler,
-    retrieveTemplatesHandler,
-    authenticateProfileHandler,
     retrieveRoleHandler,
+    authenticateProfileHandler,
     createTaskHandler,
+    retrieveTasksHandler,
+    deleteTaskHandler,
     assignTaskHandler,
     delayTaskHandler,
-    deleteTaskHandler
+    completeTaskHandler,
+    retrieveTemplatesHandler,
+    retrieveRoomsHandler,
+    createTemplateHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -33,23 +36,29 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
+        server.get('/profiles', retrieveProfilesHandler)
+
+        server.get('/profiles/:profileId/role', retrieveRoleHandler)
+
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
+        server.get('/tasks', retrieveTasksHandler)
+
         server.post('/tasks', jsonBodyParser, createTaskHandler)
+
+        server.post('/tasks/:taskId/delete', deleteTaskHandler)
 
         server.patch('/tasks/:taskId/assign/:profileId', assignTaskHandler)
 
         server.patch('/tasks/:taskId/delay', jsonBodyParser, delayTaskHandler)
 
-        server.post('/tasks/:taskId/delete', deleteTaskHandler)
-
-        server.get('/tasks', retrieveTasksHandler)
-
-        server.get('/profiles', retrieveProfilesHandler)
-
-        server.get('/profiles/:profileId/role', retrieveRoleHandler)
+        server.patch('/tasks/:taskId/complete', jsonBodyParser, completeTaskHandler)
 
         server.get('/templates', retrieveTemplatesHandler)
+
+        server.post('/templates', jsonBodyParser, createTemplateHandler)
+
+        server.get('/rooms', retrieveRoomsHandler)
 
         const date = new Date()
         server.listen(process.env.PORT, () => console.log(`Server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} in port ${process.env.PORT}`))

@@ -36,7 +36,7 @@ function Calendar(props) {
 
     const refreshTemplates = async () => {
         try {
-            const templates = await props.loadTemplates()
+            const templates = await logic.retrieveTemplates()
 
             setTemplates(templates)
         } catch (error) {
@@ -46,7 +46,7 @@ function Calendar(props) {
 
     const refreshTasks = async () => {
         try {
-            const tasks = await props.loadTasks()
+            const tasks = await logic.retrieveTasks()
             // tasks = await logic.orderTasks(tasks)
             setTasks(tasks)
         } catch (error) {
@@ -159,7 +159,9 @@ function Calendar(props) {
         let pincode = digit1 + digit2 + digit3 + digit4
 
         try {
-            await completeTask(task.id, pincode, dateObject)
+            await logic.completeTask(task.id, pincode, dateObject)
+            refreshTasks()
+            setView(null)
         } catch (error) {
             context.handleError(error)
         }
@@ -173,9 +175,9 @@ function Calendar(props) {
         {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)} {/* TODO move map to find */}
 
         {view === 'react-to-task-view' && <Container>
-            {<h3>{helper.arrangeText(task.template.name)}</h3>}
-            {<h3>{helper.arrangeDate(task.date)}</h3>}
-            <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>
+            {role === 'admin' && <h3>{helper.arrangeText(task.template.name)}</h3>}
+            {role === 'admin' && <h3>{helper.arrangeDate(task.date)}</h3>}
+            {role === 'admin' && <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>}
             {role !== null && <Button onClick={() => handleAssignThisTask(null)}>Take this task</Button>}
             {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
             {role !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}

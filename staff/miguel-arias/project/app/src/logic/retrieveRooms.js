@@ -2,7 +2,7 @@ import { errors } from 'com'
 const { SystemError } = errors
 import session from "./session"
 
-function retrieveTasks() {
+function retrieveRooms() {
     const req = {
         method: 'GET',
         headers: {
@@ -13,7 +13,7 @@ function retrieveTasks() {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/rooms`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -38,4 +38,4 @@ function retrieveTasks() {
     })()
 }
 
-export default retrieveTasks
+export default retrieveRooms

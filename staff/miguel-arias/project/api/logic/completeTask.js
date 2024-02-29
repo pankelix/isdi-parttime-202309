@@ -11,6 +11,7 @@ function completeTask(profileId, taskId, pincode, date) {
     validate.pincode(pincode)
 
     return (async () => {
+        debugger
         let profile
         try {
             profile = await Profile.findById(profileId)

@@ -8,7 +8,7 @@ import Context from '../Context'
 import { useContext } from '../hooks'
 
 import { Button, Container } from '../library'
-import { Calendar, Profiles, Templates } from '../components'
+import { Calendar, Profiles, Templates, Stats } from '../components'
 /* import { Button, Container } from '../library' */
 
 function Home(props) {
@@ -21,15 +21,13 @@ function Home(props) {
     const [view, setView] = useState(null)
 
     function handleLogoutClick() {
-        logic.logoutHome(error => {
-            if (error) {
-                context.handleError(error)
-
-                return
-            }
-        })
-
-        props.onLogoutClick()
+        try {
+            logic.logoutHome()
+            context.handleRole(null)
+            props.onLogoutClick()
+        } catch (error) {
+            context.handleError(error)
+        }
     }
 
     function handleHomeClick() {
@@ -66,16 +64,17 @@ function Home(props) {
         </header>
 
         <Routes>
-            <Route path='/' element={<Calendar loadTasks={logic.retrieveTasks} loadTemplates={logic.retrieveTemplates} stamp={stamp} role={props.role} />} />
-            <Route path='/profiles' element={<Profiles loadProfiles={logic.retrieveProfiles} stamp={stamp} role={props.role} />} />
-            <Route path='/templates' element={<Templates loadTemplates={logic.retrieveTemplates} stamp={stamp} role={props.role} />} />
+            <Route path='/' element={<Calendar stamp={stamp} role={props.role} />} />
+            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} />} />
+            <Route path='/templates' element={<Templates stamp={stamp} role={props.role} />} />
+            {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
         </Routes>
         <footer>
             <nav>
                 <Button onClick={handleLogoutClick}>Logout</Button>
                 <Button onClick={handleHomeClick}>Home</Button>
-                <Button onClick={handleTasksClick}>Tasks</Button>
-                <Button onClick={handleStatsClick}>Stats</Button>
+                {props.role !== null && <Button onClick={handleTasksClick}>Tasks</Button>}
+                {props.role !== null && <Button onClick={handleStatsClick}>Stats</Button>}
                 <Button onClick={handleProfilesClick}>Profile</Button>
             </nav>
         </footer >

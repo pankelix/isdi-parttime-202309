@@ -13,6 +13,8 @@ import assignTask from './assignTask.js'
 import delayTask from './delayTask.js'
 import deleteTask from './deleteTask.js'
 import completeTask from './completeTask.js'
+import retrieveRooms from './retrieveRooms.js'
+import createTemplate from './createTemplate.js'
 
 const logic = {
     registerHome,
@@ -30,6 +32,8 @@ const logic = {
     delayTask,
     deleteTask,
     completeTask,
+    retrieveRooms,
+    createTemplate,
 }
 
 export default logic

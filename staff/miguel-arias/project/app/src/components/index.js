@@ -5,6 +5,7 @@ import Profiles from './Profiles.jsx'
 import Profile from  './Profile.jsx'
 import Templates from './Templates.jsx'
 import Template from './Template.jsx'
+import Stats from './Stats.jsx'
 
 export {
     Calendar,
@@ -13,5 +14,6 @@ export {
     Profiles,
     Profile,
     Templates,
-    Template
+    Template,
+    Stats,
 }

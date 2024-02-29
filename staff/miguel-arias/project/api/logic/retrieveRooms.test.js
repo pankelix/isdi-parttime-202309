@@ -1,16 +1,13 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 import mongoose from 'mongoose'
-import createTask from './createTask.js'
+
+import retrieveRooms from './retrieveRooms.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await createTask('65d5081ea39e64389e9fd25a')
-
-        console.log('task registered')
+        const rooms = await retrieveRooms('65d79ed33377222a975829fa')
+        console.log('rooms retrieved', rooms)
 
         await mongoose.disconnect()
     } catch (error) {

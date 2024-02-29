@@ -44,7 +44,7 @@ function App() {
     else if (error instanceof DuplicityError || error instanceof NotFoundError)
       level = 'error'
     else if (error instanceof TokenError) {
-      logic.logoutUser(() => navigate('/login'))
+      logic.logoutHome(() => navigate('/login'))
 
       message = 'Session expired'
     }
