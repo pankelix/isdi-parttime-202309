@@ -3,9 +3,9 @@ const { SystemError } = errors
 
 import session from './session'
 
-const delayTask = (taskId, date) => {
-    validate.id(taskId, 'task id')
-    validate.date(date)
+const redeemPoints = (profileId, points) => {
+    validate.id(profileId, 'profile id')
+    validate.number(points, 'points')
 
     const req = {
         method: 'PATCH',
@@ -13,13 +13,13 @@ const delayTask = (taskId, date) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.profileToken}`
         },
-        body: JSON.stringify({ date })
+        body: JSON.stringify({ points })
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/delay`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/stats/${profileId}/redeem`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -38,4 +38,4 @@ const delayTask = (taskId, date) => {
     })()
 }
 
-export default delayTask
+export default redeemPoints

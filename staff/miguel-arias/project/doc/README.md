@@ -174,6 +174,8 @@ Order
 
 ## Future versions will include:
 
+##### Store tasks (instead of deletion)
+
 ##### Alternatives to pincode (version 2)
 
 * Fingerprint

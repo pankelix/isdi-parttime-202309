@@ -1,21 +1,25 @@
 import { Button } from '../library'
 
+import logic from '../logic'
+import helper from '../logic/helpers'
+
 function Template(props) {
     const template = props.template
 
-    const arrangeText = (text) => {
-        let capital = text[0].toUpperCase()
-        let newText = capital + text.slice(1)
-        return newText.replace("-", " ")
+    const handleDeleteClick = async () => {
+        try {
+            await logic.deleteTemplate(template.id)
+        } catch (error) {
+
+        }
     }
 
     return <article>
-        <h3>{arrangeText(template.name)}</h3>
+        <h3>{helper.arrangeText(template.name)}</h3>
 
         {props.role === 'admin' && <aside>
             <Button>Edit task</Button>
-            <Button>Store task</Button>
-            <Button>Delete task</Button>
+            <Button onClick={handleDeleteClick}>Delete template</Button>
         </aside>}
     </article>
 }

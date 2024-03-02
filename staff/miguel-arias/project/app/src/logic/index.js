@@ -15,6 +15,7 @@ import deleteTask from './deleteTask.js'
 import completeTask from './completeTask.js'
 import retrieveRooms from './retrieveRooms.js'
 import createTemplate from './createTemplate.js'
+import redeemPoints from './redeemPoints.js'
 
 const logic = {
     registerHome,
@@ -34,6 +35,7 @@ const logic = {
     completeTask,
     retrieveRooms,
     createTemplate,
+    redeemPoints,
 }
 
 export default logic

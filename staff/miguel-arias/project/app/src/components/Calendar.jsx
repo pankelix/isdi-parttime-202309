@@ -120,10 +120,8 @@ function Calendar(props) {
         event.preventDefault()
         const date = event.target.delayDate.value
         const dateObject = date ? new Date(date) : null
-
-        const taskId = event.nativeEvent.submitter.value
         try {
-            await logic.delayTask(taskId, dateObject)
+            await logic.delayTask(task.id, dateObject)
             refreshTasks()
             setView(null)
         } catch (error) {

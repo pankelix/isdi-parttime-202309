@@ -21,6 +21,7 @@ import {
     retrieveTemplatesHandler,
     retrieveRoomsHandler,
     createTemplateHandler,
+    redeemPointsHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -59,6 +60,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/templates', jsonBodyParser, createTemplateHandler)
 
         server.get('/rooms', retrieveRoomsHandler)
+
+        server.patch('/stats/:profileId/redeem', jsonBodyParser, redeemPointsHandler)
 
         const date = new Date()
         server.listen(process.env.PORT, () => console.log(`Server is online at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} in port ${process.env.PORT}`))

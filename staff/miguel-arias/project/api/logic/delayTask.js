@@ -1,7 +1,7 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
-import { Task } from '../data/models.js'
+import { Task, Profile } from '../data/models.js'
 
 function delayTask(profileId, taskId, date) {
     validate.id(profileId, 'profile id')

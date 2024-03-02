@@ -9,14 +9,14 @@ import logic from '../logic/index.js'
 export default async (req, res) => {
     const token = req.headers.authorization.substring(7)
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    const profileId = payload.sub
+    const sessionProfileId = payload.sub
 
-    const { date } = req.body
+    const { points } = req.body
 
-    const { taskId } = req.params
+    const { profileId } = req.params
 
     try {
-        await logic.delayTask(profileId, taskId, date)
+        await logic.redeemPoints(sessionProfileId, profileId, points)
     } catch (error) {
         let status = 500
 
