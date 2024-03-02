@@ -11,6 +11,7 @@ function Profiles(props) {
     const context = useContext()
 
     const [profiles, setProfiles] = useState([])
+    const [activeProfileId, setActiveProfileId] = useState(null)
     const [pinCode, setPinCode] = useState(null)
     const [name, setName] = useState(null)
     const [view, setView] = useState(null)
@@ -74,11 +75,25 @@ function Profiles(props) {
 
     const handleManageProfileSubmit = async (event) => {
         event.preventDefault()
-        const profileName = event.target.querySelector('Input[list="profiles"]').value
-        const profile = profiles.find(profile => profile.name === profileName)
+
         const role = event.target.querySelector('Input[list="roles"]').value
         try {
-            await logic.editRole(profile.id, role)
+            await logic.editRole(activeProfileId, role)
+            refreshProfiles()
+            context.handleRole(role)
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
+    const handleOnProfileClick = (profileId) => {
+        setActiveProfileId(profileId)
+    }
+
+    const handleDeleteProfileClick = async () => {
+        try {
+            await logic.deleteProfile(activeProfileId)
             refreshProfiles()
             setView(null)
         } catch (error) {
@@ -118,11 +133,8 @@ function Profiles(props) {
         </Container>}
 
         {view === 'manage-profiles-view' && <Container>
-            <Form onSubmit={handleManageProfileSubmit}>
-                <Input list='profiles'>Profile to change</Input>
-                <datalist id='profiles'>
-                    {profiles.map(profile => <option key={profile.id} value={profile.name} />)}
-                </datalist>
+            {<Form onSubmit={handleManageProfileSubmit}>
+                {profiles.map(profile => <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button>)}
 
                 <Input list='roles'>New role</Input>
                 <datalist id='roles'>
@@ -132,8 +144,8 @@ function Profiles(props) {
 
                 <Button type='submit'>Accept</Button>
 
-                <Button type='button'>Delete profile</Button>
-            </Form>
+                <Button type='button' onClick={handleDeleteProfileClick}>Delete profile</Button>
+            </Form>}
         </Container>}
 
         <Container>

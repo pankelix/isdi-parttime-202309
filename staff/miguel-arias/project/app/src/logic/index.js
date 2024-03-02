@@ -21,6 +21,7 @@ import editTemplate from './editTemplate.js'
 import createRoom from './createRoom.js'
 import deleteRoom from './deleteRoom.js'
 import editRole from './editRole.js'
+import deleteProfile from './deleteProfile.js'
 
 const logic = {
     registerHome,
@@ -46,6 +47,7 @@ const logic = {
     createRoom,
     deleteRoom,
     editRole,
+    deleteProfile,
 }
 
 export default logic

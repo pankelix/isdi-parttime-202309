@@ -19,6 +19,7 @@ import editTemplateHandler from './editTemplateHandler.js'
 import createRoomHandler from './createRoomHandler.js'
 import deleteRoomHandler from './deleteRoomHandler.js'
 import editRoleHandler from './editRoleHandler.js'
+import deleteProfileHandler from './deleteProfileHandler.js'
 
 export {
     registerHomeHandler,
@@ -42,4 +43,5 @@ export {
     createRoomHandler,
     deleteRoomHandler,
     editRoleHandler,
+    deleteProfileHandler,
 }

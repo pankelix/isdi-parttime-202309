@@ -27,6 +27,7 @@ import {
     createRoomHandler,
     deleteRoomHandler,
     editRoleHandler,
+    deleteProfileHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -47,6 +48,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.get('/profiles/:profileId/role', retrieveRoleHandler)
 
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
+
+        server.post('/profiles/:profileId/delete', deleteProfileHandler)
 
         server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
 
