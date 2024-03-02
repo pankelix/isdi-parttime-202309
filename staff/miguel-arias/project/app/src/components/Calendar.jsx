@@ -185,7 +185,7 @@ function Calendar(props) {
         </Container>}
 
         {view === 'assign-task-view' && <Container>
-            {profiles.map(profile => <Button onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
+            {profiles.map(profile => <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
         </Container>}
 
         {view === 'pin-code-view' && <Container>

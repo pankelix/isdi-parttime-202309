@@ -2,11 +2,13 @@ import { validate, errors } from 'com'
 const { SystemError, NotFoundError, PermissionError } = errors
 
 import { Task, Profile } from '../data/models.js'
-
+debugger
 function assignTask(sessionProfileId, taskId, profileId) {
     validate.id(sessionProfileId, 'session profile id')
     validate.id(taskId, 'task id')
-    validate.id(profileId, 'profile id')
+
+    if (profileId !== null)
+        validate.id(profileId, 'profile id')
 
     return (async () => {
         let task
@@ -19,24 +21,37 @@ function assignTask(sessionProfileId, taskId, profileId) {
         if (!task)
             throw new NotFoundError('task not found')
 
+        let assignToSelf = false
+        if (profileId === null)
+            assignToSelf = true
+
         let profile
 
-        if (profileId === null)
-            profile = sessionProfileId
+        if (profileId === null) {
+            try {
+                profile = await Profile.findById(sessionProfileId).lean()
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
 
-        try {
-            profile = await Profile.findById(profileId).lean()
-        } catch (error) {
-            throw new SystemError(error.message)
+            if (!profile)
+                throw new NotFoundError('profile not found')
+
+            if (profile.role !== 'admin' && assignToSelf !== true)
+                throw new PermissionError('profile is not admin')
+
+        } else if (profileId) {
+            try {
+                profile = await Profile.findById(profileId).lean()
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
+
+            if (!profile)
+                throw new NotFoundError('profile not found')
         }
 
-        if (!profile)
-            throw new NotFoundError('profile not found')
-
-        if (profile.role !== 'admin')
-            throw new PermissionError('profile is not admin')
-
-            task.assignee = profileId
+        task.assignee = profile._id.toString()
 
         try {
             await task.save()

@@ -17,7 +17,6 @@ function Profiles(props) {
     const refreshProfiles = async () => {
         try {
             const profiles = await logic.retrieveProfiles()
-            console.log(profiles)
             setProfiles(profiles)
         } catch (error) {
             context.handleError(error)

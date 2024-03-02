@@ -14,6 +14,7 @@ import completeTaskHandler from './completeTaskHandler.js'
 import retrieveRoomsHandler from './retrieveRoomsHandler.js'
 import createTemplateHandler from './createTemplateHandler.js'
 import redeemPointsHandler from './redeemPointsHandler.js'
+import deleteTemplateHandler from './deleteTemplateHandler.js'
 
 export {
     registerHomeHandler,
@@ -32,4 +33,5 @@ export {
     retrieveRoomsHandler,
     createTemplateHandler,
     redeemPointsHandler,
+    deleteTemplateHandler,
 }

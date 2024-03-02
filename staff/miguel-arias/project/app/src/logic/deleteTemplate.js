@@ -3,25 +3,21 @@ const { SystemError } = errors
 
 import session from './session'
 
-const assignTask = (taskId, profileId) => {
-    if (profileId !== null)
-        validate.id(profileId, 'profile id')
-
-    validate.id(taskId, 'task id')
+const deleteTemplate = (templateId) => {
+    validate.id(templateId, 'template id')
 
     const req = {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.profileToken}`
-        },
-        body: JSON.stringify({ profileId })
+        }
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/assign`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/templates/${templateId}/delete`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -40,4 +36,4 @@ const assignTask = (taskId, profileId) => {
     })()
 }
 
-export default assignTask
+export default deleteTemplate

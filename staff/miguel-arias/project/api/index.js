@@ -22,6 +22,7 @@ import {
     retrieveRoomsHandler,
     createTemplateHandler,
     redeemPointsHandler,
+    deleteTemplateHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -49,7 +50,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/tasks/:taskId/delete', deleteTaskHandler)
 
-        server.patch('/tasks/:taskId/assign/:profileId', assignTaskHandler)
+        server.patch('/tasks/:taskId/assign/', jsonBodyParser, assignTaskHandler)
 
         server.patch('/tasks/:taskId/delay', jsonBodyParser, delayTaskHandler)
 
@@ -58,6 +59,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.get('/templates', retrieveTemplatesHandler)
 
         server.post('/templates', jsonBodyParser, createTemplateHandler)
+
+        server.post('/templates/:templateId/delete', deleteTemplateHandler)
 
         server.get('/rooms', retrieveRoomsHandler)
 

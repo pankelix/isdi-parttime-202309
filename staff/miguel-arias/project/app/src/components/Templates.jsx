@@ -87,7 +87,7 @@ function Templates(props) {
 
         <Button>Filter</Button>
 
-        {templates.map(template => <Template key={template.id} template={template} role={props.role} />)}
+        {templates.map(template => <Template key={template.id} template={template} role={props.role} onDeleteSuccess={refreshTemplates} />)}
 
         <Container>
             <Button onClick={handleNewTemplateView}>

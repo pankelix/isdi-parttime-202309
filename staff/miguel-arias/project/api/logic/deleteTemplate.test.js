@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
-import assignTask from './assignTask.js'
+import deleteTemplate from './deleteTemplate.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await assignTask('65d79ed43377222a97582a1c', '65d79ed43377222a97582a3a', null)
+        await deleteTemplate('65d79ed33377222a97582a18', '65d79ed43377222a97582a22')
 
-        console.log('task assigned')
+        console.log('template and tasks associated deleted')
 
         await mongoose.disconnect()
     } catch (error) {
