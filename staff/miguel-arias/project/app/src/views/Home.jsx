@@ -8,7 +8,7 @@ import Context from '../Context'
 import { useContext } from '../hooks'
 
 import { Button, Container } from '../library'
-import { Calendar, Profiles, Templates, Stats } from '../components'
+import { Calendar, Profiles, Templates, Stats, Rooms } from '../components'
 /* import { Button, Container } from '../library' */
 
 function Home(props) {
@@ -46,6 +46,10 @@ function Home(props) {
         navigate('/stats')
     }
 
+    function handleRoomsClick() {
+        navigate('/rooms')
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -68,6 +72,7 @@ function Home(props) {
             <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} />} />
             <Route path='/templates' element={<Templates stamp={stamp} role={props.role} />} />
             {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
+            {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} />} />}
         </Routes>
         <footer>
             <nav>
@@ -75,6 +80,7 @@ function Home(props) {
                 <Button onClick={handleHomeClick}>Home</Button>
                 {props.role !== null && <Button onClick={handleTasksClick}>Tasks</Button>}
                 {props.role !== null && <Button onClick={handleStatsClick}>Stats</Button>}
+                {props.role !== null && <Button onClick={handleRoomsClick}>Rooms</Button>}
                 <Button onClick={handleProfilesClick}>Profile</Button>
             </nav>
         </footer >

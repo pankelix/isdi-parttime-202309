@@ -23,6 +23,10 @@ import {
     createTemplateHandler,
     redeemPointsHandler,
     deleteTemplateHandler,
+    editTemplateHandler,
+    createRoomHandler,
+    deleteRoomHandler,
+    editRoleHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -44,13 +48,15 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
+        server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
+
         server.get('/tasks', retrieveTasksHandler)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
 
         server.post('/tasks/:taskId/delete', deleteTaskHandler)
 
-        server.patch('/tasks/:taskId/assign/', jsonBodyParser, assignTaskHandler)
+        server.patch('/tasks/:taskId/assign', jsonBodyParser, assignTaskHandler)
 
         server.patch('/tasks/:taskId/delay', jsonBodyParser, delayTaskHandler)
 
@@ -62,7 +68,13 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/templates/:templateId/delete', deleteTemplateHandler)
 
+        server.patch('/templates/:templateId/edit', jsonBodyParser, editTemplateHandler)
+
         server.get('/rooms', retrieveRoomsHandler)
+
+        server.post('/rooms', jsonBodyParser, createRoomHandler)
+
+        server.post('/rooms/:roomId/delete', deleteRoomHandler)
 
         server.patch('/stats/:profileId/redeem', jsonBodyParser, redeemPointsHandler)
 

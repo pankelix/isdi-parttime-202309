@@ -65,7 +65,9 @@ function Templates(props) {
 
     const handleTaskClick = (roomId) => {
         const chosenRoom = roomId
-        setChosenRooms(oldRooms => [...oldRooms, chosenRoom])
+        chosenRooms.includes(chosenRoom) ?
+            setChosenRooms(oldRooms => oldRooms.filter(room => room !== roomId)) :
+            setChosenRooms(oldRooms => [...oldRooms, chosenRoom])
     }
 
     const handleSetDay = () => {
@@ -87,7 +89,7 @@ function Templates(props) {
 
         <Button>Filter</Button>
 
-        {templates.map(template => <Template key={template.id} template={template} role={props.role} onDeleteSuccess={refreshTemplates} />)}
+        {templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} />)}
 
         <Container>
             <Button onClick={handleNewTemplateView}>

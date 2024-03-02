@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
-import createRoom from './createRoom.js'
+import editRole from './editRole.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await createRoom('65d79ed33377222a975829fa', 'parking')
+        await editRole('65d79ed33377222a97582a18', '65d79ed43377222a97582a1c', 'admin')
 
-        console.log('room created')
+        console.log('role edited')
 
         await mongoose.disconnect()
     } catch (error) {

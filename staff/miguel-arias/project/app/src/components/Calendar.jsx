@@ -27,7 +27,6 @@ function Calendar(props) {
     const retrieveAssignee = async () => {
         try {
             const profiles = await logic.retrieveProfiles()
-            console.log(profiles)
             setProfiles(profiles)
         } catch (error) {
             context.handleError(error)
@@ -170,7 +169,7 @@ function Calendar(props) {
 
         <Button>Filter</Button>
 
-        {tasks.map(task => <Task key={task.id} task={task} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} />)} {/* TODO move map to find */}
+        {tasks.map(task => <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} /* color={profiles.} */ onTaskClick={handleOnTaskClick} />)} {/* TODO move map to find */}
 
         {view === 'react-to-task-view' && <Container>
             {role === 'admin' && <h3>{helper.arrangeText(task.template.name)}</h3>}

@@ -1,13 +1,15 @@
 import mongoose from 'mongoose'
-import createRoom from './createRoom.js'
+import deleteRoom from './deleteRoom.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await createRoom('65d79ed33377222a975829fa', 'parking')
+        await deleteRoom('65d79ed33377222a97582a18', '65d79ed33377222a97582a02')
 
-        console.log('room created')
+        //profileId, roomId
+
+        console.log('room deleted')
 
         await mongoose.disconnect()
     } catch (error) {

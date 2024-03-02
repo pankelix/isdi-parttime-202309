@@ -3,8 +3,8 @@ const { SystemError } = errors
 
 import session from './session'
 
-const deleteTask = (taskId) => {
-    validate.id(taskId, 'task id')
+const deleteRoom = (roomId) => {
+    validate.id(roomId, 'room id')
 
     const req = {
         method: 'POST',
@@ -16,7 +16,7 @@ const deleteTask = (taskId) => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/delete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/rooms/${roomId}/delete`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -35,4 +35,4 @@ const deleteTask = (taskId) => {
     })()
 }
 
-export default deleteTask
+export default deleteRoom

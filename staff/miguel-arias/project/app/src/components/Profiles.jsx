@@ -13,6 +13,7 @@ function Profiles(props) {
     const [profiles, setProfiles] = useState([])
     const [pinCode, setPinCode] = useState(null)
     const [name, setName] = useState(null)
+    const [view, setView] = useState(null)
 
     const refreshProfiles = async () => {
         try {
@@ -22,6 +23,12 @@ function Profiles(props) {
             context.handleError(error)
         }
     }
+
+    useEffect(() => {
+        console.log('Profiles effect')
+
+        refreshProfiles()
+    }, [props.stamp])
 
     const handleProfileClick = async (profileName) => {
         let name = profileName.target.firstChild.data
@@ -57,11 +64,27 @@ function Profiles(props) {
         })()
     }
 
-    useEffect(() => {
-        console.log('Profiles effect')
+    const handleEditProfileClick = () => {
+        setView('edit-profile-view')
+    }
 
-        refreshProfiles()
-    }, [props.stamp])
+    const handleManageProfilesClick = () => {
+        setView('manage-profiles-view')
+    }
+
+    const handleManageProfileSubmit = async (event) => {
+        event.preventDefault()
+        const profileName = event.target.querySelector('Input[list="profiles"]').value
+        const profile = profiles.find(profile => profile.name === profileName)
+        const role = event.target.querySelector('Input[list="roles"]').value
+        try {
+            await logic.editRole(profile.id, role)
+            refreshProfiles()
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
 
     return <Container>
         <h1>Profiles</h1>
@@ -83,9 +106,35 @@ function Profiles(props) {
         </Container>}
 
         <Container>
-            {role === 'admin' ? <Button>Manage profiles</Button> : ''}
-            {role !== null ? <Button>Edit your profile</Button> : ''}
+            {role === 'admin' ? <Button onClick={handleManageProfilesClick}>Manage profiles</Button> : ''}
+            {role !== null ? <Button onClick={handleEditProfileClick}>Edit your profile</Button> : ''}
         </Container>
+
+        {view === 'edit-profile-view' && <Container>
+            <Button>Change picture</Button>
+            <Button>Change profile color</Button>
+            <Button>Change pincode</Button>
+            <Button>Delete profile</Button>
+        </Container>}
+
+        {view === 'manage-profiles-view' && <Container>
+            <Form onSubmit={handleManageProfileSubmit}>
+                <Input list='profiles'>Profile to change</Input>
+                <datalist id='profiles'>
+                    {profiles.map(profile => <option key={profile.id} value={profile.name} />)}
+                </datalist>
+
+                <Input list='roles'>New role</Input>
+                <datalist id='roles'>
+                    <option value='admin' />
+                    <option value='user' />
+                </datalist>
+
+                <Button type='submit'>Accept</Button>
+
+                <Button type='button'>Delete profile</Button>
+            </Form>
+        </Container>}
 
         <Container>
             <Button>

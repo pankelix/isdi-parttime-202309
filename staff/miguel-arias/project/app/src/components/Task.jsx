@@ -7,6 +7,7 @@ import helper from '../logic/helpers'
 
 function Task(props) {
     const task = props.task
+    const profile = props.profile
     const assigneeName = props.profileName
 
     const context = useContext()
@@ -16,7 +17,7 @@ function Task(props) {
     }
 
     return <Container>
-        <Button onClick={handleTaskClick}>
+        <Button style={{ backgroundColor: profile? profile.color : '' }} onClick={handleTaskClick}>
             {helper.arrangeText(task.template.name)}
             {helper.arrangeDate(task.date)}
             {assigneeName}

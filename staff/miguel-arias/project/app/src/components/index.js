@@ -6,6 +6,7 @@ import Profile from  './Profile.jsx'
 import Templates from './Templates.jsx'
 import Template from './Template.jsx'
 import Stats from './Stats.jsx'
+import Rooms from './Rooms.jsx'
 
 export {
     Calendar,
@@ -16,4 +17,5 @@ export {
     Templates,
     Template,
     Stats,
+    Rooms,
 }

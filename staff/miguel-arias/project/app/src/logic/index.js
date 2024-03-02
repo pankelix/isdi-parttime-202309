@@ -17,6 +17,10 @@ import retrieveRooms from './retrieveRooms.js'
 import createTemplate from './createTemplate.js'
 import redeemPoints from './redeemPoints.js'
 import deleteTemplate from './deleteTemplate.js'
+import editTemplate from './editTemplate.js'
+import createRoom from './createRoom.js'
+import deleteRoom from './deleteRoom.js'
+import editRole from './editRole.js'
 
 const logic = {
     registerHome,
@@ -38,6 +42,10 @@ const logic = {
     createTemplate,
     redeemPoints,
     deleteTemplate,
+    editTemplate,
+    createRoom,
+    deleteRoom,
+    editRole,
 }
 
 export default logic

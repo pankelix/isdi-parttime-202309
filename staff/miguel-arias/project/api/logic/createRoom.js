@@ -21,9 +21,6 @@ function createRoom(homeId, name) {
         try {
             const room = await Room.create({ home: homeId, name })
 
-            if (!room)
-                throw new NotFoundError('room not found')
-
             return room
         } catch (error) {
             throw new SystemError(error.message)

@@ -38,6 +38,10 @@ function Stats(props) {
         }
     }
 
+    const handleCancelClick = () => {
+        setView(null)
+    }
+
     useEffect(() => {
         console.log('Profiles effect')
 
@@ -53,7 +57,7 @@ function Stats(props) {
             <Form onSubmit={handleRedeemPointsSubmit}>
                 <Input id='points' type='number' placeholder={'Points to redeem'} required={true}></Input>
                 <Button type='submit'>Redeem!</Button>
-                <Button type='button'>Cancel</Button>
+                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
         </Container>}
 

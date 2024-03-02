@@ -3,20 +3,23 @@ const { SystemError } = errors
 
 import session from './session'
 
-const deleteTask = (taskId) => {
-    validate.id(taskId, 'task id')
+const editRole = (profileId, role) => {
+    validate.id(profileId, 'profile id')
+    validate.text(role)
 
     const req = {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${session.profileToken}`
-        }
+        },
+        body: JSON.stringify({ role })
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/delete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${profileId}/edit`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -35,4 +38,4 @@ const deleteTask = (taskId) => {
     })()
 }
 
-export default deleteTask
+export default editRole

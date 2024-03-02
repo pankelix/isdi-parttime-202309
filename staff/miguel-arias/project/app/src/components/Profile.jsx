@@ -10,7 +10,7 @@ function Profile(props) {
     }
 
     return <article>
-        <ul><li><Button style={{ backgroundColor: profile.id === session.profileId ? 'red' : '' }} onClick={handleProfileClick}>{profile.name}</Button></li></ul>
+        <ul><li><Button style={{ backgroundColor: profile.id === session.profileId ? profile.color : '' }} onClick={handleProfileClick}>{profile.name}</Button></li></ul>
     </article>
 }
 

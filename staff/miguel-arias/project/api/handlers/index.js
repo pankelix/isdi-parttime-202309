@@ -15,6 +15,10 @@ import retrieveRoomsHandler from './retrieveRoomsHandler.js'
 import createTemplateHandler from './createTemplateHandler.js'
 import redeemPointsHandler from './redeemPointsHandler.js'
 import deleteTemplateHandler from './deleteTemplateHandler.js'
+import editTemplateHandler from './editTemplateHandler.js'
+import createRoomHandler from './createRoomHandler.js'
+import deleteRoomHandler from './deleteRoomHandler.js'
+import editRoleHandler from './editRoleHandler.js'
 
 export {
     registerHomeHandler,
@@ -34,4 +38,8 @@ export {
     createTemplateHandler,
     redeemPointsHandler,
     deleteTemplateHandler,
+    editTemplateHandler,
+    createRoomHandler,
+    deleteRoomHandler,
+    editRoleHandler,
 }

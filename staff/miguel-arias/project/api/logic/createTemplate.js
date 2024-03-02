@@ -6,9 +6,9 @@ import { Template, Home } from '../data/models.js'
 function createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms, points) {
     validate.id(homeId, 'home id')
     validate.text(name, 'name')
-    validate.array(rooms, 'rooms')
     validate.number(periodicityNumber, 'periodicity number')
     validate.text(periodicityRange, 'periodicity range')
+    validate.array(rooms, 'rooms')
     validate.number(points, 'points')
 
     return (async () => {
