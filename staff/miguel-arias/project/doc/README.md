@@ -134,7 +134,9 @@ Profile
 * home (Home.id)
 * name (string)
 * pincode (string)
-* color (string)
+* color (object)
+    - name(string)
+    - code(string)
 * role (string)
 * points (number)
 
@@ -153,24 +155,6 @@ Task
 * assignee(Profile.id)
 * done (boolean)
 * date(Date)
-
-<!-- Sock
-* id (string)
-* name (string)
-* size (string)
-* theme (string)
-* brand (string)
-* price (number)
-
-Cart
-* id (string)
-* user (user.id)
-* items ([socks.id])
-
-Order
-* id (string)
-* date (Date
-* items ([socks.id])) -->
 
 ## Future versions will include:
 

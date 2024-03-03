@@ -8,13 +8,7 @@ import registerProfile from './registerProfile.js'
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await registerProfile('Peter Pan', '1234', 'green', 'admin')
-        console.log('profile registered')
-        await registerProfile('Wendy Darling', '1234', 'blue', 'admin')
-        console.log('profile registered')
-        await registerProfile('Michael Darling', '1234', 'white')
-        console.log('profile registered')
-        await registerProfile('John Darling', '1234', 'pink')
+        await registerProfile('65d79ed33377222a975829fa', 'Michael Darling', '1234')
         console.log('profile registered')
 
         await mongoose.disconnect()

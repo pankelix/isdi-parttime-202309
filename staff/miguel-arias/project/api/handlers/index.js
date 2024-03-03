@@ -20,6 +20,7 @@ import createRoomHandler from './createRoomHandler.js'
 import deleteRoomHandler from './deleteRoomHandler.js'
 import editRoleHandler from './editRoleHandler.js'
 import deleteProfileHandler from './deleteProfileHandler.js'
+import registerProfileHandler from './registerProfileHandler.js'
 
 export {
     registerHomeHandler,
@@ -44,4 +45,5 @@ export {
     deleteRoomHandler,
     editRoleHandler,
     deleteProfileHandler,
+    registerProfileHandler,
 }

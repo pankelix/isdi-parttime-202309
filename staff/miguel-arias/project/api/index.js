@@ -28,6 +28,7 @@ import {
     deleteRoomHandler,
     editRoleHandler,
     deleteProfileHandler,
+    registerProfileHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -44,6 +45,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
         server.get('/profiles', retrieveProfilesHandler)
+
+        server.post('/profiles', jsonBodyParser, registerProfileHandler)
 
         server.get('/profiles/:profileId/role', retrieveRoleHandler)
 

@@ -47,8 +47,14 @@ const profile = new Schema({
         length: 4
     },
     color: {
-        type: String,
-        unique: true
+        name: {
+            type: String,
+            unique: true
+        },
+        code: {
+            type: String,
+            unique: true
+        }
     },
     role: {
         type: String,

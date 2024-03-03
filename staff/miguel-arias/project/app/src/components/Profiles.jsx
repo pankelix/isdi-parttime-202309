@@ -43,12 +43,12 @@ function Profiles(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        let digit1 = event.target.digit1.value
-        let digit2 = event.target.digit2.value
-        let digit3 = event.target.digit3.value
-        let digit4 = event.target.digit4.value
+        const digit1 = event.target.digit1.value
+        const digit2 = event.target.digit2.value
+        const digit3 = event.target.digit3.value
+        const digit4 = event.target.digit4.value
 
-        let pincode = digit1 + digit2 + digit3 + digit4
+        const pincode = digit1 + digit2 + digit3 + digit4
 
         return (async () => {
             try {
@@ -94,6 +94,30 @@ function Profiles(props) {
     const handleDeleteProfileClick = async () => {
         try {
             await logic.deleteProfile(activeProfileId)
+            refreshProfiles()
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
+    const handleNewProfileClick = () => {
+        setView('new-profile-view')
+    }
+
+    const handleNewProfileSubmit = async (event) => {
+        event.preventDefault()
+        const name = event.target.name.value
+
+        const newDigit1 = event.target.newDigit1.value
+        const newDigit2 = event.target.newDigit2.value
+        const newDigit3 = event.target.newDigit3.value
+        const newDigit4 = event.target.newDigit4.value
+
+        const pincode = newDigit1 + newDigit2 + newDigit3 + newDigit4
+
+        try {
+            await logic.registerProfile(name, pincode)
             refreshProfiles()
             setView(null)
         } catch (error) {
@@ -149,10 +173,22 @@ function Profiles(props) {
         </Container>}
 
         <Container>
-            <Button>
+            <Button onClick={handleNewProfileClick}>
                 ➕
             </Button>
         </Container>
+
+        {view === 'new-profile-view' && <Container>
+            <Form onSubmit={handleNewProfileSubmit}>
+                <Input id='name' type='text' placeholder='Name'></Input>
+                <p>Pin code</p>
+                <Input id='newDigit1' placeholder='-'></Input>
+                <Input id='newDigit2' placeholder='-'></Input>
+                <Input id='newDigit3' placeholder='-'></Input>
+                <Input id='newDigit4' placeholder='-'></Input>
+                <Button type='submit'>Submit</Button>
+            </Form>
+        </Container>}
     </Container>
 }
 
