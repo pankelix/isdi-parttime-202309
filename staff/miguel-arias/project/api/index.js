@@ -30,6 +30,7 @@ import {
     deleteProfileHandler,
     registerProfileHandler,
     changeProfileColorHandler,
+    changePincodeHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -58,6 +59,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
 
         server.patch('/profiles/:profileId/changeColor', jsonBodyParser, changeProfileColorHandler)
+
+        server.patch('/profiles/:profileId/pincode', jsonBodyParser, changePincodeHandler)
 
         server.get('/tasks', retrieveTasksHandler)
 

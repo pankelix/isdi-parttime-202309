@@ -22,6 +22,7 @@ import editRoleHandler from './editRoleHandler.js'
 import deleteProfileHandler from './deleteProfileHandler.js'
 import registerProfileHandler from './registerProfileHandler.js'
 import changeProfileColorHandler from './changeProfileColorHandler.js'
+import changePincodeHandler from './changePincodeHandler.js'
 
 export {
     registerHomeHandler,
@@ -48,4 +49,5 @@ export {
     deleteProfileHandler,
     registerProfileHandler,
     changeProfileColorHandler,
+    changePincodeHandler,
 }

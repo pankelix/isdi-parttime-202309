@@ -23,9 +23,9 @@ function registerProfile(homeId, name, pincode) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        const usedColors = await Profile.distinct('color')
+        const usedColorCodes = await Profile.distinct('color.code')
 
-        const unusedColors = colors.filter(color => !usedColors.includes(color))
+        const unusedColors = colors.filter(color => !usedColorCodes.includes(color.code))
 
         try {
             const hash = await bcrypt.hash(pincode, 8)
@@ -35,7 +35,7 @@ function registerProfile(homeId, name, pincode) {
             return profile
         } catch (error) {
             if (error.code === 11000)
-                throw new DuplicityError('profile already exists')
+                throw new DuplicityError('profile is not respecting unique values')
 
             throw new SystemError(error.message)
         }

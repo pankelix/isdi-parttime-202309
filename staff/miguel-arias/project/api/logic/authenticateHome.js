@@ -5,7 +5,6 @@ const { SystemError, CredentialsError, NotFoundError } = errors
 
 import { Home } from '../data/models.js'
 
-
 function authenticateHome(email, password) {
     validate.email(email, 'email')
     validate.password(password, 'password')

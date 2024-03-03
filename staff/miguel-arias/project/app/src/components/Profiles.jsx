@@ -127,12 +127,12 @@ function Profiles(props) {
         event.preventDefault()
         const name = event.target.name.value
 
-        const newDigit1 = event.target.newDigit1.value
-        const newDigit2 = event.target.newDigit2.value
-        const newDigit3 = event.target.newDigit3.value
-        const newDigit4 = event.target.newDigit4.value
+        const creationDigit1 = event.target.creationDigit1.value
+        const creationDigit2 = event.target.creationDigit2.value
+        const creationDigit3 = event.target.creationDigit3.value
+        const creationDigit4 = event.target.creationDigit4.value
 
-        const pincode = newDigit1 + newDigit2 + newDigit3 + newDigit4
+        const pincode = creationDigit1 + creationDigit2 + creationDigit3 + creationDigit4
 
         try {
             await logic.registerProfile(name, pincode)
@@ -166,6 +166,34 @@ function Profiles(props) {
         }
     }
 
+    const handleChangePincodeClick = () => {
+        setView('change-pincode-view')
+    }
+
+    const handleChangePincodeSubmit = async (event) => {
+        event.preventDefault()
+        const oldDigit1 = event.target.oldDigit1.value
+        const oldDigit2 = event.target.oldDigit2.value
+        const oldDigit3 = event.target.oldDigit3.value
+        const oldDigit4 = event.target.oldDigit4.value
+
+        const newDigit1 = event.target.newDigit1.value
+        const newDigit2 = event.target.newDigit2.value
+        const newDigit3 = event.target.newDigit3.value
+        const newDigit4 = event.target.newDigit4.value
+
+        const oldPincode = oldDigit1 + oldDigit2 + oldDigit3 + oldDigit4
+        const newPincode = newDigit1 + newDigit2 + newDigit3 + newDigit4
+
+        try {
+            await logic.changePincode(oldPincode, newPincode)
+            refreshProfiles()
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
     return <Container>
         <h1>Profiles</h1>
 
@@ -193,7 +221,7 @@ function Profiles(props) {
         {view === 'edit-profile-view' && <Container>
             <Button>Change picture</Button>
             <Button onClick={handleChangeColorClick}>Change profile color</Button>
-            <Button>Change pincode</Button>
+            <Button onClick={handleChangePincodeClick}>Change pincode</Button>
             <Button>Delete profile</Button>
         </Container>}
 
@@ -201,6 +229,24 @@ function Profiles(props) {
             {palette.map(color => !usedColors.includes(color.code) ? <Button key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
             <Button onClick={handleChooseColorClick}>Choose color</Button>
             <Button onClick={handleCancelClick}>Cancel</Button>
+        </Container>}
+
+        {view === 'change-pincode-view' && <Container>
+            <Form onSubmit={handleChangePincodeSubmit}>
+                <h3>{name}</h3>
+                <p>Old pin code</p>
+                <Input id='oldDigit1' placeholder='-'></Input>
+                <Input id='oldDigit2' placeholder='-'></Input>
+                <Input id='oldDigit3' placeholder='-'></Input>
+                <Input id='oldDigit4' placeholder='-'></Input>
+
+                <p>New pin code</p>
+                <Input id='newDigit1' placeholder='-'></Input>
+                <Input id='newDigit2' placeholder='-'></Input>
+                <Input id='newDigit3' placeholder='-'></Input>
+                <Input id='newDigit4' placeholder='-'></Input>
+                <Button type='submit'>Submit</Button>
+            </Form>
         </Container>}
 
         {view === 'manage-profiles-view' && <Container>
@@ -229,10 +275,10 @@ function Profiles(props) {
             <Form onSubmit={handleNewProfileSubmit}>
                 <Input id='name' type='text' placeholder='Name'></Input>
                 <p>Pin code</p>
-                <Input id='newDigit1' placeholder='-'></Input>
-                <Input id='newDigit2' placeholder='-'></Input>
-                <Input id='newDigit3' placeholder='-'></Input>
-                <Input id='newDigit4' placeholder='-'></Input>
+                <Input id='creationDigit1' placeholder='-'></Input>
+                <Input id='creationDigit2' placeholder='-'></Input>
+                <Input id='creationDigit3' placeholder='-'></Input>
+                <Input id='creationDigit4' placeholder='-'></Input>
                 <Button type='submit'>Submit</Button>
                 <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
