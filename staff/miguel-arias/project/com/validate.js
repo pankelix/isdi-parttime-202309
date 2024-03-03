@@ -17,6 +17,10 @@ function number(number, explain) {
     if (typeof number !== 'number') throw new TypeError(`${explain} is not a number`)
 }
 
+function object(object, explain) {
+    if (typeof object !== 'object') throw new TypeError(`${explain} is not a object`)
+}
+
 function funktion(funktion, explain) {
     if (typeof funktion !== 'function') throw new TypeError(`${explain} is not a function`)
 }
@@ -55,6 +59,7 @@ const validate = {
     text,
     email,
     number,
+    object,
     function: funktion,
     id,
     password,

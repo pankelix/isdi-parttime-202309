@@ -21,6 +21,7 @@ import deleteRoomHandler from './deleteRoomHandler.js'
 import editRoleHandler from './editRoleHandler.js'
 import deleteProfileHandler from './deleteProfileHandler.js'
 import registerProfileHandler from './registerProfileHandler.js'
+import changeProfileColorHandler from './changeProfileColorHandler.js'
 
 export {
     registerHomeHandler,
@@ -46,4 +47,5 @@ export {
     editRoleHandler,
     deleteProfileHandler,
     registerProfileHandler,
+    changeProfileColorHandler,
 }

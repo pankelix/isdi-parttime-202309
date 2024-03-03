@@ -17,7 +17,7 @@ function Task(props) {
     }
 
     return <Container>
-        <Button style={{ backgroundColor: profile ? profile.color : '' }} onClick={handleTaskClick}>
+        <Button style={{ backgroundColor: profile ? profile.color.code : '' }} onClick={handleTaskClick}>
             {helper.arrangeText(task.template.name)}
             {helper.arrangeDate(task.date)}
             {assigneeName}

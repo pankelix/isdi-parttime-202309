@@ -2,6 +2,7 @@ import { Profile } from '../components'
 import { Container, Form, Input, Button } from '../library'
 import { useEffect, useState } from 'react'
 import { useContext } from '../hooks'
+import defaultColors from 'com/defaultColors'
 
 import logic from '../logic'
 
@@ -9,16 +10,24 @@ function Profiles(props) {
     const role = props.role
 
     const context = useContext()
+    const colors = defaultColors
 
     const [profiles, setProfiles] = useState([])
     const [activeProfileId, setActiveProfileId] = useState(null)
     const [pinCode, setPinCode] = useState(null)
     const [name, setName] = useState(null)
+    const [palette, setPalette] = useState([])
+    const [chosenColor, setChosenColor] = useState(null)
+    const [usedColors, setUsedColors] = useState([])
     const [view, setView] = useState(null)
 
     const refreshProfiles = async () => {
         try {
             const profiles = await logic.retrieveProfiles()
+            profiles.forEach(profile => {
+                let newColor = profile.color.code
+                setUsedColors(oldColors => [...oldColors, newColor])
+            })
             setProfiles(profiles)
         } catch (error) {
             context.handleError(error)
@@ -28,8 +37,17 @@ function Profiles(props) {
     useEffect(() => {
         console.log('Profiles effect')
 
+        refreshColors()
         refreshProfiles()
     }, [props.stamp])
+
+    const refreshColors = async () => {
+        try {
+            setPalette(colors)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
 
     const handleProfileClick = async (profileName) => {
         let name = profileName.target.firstChild.data
@@ -125,6 +143,29 @@ function Profiles(props) {
         }
     }
 
+    const handleCancelClick = () => {
+        setView('null')
+    }
+
+    const handleChangeColorClick = () => {
+        setView('change-color-view')
+    }
+
+    const handleColorClick = (color) => {
+        setChosenColor(color)
+    }
+
+    const handleChooseColorClick = async () => {
+        try {
+            await logic.changeProfileColor(chosenColor)
+            refreshProfiles()
+            setChosenColor(null)
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
     return <Container>
         <h1>Profiles</h1>
 
@@ -151,9 +192,15 @@ function Profiles(props) {
 
         {view === 'edit-profile-view' && <Container>
             <Button>Change picture</Button>
-            <Button>Change profile color</Button>
+            <Button onClick={handleChangeColorClick}>Change profile color</Button>
             <Button>Change pincode</Button>
             <Button>Delete profile</Button>
+        </Container>}
+
+        {view === 'change-color-view' && <Container>
+            {palette.map(color => !usedColors.includes(color.code) ? <Button key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
+            <Button onClick={handleChooseColorClick}>Choose color</Button>
+            <Button onClick={handleCancelClick}>Cancel</Button>
         </Container>}
 
         {view === 'manage-profiles-view' && <Container>
@@ -187,6 +234,7 @@ function Profiles(props) {
                 <Input id='newDigit3' placeholder='-'></Input>
                 <Input id='newDigit4' placeholder='-'></Input>
                 <Button type='submit'>Submit</Button>
+                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
         </Container>}
     </Container>

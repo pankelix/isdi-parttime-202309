@@ -23,6 +23,7 @@ import deleteRoom from './deleteRoom.js'
 import editRole from './editRole.js'
 import deleteProfile from './deleteProfile.js'
 import registerProfile from './registerProfile.js'
+import changeProfileColor from './changeProfileColor.js'
 
 const logic = {
     registerHome,
@@ -50,6 +51,7 @@ const logic = {
     editRole,
     deleteProfile,
     registerProfile,
+    changeProfileColor,
 }
 
 export default logic
