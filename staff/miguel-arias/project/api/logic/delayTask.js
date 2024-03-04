@@ -28,7 +28,10 @@ function delayTask(profileId, taskId, date) {
         if (!task)
             throw new NotFoundError('task not found')
 
+        date = new Date(date)
+
         task.date = date
+        task.delay = task.delay + 1
 
         try {
             await task.save()

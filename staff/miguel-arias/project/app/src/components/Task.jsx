@@ -21,6 +21,7 @@ function Task(props) {
             {helper.arrangeText(task.template.name)}
             {helper.arrangeDate(task.date)}
             {assigneeName}
+            {task.delay ? `Delayed ${task.delay} times` : ''}
         </Button>
     </Container>
 }

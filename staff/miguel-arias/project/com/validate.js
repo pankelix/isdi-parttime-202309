@@ -47,12 +47,19 @@ function array(array, explain) {
     if (!Array.isArray(array)) throw new TypeError(`${explain} is not an array`)
 }
 
-function date(date, explain = 'date') {
+/* function date(date, explain = 'date') {
     if (!(date instanceof Date)) throw new TypeError(`${explain} is not a date`)
-}
+} */
 
 function boolean(boolean, explain) {
     if (typeof boolean !== 'boolean') throw new TypeError(`${explain} is not a boolean`)
+}
+
+function date(date, explain = 'date') {
+    text(date, explain)
+
+    if (date.length !== 10)
+        throw new TypeError(`${explain} is not a date`)
 }
 
 const validate = {

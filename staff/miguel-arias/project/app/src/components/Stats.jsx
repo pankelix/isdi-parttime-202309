@@ -14,7 +14,6 @@ function Stats(props) {
     const refreshProfiles = async () => {
         try {
             const profiles = await logic.retrieveProfiles()
-            console.log(profiles)
             setProfiles(profiles)
         } catch (error) {
             context.handleError(error)
@@ -43,7 +42,7 @@ function Stats(props) {
     }
 
     useEffect(() => {
-        console.log('Profiles effect')
+        console.log('Stats effect')
 
         refreshProfiles()
     }, [props.stamp])
@@ -51,7 +50,7 @@ function Stats(props) {
     return <Container>
         <h1>Statistics</h1>
 
-        {profiles.map(profile => <Container> <p>{profile.name} {profile.points ? profile.points : '0'}</p> {props.role === 'admin' &&profile.points && <Button key={profile.id} onClick={() => handleRedeemPointsClick(profile.id)}>Redeem points</Button>}</Container>)}
+        {profiles.map(profile => <Container key={profile.id}> <p>{profile.name} {profile.points ? profile.points : '0'}</p> {props.role === 'admin' && profile.points && <Button onClick={() => handleRedeemPointsClick(profile.id)}>Redeem points</Button>}</Container>)}
 
         {view === 'redeem-points-view' && <Container>
             <Form onSubmit={handleRedeemPointsSubmit}>

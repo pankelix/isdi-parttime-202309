@@ -19,6 +19,7 @@ function Calendar(props) {
     const navigate = useNavigate()
 
     const [tasks, setTasks] = useState([])
+    const [today, setToday] = useState(null)
     const [task, setTask] = useState(null)
     const [profiles, setProfiles] = useState([])
     const [templates, setTemplates] = useState([])
@@ -43,6 +44,10 @@ function Calendar(props) {
         }
     }
 
+    const refreshToday = () => {
+        setToday(new Date().toISOString().split('T')[0])
+    }
+
     const refreshTasks = async () => {
         try {
             const tasks = await logic.retrieveTasks()
@@ -56,6 +61,7 @@ function Calendar(props) {
     useEffect(() => {
         console.log('Tasks/Profiles effect')
 
+        refreshToday()
         retrieveAssignee()
         refreshTasks()
         refreshTemplates()
@@ -118,9 +124,9 @@ function Calendar(props) {
     const handleDelaySubmit = async (event) => {
         event.preventDefault()
         const date = event.target.delayDate.value
-        const dateObject = date ? new Date(date) : null
+        /* const dateObject = date ? new Date(date) : null */
         try {
-            await logic.delayTask(task.id, dateObject)
+            await logic.delayTask(task.id, date)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -146,7 +152,7 @@ function Calendar(props) {
     const handleCompleteSubmit = async (event) => {
         event.preventDefault()
         const date = event.target.completionDate.value
-        const dateObject = date ? new Date(date) : null
+        /* const dateObject = date ? new Date(date) : null */
 
         let digit1 = event.target.digit1.value
         let digit2 = event.target.digit2.value
@@ -156,7 +162,7 @@ function Calendar(props) {
         let pincode = digit1 + digit2 + digit3 + digit4
 
         try {
-            await logic.completeTask(task.id, pincode, dateObject)
+            await logic.completeTask(task.id, pincode, date)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -169,7 +175,7 @@ function Calendar(props) {
 
         <Button>Filter</Button>
 
-        {tasks.map(task => <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} /* color={profiles.} */ onTaskClick={handleOnTaskClick} />)} {/* TODO move map to find */}
+        {tasks.map(task => <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} /* color={profiles.} */ onTaskClick={handleOnTaskClick} />)}
 
         {view === 'react-to-task-view' && <Container>
             {role === 'admin' && <h3>{helper.arrangeText(task.template.name)}</h3>}
@@ -190,7 +196,7 @@ function Calendar(props) {
         {view === 'pin-code-view' && <Container>
             <Form onSubmit={handleCompleteSubmit}>
                 <Label for='completionDate'>Completion date</Label>
-                <Input id='completionDate' type={'date'} required={true}></Input>
+                <Input max={today} id='completionDate' type={'date'} required={true}></Input>
                 <p>Pin Code</p>
                 <Input id='digit1' placeholder='-'></Input>
                 <Input id='digit2' placeholder='-'></Input>

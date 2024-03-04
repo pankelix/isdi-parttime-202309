@@ -9,6 +9,7 @@ function completeTask(profileId, taskId, pincode, date) {
     validate.id(profileId, 'profile id')
     validate.id(taskId, 'task id')
     validate.pincode(pincode)
+    validate.date(date)
 
     return (async () => {
         debugger
@@ -45,7 +46,9 @@ function completeTask(profileId, taskId, pincode, date) {
         if (!task)
             throw new NotFoundError('task not found')
 
-        const newDate = date.getDate() + task.template.periodicity + 1
+        date = new Date(date)
+
+        const newDate = date.getDate() + task.template.periodicity
 
         task.date = date.setDate(newDate)
 

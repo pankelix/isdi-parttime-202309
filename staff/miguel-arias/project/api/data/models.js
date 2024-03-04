@@ -107,6 +107,10 @@ const task = new Schema({
     date: {
         type: Date,
         default: new Date()
+    },
+    delay: {
+        type: Number,
+        default: 0
     }
 })
 

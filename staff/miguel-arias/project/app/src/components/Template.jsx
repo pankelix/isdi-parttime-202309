@@ -8,6 +8,7 @@ import { Button, Container, Form, Input } from '../library'
 
 function Template(props) {
     const template = props.template
+    const rooms = props.rooms
     const context = useContext()
 
     const [view, setView] = useState()
@@ -52,7 +53,15 @@ function Template(props) {
     }
 
     return <article>
-        <h3>{helper.arrangeText(template.name)}</h3>
+        <Container>
+            <h3>{helper.arrangeText(template.name)}</h3>
+            <h4>Points</h4>
+            <p>{template.points}</p>
+            <h4>Rooms</h4>
+            {template.rooms.map(room => room.id === room.id ?  <p>{helper.arrangeText(room.name)}</p> : '')}
+            <h4>Periodicity</h4>
+            <p>{helper.arrangePeriodicity(template.periodicity)}</p>
+        </Container>
 
         {props.role === 'admin' && <aside>
             <Button onClick={handleEditClick}>Edit task</Button>

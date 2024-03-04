@@ -273,7 +273,7 @@ function Profiles(props) {
                     <option value='user' />
                 </datalist>
 
-                <Button type='submit'>Accept</Button>
+                <Button type='submit'>Change Role</Button>
 
                 <Button type='button' onClick={handleDeleteProfileClick}>Delete profile</Button>
             </Form>}
