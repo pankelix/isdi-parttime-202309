@@ -77,6 +77,7 @@ function Profiles(props) {
                     context.handleRole('admin')
                 else
                     context.handleRole('user')
+                setView(null)
             } catch (error) {
                 context.handleError(error)
             }
@@ -110,13 +111,26 @@ function Profiles(props) {
     }
 
     const handleDeleteProfileClick = async () => {
-        try {
-            await logic.deleteProfile(activeProfileId)
-            refreshProfiles()
-            setView(null)
-        } catch (error) {
-            context.handleError(error)
-        }
+        if (confirm('Are you sure you want to delete this profile?'))
+            try {
+                await logic.deleteProfile(activeProfileId)
+                refreshProfiles()
+                setView(null)
+            } catch (error) {
+                context.handleError(error)
+            }
+    }
+
+    const handleDeleteOwnProfileClick = async () => {
+        if (confirm('Are you sure you want to delete your profile?'))
+            try {
+                await logic.deleteProfile()
+                refreshProfiles()
+                setView(null)
+                context.handleRole(null)
+            } catch (error) {
+                context.handleError(error)
+            }
     }
 
     const handleNewProfileClick = () => {
@@ -222,7 +236,7 @@ function Profiles(props) {
             <Button>Change picture</Button>
             <Button onClick={handleChangeColorClick}>Change profile color</Button>
             <Button onClick={handleChangePincodeClick}>Change pincode</Button>
-            <Button>Delete profile</Button>
+            <Button onClick={handleDeleteOwnProfileClick}>Delete profile</Button>
         </Container>}
 
         {view === 'change-color-view' && <Container>
@@ -251,7 +265,7 @@ function Profiles(props) {
 
         {view === 'manage-profiles-view' && <Container>
             {<Form onSubmit={handleManageProfileSubmit}>
-                {profiles.map(profile => <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button>)}
+                {profiles.map(profile => profile.name !== name ? <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button> : '')}
 
                 <Input list='roles'>New role</Input>
                 <datalist id='roles'>

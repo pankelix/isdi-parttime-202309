@@ -4,7 +4,8 @@ const { SystemError } = errors
 import session from './session'
 
 const deleteProfile = (profileId) => {
-    validate.id(profileId, 'profile id')
+    if (profileId)
+        validate.id(profileId, 'profile id')
 
     const req = {
         method: 'POST',
@@ -16,7 +17,7 @@ const deleteProfile = (profileId) => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${profileId}/delete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${profileId ? profileId : session.profileId}/delete`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }

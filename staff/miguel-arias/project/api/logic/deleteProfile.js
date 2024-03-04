@@ -7,18 +7,20 @@ function deleteProfile(sessionProfileId, profileId) {
     validate.id(profileId, 'profile id')
 
     return (async () => {
-        let sessionProfile
-        try {
-            sessionProfile = await Profile.findById(sessionProfileId).lean()
-        } catch (error) {
-            throw new SystemError(error.message)
+        if (sessionProfileId !== profileId) {
+            let sessionProfile
+            try {
+                sessionProfile = await Profile.findById(sessionProfileId).lean()
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
+
+            if (!sessionProfile)
+                throw new NotFoundError('sessionProfile not found')
+
+            if (sessionProfile.role !== 'admin')
+                throw new PermissionError('sessionProfile is not admin')
         }
-
-        if (!sessionProfile)
-            throw new NotFoundError('sessionProfile not found')
-
-        if (sessionProfile.role !== 'admin')
-            throw new PermissionError('sessionProfile is not admin')
 
         let profile
         try {
