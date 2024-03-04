@@ -7,10 +7,11 @@ const { SystemError, DuplicityError, NotFoundError } = errors
 import { Profile, Home } from '../data/models.js'
 debugger
 
-function registerProfile(homeId, name, pincode) {
+function registerProfile(homeId, name, pincode, color) {
     validate.id(homeId)
     validate.text(name, 'name')
     validate.pincode(pincode, 'pincode')
+    validate.object(color, 'color')
 
     return (async () => {
         let home
@@ -30,7 +31,7 @@ function registerProfile(homeId, name, pincode) {
         try {
             const hash = await bcrypt.hash(pincode, 8)
 
-            const profile = await Profile.create({ home: homeId, name, pincode: hash, color: unusedColors[0] })
+            const profile = await Profile.create({ home: homeId, name, pincode: hash, color: color ? color : unusedColors[0] })
 
             return profile
         } catch (error) {

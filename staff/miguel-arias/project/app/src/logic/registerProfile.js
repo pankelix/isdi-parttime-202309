@@ -3,9 +3,10 @@ const { SystemError } = errors
 
 import session from './session'
 
-const registerProfile = (name, pincode) => {
+const registerProfile = (name, pincode, chosenColor) => {
     validate.text(name, 'name')
     validate.pincode(pincode)
+    validate.object(chosenColor, 'chosen color')
 
     const req = {
         method: 'POST',
@@ -13,7 +14,7 @@ const registerProfile = (name, pincode) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.token}`
         },
-        body: JSON.stringify({ name, pincode })
+        body: JSON.stringify({ name, pincode, chosenColor })
     }
 
     return (async () => {

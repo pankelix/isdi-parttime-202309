@@ -149,7 +149,7 @@ function Profiles(props) {
         const pincode = creationDigit1 + creationDigit2 + creationDigit3 + creationDigit4
 
         try {
-            await logic.registerProfile(name, pincode)
+            await logic.registerProfile(name, pincode, chosenColor)
             refreshProfiles()
             setView(null)
         } catch (error) {
@@ -293,6 +293,7 @@ function Profiles(props) {
                 <Input id='creationDigit2' placeholder='-'></Input>
                 <Input id='creationDigit3' placeholder='-'></Input>
                 <Input id='creationDigit4' placeholder='-'></Input>
+                {palette.map(color => !usedColors.includes(color.code) ? <Button type='button' key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
                 <Button type='submit'>Submit</Button>
                 <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>

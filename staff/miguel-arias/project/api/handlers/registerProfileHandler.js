@@ -12,9 +12,9 @@ export default async (req, res) => {
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         const homeId = payload.sub
 
-        const { name, pincode } = req.body
+        const { name, pincode, chosenColor } = req.body
 
-        await logic.registerProfile(homeId, name, pincode)
+        await logic.registerProfile(homeId, name, pincode, chosenColor)
     } catch (error) {
         let status = 500
 
