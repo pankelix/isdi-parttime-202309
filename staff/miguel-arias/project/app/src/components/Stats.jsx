@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useContext } from '../hooks'
 import { Button, Container, Input, Form } from '../library'
 
+import session from '../logic/session'
 import logic from '../logic'
 
 function Stats(props) {
@@ -50,7 +51,7 @@ function Stats(props) {
     return <Container>
         <h1>Statistics</h1>
 
-        {profiles.map(profile => <Container key={profile.id}> <p>{profile.name} {profile.points ? profile.points : '0'}</p> {props.role === 'admin' && profile.points && <Button onClick={() => handleRedeemPointsClick(profile.id)}>Redeem points</Button>}</Container>)}
+        {profiles.map(profile => <Container key={profile.id}> <p>{profile.name} {profile.points ? profile.points : '0'}</p> {session.profileRole === 'admin' && profile.points && <Button onClick={() => handleRedeemPointsClick(profile.id)}>Redeem points</Button>}</Container>)}
 
         {view === 'redeem-points-view' && <Container>
             <Form onSubmit={handleRedeemPointsSubmit}>

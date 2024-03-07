@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 
+import { format, addDay } from '@formkit/tempo'
+
+import session from '../logic/session'
 import logic from '../logic'
-import helper from '../logic/helpers'
+import helpers from '../logic/helpers'
 
 import { useContext } from '../hooks'
 
@@ -13,12 +16,12 @@ import { Task, Template } from '../components'
 function Calendar(props) {
     console.log('Calendar')
 
-    const role = props.role
-
     const context = useContext()
     const navigate = useNavigate()
 
     const [tasks, setTasks] = useState([])
+    const [filter, setFilter] = useState(null)
+    const [reversed, setReversed] = useState(false)
     const [today, setToday] = useState(null)
     const [task, setTask] = useState(null)
     const [profiles, setProfiles] = useState([])
@@ -51,8 +54,26 @@ function Calendar(props) {
     const refreshTasks = async () => {
         try {
             const tasks = await logic.retrieveTasks()
-            // tasks = await logic.orderTasks(tasks)
-            setTasks(tasks)
+            const tasks2 = []
+            for (let i = 0; i < tasks.length - 1; i++) {
+                const startDate = new Date(tasks[i].date)
+                const endDate = new Date(tasks[i + 1].date)
+                const msDifference = endDate - startDate
+                const daysDifference = Math.floor(msDifference / (1000 * 60 * 60 * 24))
+
+                tasks2.push(tasks[i])
+                for (let j = 0; j < daysDifference - 1; j++) {
+                    tasks2.push({ date: format(addDay(tasks[i].date, j + 1), 'YYYY-MM-DD').slice(5).replace('-', ' ') })
+                    /* const originalDate = tasks[i].date
+                    const objectDate = new Date(originalDate)
+                    objectDate.setDate(objectDate.getDate() + j)
+                    const newDate = objectDate.toISOString().split('T')[0]
+                    tasks2.push({ date: newDate }) */
+                }
+            }
+            tasks2.push(tasks[tasks.length - 1])
+            // crear array tasks2 y le inyecto las tareas y nulos donde no haya tareas y guardo en setTasks el tasks2
+            setTasks(tasks2)
         } catch (error) {
             context.handleError(error)
         }
@@ -124,7 +145,6 @@ function Calendar(props) {
     const handleDelaySubmit = async (event) => {
         event.preventDefault()
         const date = event.target.delayDate.value
-        /* const dateObject = date ? new Date(date) : null */
         try {
             await logic.delayTask(task.id, date)
             refreshTasks()
@@ -152,7 +172,6 @@ function Calendar(props) {
     const handleCompleteSubmit = async (event) => {
         event.preventDefault()
         const date = event.target.completionDate.value
-        /* const dateObject = date ? new Date(date) : null */
 
         let digit1 = event.target.digit1.value
         let digit2 = event.target.digit2.value
@@ -170,23 +189,93 @@ function Calendar(props) {
         }
     }
 
+    const handleFilterClick = () => {
+        setView('filter-view')
+    }
+
+    const handleAscendTasksClick = () => {
+        if (reversed === false) {
+            const reversedTasks = [...tasks].reverse()
+            setTasks(reversedTasks)
+            setReversed(true)
+        }
+    }
+
+    const handleDescendTasksClick = () => {
+        if (reversed === true) {
+            const reversedTasks = [...tasks].reverse()
+            setTasks(reversedTasks)
+            setReversed(false)
+        }
+    }
+
+    /* const handleFilterByRoomClick = () => {
+        setFilter('room')
+        refreshTasks()
+    } */
+
+    /* const handleFilterByRoom = async (templateId) => {
+        try {
+            const tasks = await logic.retrieveTasksByRoom(templateId)
+            setTasks(tasks)
+            setView(null)
+            setFilter(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    } */
+
+    /* const handleFilterByAssigneeClick = () => {
+        setFilter('assignee')
+        refreshTasks()
+    } */
+
+    /* const handleFilterByAssignee = async (profileId) => {
+        try {
+            const tasks = await logic.retrieveTasksByAssignee(profileId)
+            setTasks(tasks)
+            setView(null)
+            setFilter(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    } */
+
+    const handleRestartFilters = () => {
+        setView(null)
+        setFilter(null)
+        refreshTasks()
+    }
+
     return <Container>
         <h1>Tasks</h1>
 
-        <Button>Filter</Button>
+        <Button onClick={handleFilterClick}>Filter</Button>
+        <Button onClick={handleRestartFilters}>Restart filters</Button>
 
-        {tasks.map(task => <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} /* color={profiles.} */ onTaskClick={handleOnTaskClick} />)}
+        {view === 'filter-view' && <Container>
+            <Button onClick={handleAscendTasksClick}>🔼</Button>
+            <Button onClick={handleDescendTasksClick}>🔽</Button>
+            <Button /* onClick={handleFilterByRoomClick} */>By Room</Button>
+            <Button /* onClick={handleFilterByAssigneeClick} */>By Assignee</Button>
+        </Container>}
+
+        {/* {filter === 'room' && templates.map(template => template.rooms.map(room => <Container><Button key={room.id} onClick={() => handleFilterByRoom(template.id)}>{helpers.arrangeText(room.name)}</Button></Container>))} */}
+
+        {/* {filter === 'assignee' && profiles.map(profile => <Container><Button key={profile.id} onClick={() => handleFilterByAssignee(profile.id)}>{helpers.arrangeText(profile.name)}</Button></Container>)} */}
+
+        {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <Button key={task.date}>{task.date}</Button>)}
 
         {view === 'react-to-task-view' && <Container>
-            {role === 'admin' && <h3>{helper.arrangeText(task.template.name)}</h3>}
-            {role === 'admin' && <h3>{helper.arrangeDate(task.date)}</h3>}
-            {role === 'admin' && <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>}
-            {role !== null && <Button onClick={() => handleAssignThisTask(null)}>Take this task</Button>}
-            {role === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
-            {role !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}
-            {role !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
-            {role === 'admin' && <Button onClick={handleDeleteClick}>Delete this task</Button>}
-            {role !== null && <Button onClick={handleCancelClick}>Cancel</Button>}
+            {session.profileRole === 'admin' && <h3>{helpers.arrangeText(task.template.name)}</h3>}
+            {session.profileRole === 'admin' && <h3>{helpers.arrangeDate(task.date)}</h3>}
+            {session.profileRole === 'admin' && <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>}
+            {session.profileRole !== null && <Button onClick={() => handleAssignThisTask(null)}>Take this task</Button>}
+            {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
+            {session.profileRole !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}
+            {session.profileRole !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
+            {session.profileRole === 'admin' && <Button onClick={handleDeleteClick}>Delete this task</Button>}
+            {session.profileRole !== null && <Button onClick={handleCancelClick}>Cancel</Button>}
         </Container>}
 
         {view === 'assign-task-view' && <Container>
@@ -234,7 +323,7 @@ function Calendar(props) {
                 ➕
             </Button>
         </Container>
-    </Container>
+    </Container >
 }
 
 export default Calendar

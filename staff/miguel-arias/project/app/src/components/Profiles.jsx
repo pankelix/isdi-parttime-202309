@@ -4,18 +4,17 @@ import { useEffect, useState } from 'react'
 import { useContext } from '../hooks'
 import defaultColors from 'com/defaultColors'
 
+import session from '../logic/session'
 import logic from '../logic'
 
 function Profiles(props) {
-    const role = props.role
-
     const context = useContext()
     const colors = defaultColors
 
     const [profiles, setProfiles] = useState([])
     const [activeProfileId, setActiveProfileId] = useState(null)
-    const [pinCode, setPinCode] = useState(null)
     const [name, setName] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
     const [palette, setPalette] = useState([])
     const [chosenColor, setChosenColor] = useState(null)
     const [usedColors, setUsedColors] = useState([])
@@ -53,13 +52,13 @@ function Profiles(props) {
         let name = profileName.target.firstChild.data
         try {
             setName(name)
-            setPinCode('pinCode')
+            setView('login-profile-view')
         } catch (error) {
             context.handleError(error)
         }
     }
 
-    const handleSubmit = (event) => {
+    const handleLoginProfileSubmit = (event) => {
         event.preventDefault()
         const digit1 = event.target.digit1.value
         const digit2 = event.target.digit2.value
@@ -71,13 +70,14 @@ function Profiles(props) {
         return (async () => {
             try {
                 await logic.loginProfile(name, pincode)
-                setPinCode(null)
+                setView(null)
                 const role = await logic.retrieveRole()
                 if (role === 'admin')
                     context.handleRole('admin')
                 else
                     context.handleRole('user')
                 setView(null)
+                refreshProfiles()
             } catch (error) {
                 context.handleError(error)
             }
@@ -208,15 +208,33 @@ function Profiles(props) {
         }
     }
 
+    const handleChangePictureClick = () => {
+        setView('change-picture-view')
+    }
+
+    const handleImageChange = (event) => {
+        const image = event.target.files[0]
+        setSelectedImage(image)
+    }
+
+    const handleImageSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            await logic.changeImage(selectedImage)
+            setSelectedImage(null)
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
     return <Container>
         <h1>Profiles</h1>
 
-        <Button>Filter</Button>
-
         {profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />)}
 
-        {pinCode === 'pinCode' && <Container>
-            <Form onSubmit={handleSubmit}>
+        {view === 'login-profile-view' && <Container>
+            <Form onSubmit={handleLoginProfileSubmit}>
                 <h3>{name}</h3>
                 <p>Pin code</p>
                 <Input id='digit1' placeholder='-'></Input>
@@ -228,15 +246,22 @@ function Profiles(props) {
         </Container>}
 
         <Container>
-            {role === 'admin' ? <Button onClick={handleManageProfilesClick}>Manage profiles</Button> : ''}
-            {role !== null ? <Button onClick={handleEditProfileClick}>Edit your profile</Button> : ''}
+            {session.profileRole === 'admin' ? <Button onClick={handleManageProfilesClick}>Manage profiles</Button> : ''}
+            {session.profileRole !== null ? <Button onClick={handleEditProfileClick}>Edit your profile</Button> : ''}
         </Container>
 
         {view === 'edit-profile-view' && <Container>
-            <Button>Change picture</Button>
+            <Button onClick={handleChangePictureClick}>Change picture</Button>
             <Button onClick={handleChangeColorClick}>Change profile color</Button>
             <Button onClick={handleChangePincodeClick}>Change pincode</Button>
             <Button onClick={handleDeleteOwnProfileClick}>Delete profile</Button>
+        </Container>}
+
+        {view === 'change-picture-view' && <Container>
+            <Form onSubmit={handleImageSubmit}>
+                <Input type='file' accept='image/*' onChange={handleImageChange}></Input>
+                <Button type='submit'>Upload image</Button>
+            </Form>
         </Container>}
 
         {view === 'change-color-view' && <Container>

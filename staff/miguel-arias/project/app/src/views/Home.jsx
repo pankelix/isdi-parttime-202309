@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 
+import session from '../logic/session'
 import logic from '../logic'
-
-import Context from '../Context'
 
 import { useContext } from '../hooks'
 
-import { Button, Container } from '../library'
+import { Button } from '../library'
 import { Calendar, Profiles, Templates, Stats, Rooms } from '../components'
-/* import { Button, Container } from '../library' */
 
 function Home(props) {
 
@@ -18,7 +16,6 @@ function Home(props) {
 
     const [name, setName] = useState(null)
     const [stamp, setStamp] = useState(null)
-    const [view, setView] = useState(null)
 
     function handleLogoutClick() {
         try {
@@ -74,13 +71,14 @@ function Home(props) {
             {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
             {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} />} />}
         </Routes>
+
         <footer>
             <nav>
                 <Button onClick={handleLogoutClick}>Logout</Button>
                 <Button onClick={handleHomeClick}>Home</Button>
-                {props.role !== null && <Button onClick={handleTasksClick}>Tasks</Button>}
-                {props.role !== null && <Button onClick={handleStatsClick}>Stats</Button>}
-                {props.role !== null && <Button onClick={handleRoomsClick}>Rooms</Button>}
+                {session.profileRole !== null && <Button onClick={handleTasksClick}>Templates</Button>}
+                {session.profileRole !== null && <Button onClick={handleStatsClick}>Stats</Button>}
+                {session.profileRole !== null && <Button onClick={handleRoomsClick}>Rooms</Button>}
                 <Button onClick={handleProfilesClick}>Profile</Button>
             </nav>
         </footer >

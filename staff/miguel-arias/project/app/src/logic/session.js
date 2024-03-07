@@ -46,6 +46,18 @@ const session = {
         // sessionStorage.profileToken
         return sessionStorage.profileToken ? sessionStorage.profileToken : null
     },
+
+    set profileRole(profileRole) {
+        if (profileRole) // session.profileRole = '123' entrará aqui
+            sessionStorage.profileRole = profileRole
+        else // si pongo session.profileRole = null, entrará aqui
+            delete sessionStorage.profileRole
+    },
+
+    get profileRole() {
+        // sessionStorage.profileRole
+        return sessionStorage.profileRole ? sessionStorage.profileRole : null
+    },
 }
 
 export default session

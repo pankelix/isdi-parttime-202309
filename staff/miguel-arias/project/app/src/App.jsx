@@ -7,7 +7,8 @@ import Context from './Context'
 import { errors } from 'com'
 const { ContentError, DuplicityError, NotFoundError, TokenError } = errors
 
-import Feedback from './components/Feedback'
+import { Feedback } from './components'
+import session from './logic/session'
 import logic from './logic'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
 
   const [level, setLevel] = useState(null)
   const [message, setMessage] = useState(null)
-  const [role, setRole] = useState(null)
+  const [role, setRole] = useState(logic.getProfileRole)
 
   const navigate = useNavigate()
 
@@ -61,7 +62,7 @@ function App() {
   }
 
   const handleRole = role => {
-    setRole(role)
+    session.profileRole = role
   }
 
   return <>

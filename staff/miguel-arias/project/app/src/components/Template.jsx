@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { useContext } from '../hooks'
 
+import session from '../logic/session'
 import logic from '../logic'
 import helper from '../logic/helpers'
 import { Button, Container, Form, Input } from '../library'
@@ -58,13 +59,13 @@ function Template(props) {
             <h4>Points</h4>
             <p>{template.points}</p>
             <h4>Rooms</h4>
-            {template.rooms.map(room => room.id === room.id ?  <p>{helper.arrangeText(room.name)}</p> : '')}
+            {template.rooms.map(room => <p key={room.id}>{helper.arrangeText(room.name)}</p>)}
             <h4>Periodicity</h4>
             <p>{helper.arrangePeriodicity(template.periodicity)}</p>
         </Container>
 
-        {props.role === 'admin' && <aside>
-            <Button onClick={handleEditClick}>Edit task</Button>
+        {session.profileRole === 'admin' && <aside>
+            <Button onClick={handleEditClick}>Edit template</Button>
             <Button onClick={handleDeleteClick}>Delete template</Button>
         </aside>}
 

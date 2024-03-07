@@ -25,6 +25,7 @@ import deleteProfile from './deleteProfile.js'
 import registerProfile from './registerProfile.js'
 import changeProfileColor from './changeProfileColor.js'
 import changePincode from './changePincode.js'
+import getprofileRole from './getProfileRole.js'
 
 const logic = {
     registerHome,
@@ -54,6 +55,7 @@ const logic = {
     registerProfile,
     changeProfileColor,
     changePincode,
+    getprofileRole,
 }
 
 export default logic

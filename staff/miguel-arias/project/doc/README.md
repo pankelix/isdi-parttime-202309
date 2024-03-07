@@ -57,10 +57,10 @@ Different profiles with different permissions (admin/user/home/child)
 * Tasks feed
     - Default: Calendar since actual day (vertical infinite scroll)
     - Filter
-        - Date range
+        - Date range (canceled)
         - Room
         - Assigned person
-        - Points granted
+        - Points granted (canceled)
     - Tasks (go to **Task templates**)
     - Stats (go to **Stats**)
     - Profile (go to **Profile views**)
@@ -99,7 +99,7 @@ Different profiles with different permissions (admin/user/home/child)
 * See all task templates
 * Filter task templates
     - By room
-    - By points awarded
+    - By points awarded (canceled)
 * Edit task
 * Store task
 * Delete task

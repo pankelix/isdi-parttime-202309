@@ -3,12 +3,15 @@ import { useState, useEffect } from 'react'
 import { Template } from '../components'
 import { Container, Button, Form, Input } from '../library'
 
+import helpers from '../logic/helpers'
 import logic from '../logic'
 
 function Templates(props) {
 
     const [templates, setTemplates] = useState([])
     const [rooms, setRooms] = useState([])
+    const [filter, setFilter] = useState(null)
+    const [reversed, setReversed] = useState(false)
     const [chosenRooms, setChosenRooms] = useState([])
     const [dayOrWeek, setDayOrWeek] = useState('day')
     const [view, setView] = useState(null)
@@ -84,10 +87,58 @@ function Templates(props) {
         setChosenRooms([])
     }
 
+    const handleFilterClick = () => {
+        setView('filter-view')
+    }
+
+    const handleAscendTemplatesClick = () => {
+        if (reversed === false) {
+            const reversedTemplates = [...templates].reverse()
+            setTemplates(reversedTemplates)
+            setReversed(true)
+        }
+    }
+
+    const handleDescendTemplatesClick = () => {
+        if (reversed === true) {
+            const reversedTemplates = [...templates].reverse()
+            setTemplates(reversedTemplates)
+            setReversed(false)
+        }
+    }
+
+    const handleFilterByRoomClick = () => {
+        setFilter('room')
+        refreshTemplates()
+    }
+
+    const handleFilterByRoom = (roomId) => {
+        const templatesFilteredByRoom = templates.filter((template) => template.rooms.some((room) => room._id === roomId))
+        setTemplates(templatesFilteredByRoom)
+        setView(null)
+        setFilter(null)
+    }
+
+    const handleRestartFilters = () => {
+        setView(null)
+        setFilter(null)
+        refreshTemplates()
+    }
+
     return <Container>
         <h1>Templates</h1>
 
-        <Button>Filter</Button>
+        <Button onClick={handleFilterClick}>Filter</Button>
+        <Button onClick={handleRestartFilters}>Restart filters</Button>
+
+        {view === 'filter-view' && <Container>
+            <Button onClick={handleAscendTemplatesClick}>🔼</Button>
+            <Button onClick={handleDescendTemplatesClick}>🔽</Button>
+            <Button onClick={handleFilterByRoomClick}>By Room</Button>
+
+            {filter === 'room' && templates.map(template => template.rooms.map(room => <Button key={room.id} onClick={() => handleFilterByRoom(room._id)}>{helpers.arrangeText(room.name)}</Button>))}
+
+        </Container>}
 
         {templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} />)}
 

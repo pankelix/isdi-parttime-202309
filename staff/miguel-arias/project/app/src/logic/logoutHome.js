@@ -2,9 +2,10 @@ import session from './session'
 
 function logoutUser() {
     session.token = null
-    session.homeId
+    session.homeId = null
     session.profileToken = null
     session.profileId = null
+    session.profileRole = null
 
     return
 }
