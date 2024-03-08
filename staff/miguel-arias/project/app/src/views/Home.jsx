@@ -14,7 +14,8 @@ function Home(props) {
     const context = useContext()
     const navigate = useNavigate()
 
-    const [name, setName] = useState(null)
+    const [homeName, setHomeName] = useState(null)
+    const [profileName, setProfileName] = useState(null)
     const [stamp, setStamp] = useState(null)
 
     function handleLogoutClick() {
@@ -51,17 +52,24 @@ function Home(props) {
         (async () => {
             try {
                 const home = await logic.retrieveHome()
-
-                setName(home.name)
+                setHomeName(home.name)
             } catch (error) {
                 context.handleError(error)
             }
+            try {
+                const profiles = await logic.retrieveProfiles()
+                const profile = profiles.find(profile => session.profileId === profile.id)
+                if (profile)
+                    setProfileName(profile.name)
+            } catch (error) {
+
+            }
         })()
-    }, [])
+    }, [session.profileId])
 
     return <>
         <header>
-            <h1>Hello world, your home is {name}</h1>
+            <h1>Hello world, your home is {homeName}</h1>
         </header>
 
         <Routes>
@@ -79,7 +87,7 @@ function Home(props) {
                 {session.profileRole !== null && <Button onClick={handleTasksClick}>Templates</Button>}
                 {session.profileRole !== null && <Button onClick={handleStatsClick}>Stats</Button>}
                 {session.profileRole !== null && <Button onClick={handleRoomsClick}>Rooms</Button>}
-                <Button onClick={handleProfilesClick}>Profile</Button>
+                <Button onClick={handleProfilesClick}>{session.profileId ? profileName : 'Profile'}</Button>
             </nav>
         </footer >
     </>

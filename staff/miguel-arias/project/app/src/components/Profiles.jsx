@@ -1,5 +1,6 @@
 import { Profile } from '../components'
 import { Container, Form, Input, Button } from '../library'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useContext } from '../hooks'
 import defaultColors from 'com/defaultColors'
@@ -9,6 +10,7 @@ import logic from '../logic'
 
 function Profiles(props) {
     const context = useContext()
+    const navigate = useNavigate()
     const colors = defaultColors
 
     const [profiles, setProfiles] = useState([])
@@ -70,14 +72,13 @@ function Profiles(props) {
         return (async () => {
             try {
                 await logic.loginProfile(name, pincode)
-                setView(null)
                 const role = await logic.retrieveRole()
                 if (role === 'admin')
                     context.handleRole('admin')
                 else
                     context.handleRole('user')
+                navigate('/')
                 setView(null)
-                refreshProfiles()
             } catch (error) {
                 context.handleError(error)
             }
