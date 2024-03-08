@@ -59,48 +59,55 @@ function Calendar(props) {
 
             const currentDate = addDay(new Date(), week * 7)
             const startOfCurrentWeek = dayEnd(weekStart(currentDate, 1))
+            const endOfCurrentWeek = dayEnd(weekEnd(currentDate, 1))
 
-            if (tasks.length === 0) {
-                for (let j = 0; j < 7; j++) {
-                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
-                }
-
-            } else {
-                const firstTaskDate = new Date(tasks[0].date)
-                const firstPartOfWeekInms = firstTaskDate - startOfCurrentWeek
+            for (let i = 0; i < 1; i++) {
+                const nextTaskDate = new Date(tasks[i].date)
+                const firstPartOfWeekInms = nextTaskDate - startOfCurrentWeek
                 const firstPartOfWeek = Math.ceil(firstPartOfWeekInms / (1000 * 60 * 60 * 24))
+                let firstPartCounted = false
+                let secondPartCounted = false
 
-                for (let j = 0; j < firstPartOfWeek; j++) {
-                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
+                if (firstPartCounted === false) {
+                    for (let j = 0; j < firstPartOfWeek; j++) {
+                        tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'DD-MM-YYYY').slice(0, 5).replace('-', ' ') })
+                    }
+                    firstPartCounted = true
                 }
 
-                for (let i = 0; i < tasks.length - 1; i++) {
+
+                for (let k = 0; k < tasks.length - 1; k++) {
                     const startDate = new Date(tasks[i].date)
                     const endDate = new Date(tasks[i + 1].date)
                     const msDifference = endDate - startDate
-                    const daysDifference = Math.floor(msDifference / (1000 * 60 * 60 * 24))
+                    const daysDifference = Math.ceil(msDifference / (1000 * 60 * 60 * 24))
 
-                    tasks2.push(tasks[i])
-                    for (let j = 0; j < daysDifference - 1; j++) {
-                        tasks2.push({ date: format(addDay(tasks[i].date, j + 1), 'DD-MM-YYYY')/* .slice(5).replace('-', ' ') */ })
+                    tasks2.push(tasks[i + k])
+                    if (daysDifference !== 1) {
+                        tasks2.push({ date: format(addDay(tasks[i].date, k + 1), 'DD-MM-YYYY').slice(0, 5).replace('-', ' ') })
                         /* const originalDate = tasks[i].date
                         const objectDate = new Date(originalDate)
-                        objectDate.setDate(objectDate.getDate() + j)
+                        objectDate.setDate(objectDate.getDate() + k)
                         const newDate = objectDate.toISOString().split('T')[0]
                         tasks2.push({ date: newDate }) */
                     }
+                    tasks2.push(tasks[i + 1 + k])
                 }
-                tasks2.push(tasks[tasks.length - 1])
 
-                const endOfCurrentWeek = dayEnd(weekEnd(currentDate, 1))
-                const lastTaskDate = new Date(tasks[tasks.length - 1].date)
-                const lastPartOfWeekInms = endOfCurrentWeek - lastTaskDate
-                const lastPartOfWeek = Math.ceil(lastPartOfWeekInms / (1000 * 60 * 60 * 24))
+                if (secondPartCounted === false) {
 
-                for (let k = 0; k < lastPartOfWeek; k++) {
-                    tasks2.push({ date: format(addDay(lastTaskDate, k + 1), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
+                    const lastTaskDate = new Date(tasks[i + 1].date)
+                    const lastPartOfWeekInms = endOfCurrentWeek - lastTaskDate
+                    const lastPartOfWeek = Math.floor(lastPartOfWeekInms / (1000 * 60 * 60 * 24))
+
+                    for (let l = 0; l < lastPartOfWeek; l++) {
+                        tasks2.push({ date: format(addDay(tasks[i + 1].date, l + 1), 'DD-MM-YYYY').slice(0, 5).replace('-', ' ') })
+                    }
+                    secondPartCounted = true
                 }
             }
+
+            /* tasks2.push(tasks[tasks.length - 1]) */
             setTasks(tasks2)
         } catch (error) {
             context.handleError(error)

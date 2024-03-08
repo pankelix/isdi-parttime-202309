@@ -62,7 +62,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.patch('/profiles/:profileId/pincode', jsonBodyParser, changePincodeHandler)
 
-        server.get('/tasks', retrieveTasksHandler)
+        server.get('/tasks/:week', retrieveTasksHandler)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
 

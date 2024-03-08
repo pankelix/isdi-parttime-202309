@@ -12,7 +12,9 @@ export default async (req, res) => {
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         const homeId = payload.sub
 
-        const tasks = await logic.retrieveTasks(homeId)
+        const { week } = req.params
+
+        const tasks = await logic.retrieveTasks(homeId, week)
 
         res.json(tasks)
 

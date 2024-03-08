@@ -2,7 +2,9 @@ import { errors, validate } from 'com'
 const { SystemError } = errors
 import session from "./session"
 
-function retrieveTasks() {
+function retrieveTasks(week) {
+    validate.number(week)
+
     const req = {
         method: 'GET',
         headers: {
@@ -13,7 +15,7 @@ function retrieveTasks() {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`, req) //tasks/numerodedias (para que me traiga solo los numeros de días que yo le diga)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${week}`, req) //tasks/numerodedias (para que me traiga solo los numeros de días que yo le diga)
         } catch (error) {
             throw new SystemError(error.message)
         }
