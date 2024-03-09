@@ -59,7 +59,7 @@ function Template(props) {
             <h4>Points</h4>
             <p>{template.points}</p>
             <h4>Rooms</h4>
-            {template.rooms.map(room => <p key={room.id}>{helper.arrangeText(room.name)}</p>)}
+            {template.rooms.map(room => <p key={room._id}>{helper.arrangeText(room.name)}</p>)}
             <h4>Periodicity</h4>
             <p>{helper.arrangePeriodicity(template.periodicity)}</p>
         </Container>

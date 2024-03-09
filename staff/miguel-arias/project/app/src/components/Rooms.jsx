@@ -60,6 +60,8 @@ function Rooms(props) {
     return <Container>
         <h1>Rooms</h1>
 
+        {rooms.length === 0 ? <h3>Please create a room clicking on the + below</h3> : ''}
+
         {rooms.map(room => <Container key={room.id}><h5>{helper.arrangeText(room.name)}</h5><Button onClick={() => handleDeleteRoomClick(room.id)}>Delete</Button></Container>)}
 
         {view === 'new-room-view' && <Container>

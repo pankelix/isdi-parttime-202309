@@ -4,6 +4,7 @@ dotenv.config()
 import mongoose from 'mongoose'
 import express from 'express'
 import cors from 'cors'
+import multer from 'multer'
 
 import {
     registerHomeHandler,
@@ -31,30 +32,35 @@ import {
     registerProfileHandler,
     changeProfileColorHandler,
     changePincodeHandler,
+    changeAvatarHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         const server = express()
         const jsonBodyParser = express.json()
+        const storage = multer.memoryStorage()
+        const upload = multer({ storage: storage })
 
         server.use(cors())
 
-        server.post('/homes', jsonBodyParser, registerHomeHandler)
-
         server.get('/homes', retrieveHomeHandler)
+
+        server.post('/homes', jsonBodyParser, registerHomeHandler)
 
         server.post('/homes/auth', jsonBodyParser, authenticateHomeHandler)
 
         server.get('/profiles', retrieveProfilesHandler)
 
-        server.post('/profiles', jsonBodyParser, registerProfileHandler)
-
         server.get('/profiles/:profileId/role', retrieveRoleHandler)
+
+        server.post('/profiles', jsonBodyParser, registerProfileHandler)
 
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
         server.post('/profiles/:profileId/delete', deleteProfileHandler)
+
+        server.patch('/profiles/:profileId/avatar', upload.single('image'), changeAvatarHandler)
 
         server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
 

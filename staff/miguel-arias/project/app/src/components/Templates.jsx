@@ -49,13 +49,14 @@ function Templates(props) {
         setView('new-template-view')
     }
 
-    const handleNewTemplateClick = async (event) => {
+    const handleNewTemplateSubmit = async (event) => {
         event.preventDefault()
         const name = event.target.taskName.value
         const periodicityNumber = Number(event.target.periodicityNumber.value)
         const periodicityRange = dayOrWeek
         const rooms = chosenRooms
         const points = Number(event.target.points.value)
+
         try {
             await logic.createTemplate(name, periodicityNumber, periodicityRange, rooms, points)
             refreshTemplates()
@@ -127,9 +128,13 @@ function Templates(props) {
 
     return <Container>
         <h1>Templates</h1>
+        {rooms.length === 0 ? <h3>Please create a room before creating a template</h3> : ''}
+        {rooms.length > 0 && templates.length === 0 ? <h3>Please click on the + below to create a template</h3> : ''}
 
-        <Button onClick={handleFilterClick}>Filter</Button>
-        <Button onClick={handleRestartFilters}>Restart filters</Button>
+        {templates.length > 0 ? <Container>
+            <Button onClick={handleFilterClick}>Filter</Button>
+            <Button onClick={handleRestartFilters}>Restart filters</Button>
+        </Container> : ''}
 
         {view === 'filter-view' && <Container>
             <Button onClick={handleAscendTemplatesClick}>🔼</Button>
@@ -149,7 +154,7 @@ function Templates(props) {
         </Container>
 
         {view === 'new-template-view' && <Container>
-            <Form onSubmit={handleNewTemplateClick}>
+            <Form onSubmit={handleNewTemplateSubmit}>
                 <Input id='taskName' type='text' required={true} placeholder={'Task name'}></Input>
 
                 <p>It repeats every</p>

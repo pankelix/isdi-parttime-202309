@@ -1,7 +1,8 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError, ContentError } = errors
 
-import { Template, Home } from '../data/models.js'
+import { Template, Home, Room } from '../data/models.js'
+debugger
 
 function createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms, points) {
     validate.id(homeId, 'home id')
@@ -13,7 +14,7 @@ function createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms
 
     return (async () => {
 
-        if(periodicityNumber === 0)
+        if (periodicityNumber === 0)
             throw new ContentError("periodicity can't be 0")
 
         let home
@@ -25,6 +26,21 @@ function createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms
 
         if (!home)
             throw new NotFoundError('home not found')
+
+        if (rooms.length === 0)
+            throw new NotFoundError('rooms not found')
+
+        rooms.forEach(async room => {
+            let foundRoom
+            try {
+                foundRoom = await Room.find(room.id)
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
+
+            if (!foundRoom)
+                throw new NotFoundError('room not found')
+        })
 
         let periodicity
         if (periodicityRange === 'day')

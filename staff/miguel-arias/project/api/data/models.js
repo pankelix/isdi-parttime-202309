@@ -63,11 +63,11 @@ const profile = new Schema({
     points: {
         type: Number,
         default: 0
-    }/* ,
-    profileImage: {
+    },
+    avatar: {
         data: Buffer,
         contentType: String
-    } */
+    }
 })
 
 const template = new Schema({

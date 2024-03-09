@@ -1,7 +1,11 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
+import { dayStart } from '@formkit/tempo'
+
 import { Task, Home } from '../data/models.js'
+import { ContentError } from 'com/errors.js'
+debugger
 
 function createTask(homeId, templateId, date) {
     validate.id(homeId, 'home id')
@@ -20,6 +24,10 @@ function createTask(homeId, templateId, date) {
             throw new NotFoundError('home not found')
 
         date = new Date(date)
+        const today = dayStart(new Date())
+
+        if (date < today)
+            throw new ContentError('date must be after today')
 
         try {
             const task = await Task.create({ home: homeId, template: templateId, date: date })

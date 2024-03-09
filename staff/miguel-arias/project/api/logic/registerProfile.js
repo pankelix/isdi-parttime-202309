@@ -28,10 +28,23 @@ function registerProfile(homeId, name, pincode, color) {
 
         const unusedColors = colors.filter(color => !usedColorCodes.includes(color.code))
 
+        let profilesExist
+        try {
+            profilesExist = await Profile.find()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
         try {
             const hash = await bcrypt.hash(pincode, 8)
 
-            const profile = await Profile.create({ home: homeId, name, pincode: hash, color: color ? color : unusedColors[0] })
+            let profile
+
+            if (profilesExist.length === 0) {
+                profile = await Profile.create({ home: homeId, name, pincode: hash, color: color ? color : unusedColors[0], role: 'admin' })
+            } else {
+                profile = await Profile.create({ home: homeId, name, pincode: hash, color: color ? color : unusedColors[0] })
+            }
 
             return profile
         } catch (error) {

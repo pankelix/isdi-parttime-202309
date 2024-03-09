@@ -8,9 +8,9 @@ import createTemplate from './createTemplate.js'
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await createTemplate('65d79ed33377222a975829fa', 'Limpiar ducha', 3, 'week', ['65d79ed33377222a97582a02', '65d79ed33377222a97582a04'], 15)
+        await createTemplate('65eb7378e9410ed5aa416546', 'Limpiar ducha', 3, 'week', ['12345'], 15)
 
-        //homeId, name, rooms, periodicityNumber, periodicityRange, points
+        // homeId, name, periodicityNumber, periodicityRange, rooms, points
 
         console.log('template registered')
 

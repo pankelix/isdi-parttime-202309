@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 const { JsonWebTokenError } = jwt
 
 import { errors } from 'com'
-const { NotFoundError, ContentError, TokenError, DuplicityError } = errors
+const { NotFoundError, ContentError, TokenError } = errors
 
 import logic from '../logic/index.js'
 
@@ -11,17 +11,16 @@ export default async (req, res) => {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     const homeId = payload.sub
 
-    const { name, periodicityNumber, periodicityRange, rooms, points } = req.body
+    const { profileId } = req.params
+
+    const image = req.body
     try {
-        await logic.createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms, points)
+        await logic.changeAvatar(homeId, profileId, image)
     } catch (error) {
         let status = 500
 
         if (error instanceof NotFoundError)
             status = 404
-
-        if (error instanceof DuplicityError)
-            status = 409
 
         if (error instanceof ContentError || error instanceof TypeError)
             status = 406

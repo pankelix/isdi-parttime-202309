@@ -23,9 +23,11 @@ function Calendar(props) {
     const [filter, setFilter] = useState(null)
     const [reversed, setReversed] = useState(false)
     const [today, setToday] = useState(null)
+    const [buttonDate, setButtonDate] = useState(null)
     const [week, setWeek] = useState(0)
     const [task, setTask] = useState(null)
     const [profiles, setProfiles] = useState([])
+    const [chosenTemplate, setChosenTemplate] = useState(null)
     const [templates, setTemplates] = useState([])
     const [view, setView] = useState(null)
 
@@ -123,6 +125,8 @@ function Calendar(props) {
 
     const handleCancelClick = () => {
         setView(null)
+        setButtonDate(null)
+        setChosenTemplate(null)
     }
 
     const handleNewProposalClick = () => {
@@ -133,7 +137,18 @@ function Calendar(props) {
         navigate('/templates')
     }
 
-    const handleProposeTaskClick = () => {
+    const handleProposeTaskClick = (taskDate) => {
+        if (session.profileRole === null)
+            return
+
+        if (typeof taskDate === 'string') {
+            const dateParts = taskDate.split('-')
+            const formatDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`)
+            const finalDate = formatDate.toISOString().split('T')[0]
+
+            setButtonDate(finalDate)
+        }
+
         setView('propose-task')
     }
 
@@ -141,15 +156,14 @@ function Calendar(props) {
         event.preventDefault()
         const date = event.target.date.value
         /* const dateObject = date ? new Date(date) : null */
-
-        const templateId = event.nativeEvent.submitter.value
         try {
-            await logic.createTask(templateId, date)
+            await logic.createTask(chosenTemplate, date ? date : buttonDate)
             refreshTasks()
             setView(null)
         } catch (error) {
             context.handleError(error)
         }
+
     }
 
     const handleAssignThisTaskTo = () => {
@@ -284,10 +298,12 @@ function Calendar(props) {
     }
 
     return <Container>
-        <h1>Tasks</h1>
+        <h1>Calendar</h1>
 
-        <Button onClick={handleFilterClick}>Filter</Button>
-        <Button onClick={handleRestartFilters}>Restart filters</Button>
+        <Container>
+            <Button onClick={handleFilterClick}>Filter</Button>
+            <Button onClick={handleRestartFilters}>Restart filters</Button>
+        </Container>
 
         {view === 'filter-view' && <Container>
             <Button onClick={handleAscendTasksClick}>🔼</Button>
@@ -302,7 +318,7 @@ function Calendar(props) {
         <Container>
             <Button onClick={handleLastWeekClick}>⏫</Button>
 
-            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <Button key={task.date}>{task.date}</Button>)}
+            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <Button onClick={() => handleProposeTaskClick(task.date)} key={task.date}>{task.date}</Button>)}
 
             <Button onClick={handleNextWeekClick}>⏬</Button>
         </Container>
@@ -346,17 +362,22 @@ function Calendar(props) {
 
         {view === 'new-task-view' && <Container>
             <Button onClick={handleNewTaskClick}>Create new task</Button>
-            <Button onClick={handleProposeTaskClick}>Propose task</Button>
+            {templates.length > 0 ? <Button onClick={handleProposeTaskClick}>Propose task</Button> : ''}
         </Container>}
 
         {view === 'propose-task' && <Container>
-            <Form onSubmit={handleProposeTaskSubmit}>
-                <Input id='date' type={'date'} required={true}></Input>
-                {templates.map(template => <Button key={template.id} name='template' type='submit' value={template.id}>
-                    <Template template={template} />
+            {templates.length > 0 ? <Form onSubmit={handleProposeTaskSubmit}>
+                <Input defaultValue={buttonDate} min={today} id='date' type={'date'} required={true}></Input>
+
+                {templates.map(template => <Button style={{ backgroundColor: chosenTemplate === template.id ? 'red' : '' }} onClick={() => setChosenTemplate(template.id)} key={template.id} name='template' type='button' value={template.id}>
+                    {template.name}
                 </Button>)}
-                {<Button onClick={handleCancelClick}>Cancel</Button>}
-            </Form>
+
+                <Button type='submit'>Submit</Button>
+
+                <Button onClick={handleCancelClick}>Cancel</Button>
+            </Form> : <h3>Please click on the + below to create a template</h3>}
+
         </Container>}
 
         {session.role !== null && <Container>

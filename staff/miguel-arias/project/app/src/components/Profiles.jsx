@@ -16,7 +16,6 @@ function Profiles(props) {
     const [profiles, setProfiles] = useState([])
     const [activeProfileId, setActiveProfileId] = useState(null)
     const [name, setName] = useState(null)
-    const [selectedImage, setSelectedImage] = useState(null)
     const [palette, setPalette] = useState([])
     const [chosenColor, setChosenColor] = useState(null)
     const [usedColors, setUsedColors] = useState([])
@@ -213,26 +212,24 @@ function Profiles(props) {
         setView('change-picture-view')
     }
 
-    const handleImageChange = (event) => {
-        const image = event.target.files[0]
-        setSelectedImage(image)
-    }
-
-    const handleImageSubmit = async (event) => {
+    /* const handleImageSubmit = async (event) => {
         event.preventDefault()
+        const formData = new FormData(event.target)
+        const image = formData.get('image')
         try {
-            await logic.changeImage(selectedImage)
+            await logic.changeAvatar(image)
             setSelectedImage(null)
             setView(null)
         } catch (error) {
             context.handleError(error)
         }
-    }
+    } */
 
     return <Container>
         <h1>Profiles</h1>
+        {profiles.length > 0 && !session.profileId && <h3>Please, click on your name to log in</h3>}
 
-        {profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />)}
+        {profiles.length > 0 ? profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />) : <h4>No profiles yet, create your profile clicking the + below</h4>}
 
         {view === 'login-profile-view' && <Container>
             <Form onSubmit={handleLoginProfileSubmit}>
@@ -258,12 +255,12 @@ function Profiles(props) {
             <Button onClick={handleDeleteOwnProfileClick}>Delete profile</Button>
         </Container>}
 
-        {view === 'change-picture-view' && <Container>
+        {/* {view === 'change-picture-view' && <Container>
             <Form onSubmit={handleImageSubmit}>
-                <Input type='file' accept='image/*' onChange={handleImageChange}></Input>
+                <Input name='image' type='file' accept='image/*'></Input>
                 <Button type='submit'>Upload image</Button>
             </Form>
-        </Container>}
+        </Container>} */}
 
         {view === 'change-color-view' && <Container>
             {palette.map(color => !usedColors.includes(color.code) ? <Button key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
