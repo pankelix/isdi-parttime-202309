@@ -120,6 +120,14 @@ function Calendar(props) {
 
     const handleOnTaskClick = (task) => {
         task.id = task.id.split('_')[0]
+
+        const dateString = task.date.split('T')[0]
+        const dateParts = dateString.split('-')
+        const formatDate = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`)
+        const finalDate = formatDate.toISOString().split('T')[0]
+
+        setButtonDate(finalDate)
+
         setTask(task)
         setView('react-to-task-view')
     }
@@ -355,7 +363,7 @@ function Calendar(props) {
 
         {view === 'delay-task-view' && <Container>
             <Form onSubmit={handleDelaySubmit}>
-                <Input id='delayDate' type={'date'} required={true}></Input>
+                <Input id='delayDate' defaultValue={buttonDate} type={'date'} required={true}></Input>
                 <Button type='submit' value={task}>Delay</Button>
                 <Button onClick={handleCancelClick}>Cancel</Button>
             </Form>
