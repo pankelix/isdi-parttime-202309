@@ -23,6 +23,7 @@ function Templates(props) {
             const templates = await logic.retrieveTemplates()
 
             setTemplates(templates)
+            setDayOrWeek('day')
         } catch (error) {
             context.handleError(error)
         }

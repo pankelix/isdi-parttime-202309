@@ -72,7 +72,7 @@ function Template(props) {
         {view === 'edit-click-view' && <Container>
             <h4>{helper.arrangeText(template.name)}</h4>
             <Form onSubmit={handleEditTemplateClick}>
-                <Input id='taskName' type='text' required={true} placeholder={'Task name'}></Input>
+                <Input id='taskName' defaultValue={template.name ? template.name : ''}  type='text' required={true} placeholder={'Task name'}></Input>
 
                 <p>It repeats every</p>
                 <Input type='number' min='1' id='periodicityNumber' placeholder='Number' required={true}></Input>
@@ -81,12 +81,12 @@ function Template(props) {
 
                 <Button type='button' id='week' onClick={props.onSetWeek} style={{ backgroundColor: props.dayOrWeek === 'week' ? 'red' : '' }}>'Weeks'</Button>
 
-                <Input id='points' placeholder={'Points (optional)'}>Points(optional)</Input>
+                <Input id='points' type='number' defaultValue={template.points ? template.points : ''} placeholder={'Points (optional)'}>Points(optional)</Input>
 
                 <p>Rooms</p>
                 {props.rooms.map(room => <Button type='button' key={room.id} style={{ backgroundColor: props.chosenRooms.includes(room.id) ? 'red' : '' }} onClick={() => handleTaskClick(room.id)}>{room.name}</Button>)}
 
-                <Button type='submit'>Create</Button>
+                <Button type='submit'>Edit</Button>
 
                 <Button onClick={handleCancelClick}>Cancel</Button>
             </Form>

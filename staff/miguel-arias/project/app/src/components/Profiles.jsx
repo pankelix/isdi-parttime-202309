@@ -217,7 +217,7 @@ function Profiles(props) {
         const formData = new FormData(event.target)
         const image = formData.get('image')
         try {
-            await logic.changeAvatar(image)
+            await logic.uploadAvatar(image)
             setSelectedImage(null)
             setView(null)
         } catch (error) {
