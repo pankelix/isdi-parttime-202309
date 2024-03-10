@@ -26,9 +26,10 @@ function retrieveTasks(homeId, week) {
 
         const endOfCurrentWeek = weekEnd(currentDate, 1)
 
+        // traer todas las tareas
         let tasks
         try {
-            tasks = await Task.find({ home: homeId, date: { $gte: startOfCurrentWeek, $lte: endOfCurrentWeek } }).populate('template', '-__v').select('-__v').sort({ date: 1 }).lean()
+            tasks = await Task.find({ home: homeId }).populate('template', '-__v').select('-__v').sort({ date: 1 }).lean()
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -36,12 +37,43 @@ function retrieveTasks(homeId, week) {
         if (!tasks)
             throw new NotFoundError('task not found')
 
+        let tasksAndEchoes = []
         tasks.forEach(task => {
+            if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
+                tasksAndEchoes.push({ ...task })
+
+            let currentDate = new Date(task.date)
+            let idCounter = 1
+
+            while (currentDate <= endOfCurrentWeek) {
+                currentDate = addDay(currentDate, task.template.periodicity)
+                if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
+                    const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter }
+                    tasksAndEchoes.push(newTask)
+                    idCounter++
+                }
+            }
+        })
+
+        // de cada tarea quiero que se haga un date = date x periodicity mientras date <= endOfCurrentWeek
+        // si task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek, la pusheo en un nuevo array
+        // devuelvo este nuevo array
+
+        /* let tasks
+        try {
+            tasks = await Task.find({ home: homeId, date: { $gte: startOfCurrentWeek, $lte: endOfCurrentWeek } }).populate('template', '-__v').select('-__v').sort({ date: 1 }).lean()
+        } catch (error) {
+            throw new SystemError(error.message)
+        } */
+
+        tasksAndEchoes.forEach(task => {
             task.id = task._id.toString()
             delete task._id
 
             task.date = dayEnd(task.date)
         })
+
+        tasksAndEchoes.sort((a, b) => a.date - b.date)
 
         /* let duplicatedTasks = tasks.map(task => ({ ...task, date: new Date(task.date) }))
         let newTasks = []
@@ -56,7 +88,7 @@ function retrieveTasks(homeId, week) {
 
         return allTasks */
 
-        return tasks
+        return tasksAndEchoes
     })()
 }
 

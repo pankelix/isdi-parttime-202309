@@ -119,6 +119,7 @@ function Calendar(props) {
     }, [props.stamp, week])
 
     const handleOnTaskClick = (task) => {
+        task.id = task.id.split('_')[0]
         setTask(task)
         setView('react-to-task-view')
     }
