@@ -41,35 +41,20 @@ function retrieveTasks(homeId, week) {
             delete task._id
 
             task.date = dayEnd(task.date)
-
-            /* if (task.home._id) {
-                task.home.id = task.home._id.toString()
-                delete task.home._id
-            } */
-
-            /* if (task.template._id) {
-                task.template.id = task.template._id.toString()
-                delete task.template._id
-            } */
-
-            /* if (task.template.home._id) {
-                task.template.home.id = task.template.home._id.toString()
-                delete task.template.home._id
-                delete task.template.__v
-            } */
-
-            /* if (task.template.rooms.length >= 1) {
-                task.template.rooms.forEach(room => {
-                    room.id = room._id.toString()
-                    delete room._id
-                })
-            } */
-
-            /* if (task.assignee._id) {
-                task.assignee.id = task.assignee._id.toString()
-                delete task.assignee._id
-            } */
         })
+
+        /* let duplicatedTasks = tasks.map(task => ({ ...task, date: new Date(task.date) }))
+        let newTasks = []
+        duplicatedTasks.forEach(task => {
+            task.date = addDay(new Date(task.date), task.template.periodicity)
+            task.assignee = ''
+            //if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
+            newTasks.push(task)
+        })
+
+        const allTasks = [...tasks, ...newTasks].sort((a, b) => a.date - b.date);
+
+        return allTasks */
 
         return tasks
     })()

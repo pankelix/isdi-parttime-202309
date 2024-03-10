@@ -3,9 +3,11 @@ const { SystemError, NotFoundError } = errors
 
 import { Home, Profile } from '../data/models.js'
 debugger
-function changeAvatar(homeId, profileId, image) {
+function uploadAvatar(homeId, profileId, originalname, mimetype, oldPath) {
     validate.id(homeId, 'home id')
     validate.id(profileId, 'profile id')
+    validate.text(originalname, 'file name')
+    validate.text(mimetype, 'file type')
 
     return (async () => {
         let home
@@ -29,9 +31,11 @@ function changeAvatar(homeId, profileId, image) {
             throw new NotFoundError('profile not found')
 
         profile.avatar = {
-            data: image.file.buffer,
-            contentType: image.file.mimetype
+            name: originalname,
+            type: mimetype
         }
+
+        const newPath = `./uploads/${profile.avatar._id.toString()}`
 
         try {
             await profile.save()
@@ -41,4 +45,4 @@ function changeAvatar(homeId, profileId, image) {
     })()
 }
 
-export default changeAvatar
+export default uploadAvatar

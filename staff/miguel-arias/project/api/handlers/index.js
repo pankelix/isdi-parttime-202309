@@ -23,7 +23,7 @@ import deleteProfileHandler from './deleteProfileHandler.js'
 import registerProfileHandler from './registerProfileHandler.js'
 import changeProfileColorHandler from './changeProfileColorHandler.js'
 import changePincodeHandler from './changePincodeHandler.js'
-import changeAvatarHandler from './changeAvatarHandler.js'
+import uploadAvatarHandler from './uploadAvatarHandler.js'
 
 export {
     registerHomeHandler,
@@ -51,5 +51,5 @@ export {
     registerProfileHandler,
     changeProfileColorHandler,
     changePincodeHandler,
-    changeAvatarHandler,
+    uploadAvatarHandler,
 }

@@ -13,9 +13,11 @@ export default async (req, res) => {
 
     const { profileId } = req.params
 
-    const image = req.body
+    const {originalname, mimetype, path} = req.image
+    const oldPath = path
+
     try {
-        await logic.changeAvatar(homeId, profileId, image)
+        await logic.uploadAvatar(homeId, profileId, originalname, mimetype, oldPath)
     } catch (error) {
         let status = 500
 
@@ -33,5 +35,5 @@ export default async (req, res) => {
         res.status(status).json({ error: error.constructor.name, message: error.message })
     }
 
-    res.status(201).send()
+    res.status(200).send()
 }

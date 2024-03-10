@@ -3,7 +3,7 @@ const { SystemError } = errors
 
 import session from './session'
 
-const changeAvatar = (image) => {
+const uploadAvatar = (image) => {
 
     const req = {
         method: 'PATCH',
@@ -16,7 +16,7 @@ const changeAvatar = (image) => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${session.profileId}/avatar`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${session.profileId}/upload-avatar`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -35,4 +35,4 @@ const changeAvatar = (image) => {
     })()
 }
 
-export default changeAvatar
+export default uploadAvatar

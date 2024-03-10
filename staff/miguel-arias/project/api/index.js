@@ -32,7 +32,7 @@ import {
     registerProfileHandler,
     changeProfileColorHandler,
     changePincodeHandler,
-    changeAvatarHandler,
+    uploadAvatarHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -60,7 +60,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/profiles/:profileId/delete', deleteProfileHandler)
 
-        server.patch('/profiles/:profileId/avatar', upload.single('image'), changeAvatarHandler)
+        server.patch('/profiles/:profileId/upload-avatar', upload.single('image'), uploadAvatarHandler)
 
         server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
 

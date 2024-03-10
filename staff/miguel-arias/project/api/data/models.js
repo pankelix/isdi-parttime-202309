@@ -65,9 +65,18 @@ const profile = new Schema({
         default: 0
     },
     avatar: {
+        name: {
+            type: String,
+            unique: true
+        },
+        type: {
+            type: String
+        }
+    }
+    /* avatar: {
         data: Buffer,
         contentType: String
-    }
+    } */
 })
 
 const template = new Schema({

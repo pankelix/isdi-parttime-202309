@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
-import changeAvatar from './changeAvatar.js'
+import uploadAvatar from './uploadAvatar.js'
 
 (async () => {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/test')
 
-        await changeAvatar('65d79ed33377222a975829fa', '65d79ed33377222a97582a18', '???')
+        await uploadAvatar('65d79ed33377222a975829fa', '65d79ed33377222a97582a18', '???')
 
         console.log('profile avatar changed')
 

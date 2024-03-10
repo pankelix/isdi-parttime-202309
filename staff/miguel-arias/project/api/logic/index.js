@@ -23,7 +23,7 @@ import deleteProfile from './deleteProfile.js'
 import registerProfile from './registerProfile.js'
 import changeProfileColor from './changeProfileColor.js'
 import changePincode from './changePincode.js'
-import changeAvatar from './changeAvatar.js'
+import uploadAvatar from './uploadAvatar.js'
 
 const logic = {
     registerHome,
@@ -51,7 +51,7 @@ const logic = {
     registerProfile,
     changeProfileColor,
     changePincode,
-    changeAvatar,
+    uploadAvatar,
 }
 
 export default logic
