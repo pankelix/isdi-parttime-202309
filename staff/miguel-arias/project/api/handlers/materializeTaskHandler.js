@@ -1,24 +1,21 @@
 import jwt from 'jsonwebtoken'
-const {JsonWebTokenError} = jwt
+const { JsonWebTokenError } = jwt
 
 import { errors } from 'com'
-const { NotFoundError, ContentError, TokenError } = errors
+const { NotFoundError, ContentError, TokenError, DuplicityError } = errors
 
 import logic from '../logic/index.js'
 
 export default async (req, res) => {
     const token = req.headers.authorization.substring(7)
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    const sessionProfileId = payload.sub
+    const homeId = payload.sub
 
-    const { points } = req.body
-
-    const { profileId } = req.params
-
+    const { task } = req.body
     try {
-        await logic.redeemPoints(sessionProfileId, profileId, points)
+        const materializedTaskId = await logic.materializeTask(homeId, task)
 
-        res.status(204).send()
+        res.json(materializedTaskId)
     } catch (error) {
         let status = 500
 
@@ -33,6 +30,11 @@ export default async (req, res) => {
         if (error instanceof ContentError || error instanceof TypeError)
             status = 406
 
+        if (error instanceof DuplicityError)
+            status = 409
+
         res.status(status).json({ error: error.constructor.name, message: error.message })
     }
+
+    res.status(201).send()
 }

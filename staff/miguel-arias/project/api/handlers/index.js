@@ -24,6 +24,7 @@ import registerProfileHandler from './registerProfileHandler.js'
 import changeProfileColorHandler from './changeProfileColorHandler.js'
 import changePincodeHandler from './changePincodeHandler.js'
 import uploadAvatarHandler from './uploadAvatarHandler.js'
+import materializeTaskHandler from './materializeTaskHandler.js'
 
 export {
     registerHomeHandler,
@@ -52,4 +53,5 @@ export {
     changeProfileColorHandler,
     changePincodeHandler,
     uploadAvatarHandler,
+    materializeTaskHandler,
 }

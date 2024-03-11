@@ -20,11 +20,11 @@ function retrieveTasks(homeId, week) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        const currentDate = addDay(new Date(), week * 7)
+        const referenceDate = addDay(new Date(), week * 7)
 
-        const startOfCurrentWeek = weekStart(currentDate, 1)
+        const startOfCurrentWeek = weekStart(referenceDate, 1)
 
-        const endOfCurrentWeek = weekEnd(currentDate, 1)
+        const endOfCurrentWeek = weekEnd(referenceDate, 1)
 
         // traer todas las tareas
         let tasks
@@ -38,19 +38,38 @@ function retrieveTasks(homeId, week) {
             throw new NotFoundError('task not found')
 
         let tasksAndEchoes = []
+
         tasks.forEach(task => {
-            if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
-                tasksAndEchoes.push({ ...task })
+            if (task.done === true) {
+                if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek) {
+                    tasksAndEchoes.push({ ...task })
+                }
+            }
 
-            let currentDate = new Date(task.date)
-            let idCounter = 1
+            if (task.done === false) {
+                const existingEcho = tasksAndEchoes.find(echo => echo._id ? echo._id === task.oldId : null)
 
-            while (currentDate <= endOfCurrentWeek) {
-                currentDate = addDay(currentDate, task.template.periodicity)
-                if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
-                    const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter }
-                    tasksAndEchoes.push(newTask)
-                    idCounter++
+                if (existingEcho) {
+                    const index = tasksAndEchoes.indexOf(existingEcho)
+                    tasksAndEchoes.splice(index, 1)
+                }
+
+                if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
+                    tasksAndEchoes.push({ ...task })
+
+                let currentDate = new Date(task.date)
+                let idCounter = 0
+
+                while (currentDate <= endOfCurrentWeek) {
+                    currentDate = addDay(currentDate, task.template.periodicity)
+                    if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
+                        const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter }
+
+                        if (newTask.date >= task.date) {
+                            tasksAndEchoes.push(newTask)
+                            idCounter++
+                        }
+                    }
                 }
             }
         })

@@ -124,6 +124,9 @@ const task = new Schema({
     delay: {
         type: Number,
         default: 0
+    },
+    oldId: {
+        type: String
     }
 })
 

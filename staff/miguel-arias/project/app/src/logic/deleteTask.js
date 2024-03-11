@@ -4,6 +4,7 @@ const { SystemError } = errors
 import session from './session'
 
 const deleteTask = (taskId) => {
+    taskId = taskId.split('_')[0]
     validate.id(taskId, 'task id')
 
     const req = {

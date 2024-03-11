@@ -17,6 +17,8 @@ export default async (req, res) => {
 
     try {
         await logic.completeTask(sessionProfileId, taskId, pincode, date)
+
+        res.status(204).send()
     } catch (error) {
         let status = 500
 
@@ -24,6 +26,9 @@ export default async (req, res) => {
             status = 401
             error = new TokenError(error.message)
         }
+
+        if (error instanceof PermissionError)
+            status = 401
 
         if (error instanceof NotFoundError)
             status = 404
@@ -34,5 +39,4 @@ export default async (req, res) => {
         res.status(status).json({ error: error.constructor.name, message: error.message })
     }
 
-    res.status(204).send()
 }

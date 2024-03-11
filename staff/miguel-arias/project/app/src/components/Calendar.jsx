@@ -119,7 +119,7 @@ function Calendar(props) {
     }, [props.stamp, week])
 
     const handleOnTaskClick = (task) => {
-        task.id = task.id.split('_')[0]
+        /* task.id = task.id.split('_')[0] */
 
         const dateString = task.date.split('T')[0]
         const dateParts = dateString.split('-')
@@ -180,8 +180,17 @@ function Calendar(props) {
     }
 
     const handleAssignThisTask = async (profileId) => {
+        let materializedTaskId
+        if (task.id.includes('_')) {
+            try {
+                materializedTaskId = await logic.materializeTask(task, profileId)
+            } catch (error) {
+                context.handleError(error)
+            }
+        }
+
         try {
-            await logic.assignTask(task.id, profileId)
+            await logic.assignTask(materializedTaskId ? materializedTaskId : task.id, profileId)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -206,7 +215,7 @@ function Calendar(props) {
     }
 
     const handleDeleteClick = async () => {
-        if (confirm('Are you sure you want to delete this task?'))
+        if (confirm("Are you sure you want to delete this task? You'll delete all tasks like this one"))
             try {
                 await logic.deleteTask(task.id)
                 refreshTasks()
@@ -222,6 +231,16 @@ function Calendar(props) {
 
     const handleCompleteSubmit = async (event) => {
         event.preventDefault()
+
+        let materializedTaskId
+        if (task.id.includes('_')) {
+            try {
+                materializedTaskId = await logic.materializeTask(task)
+            } catch (error) {
+                context.handleError(error)
+            }
+        }
+
         const date = event.target.completionDate.value
 
         let digit1 = event.target.digit1.value
@@ -232,7 +251,7 @@ function Calendar(props) {
         let pincode = digit1 + digit2 + digit3 + digit4
 
         try {
-            await logic.completeTask(task.id, pincode, date)
+            await logic.completeTask(materializedTaskId ? materializedTaskId : task.id, pincode, date)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -353,11 +372,12 @@ function Calendar(props) {
                 <Label for='completionDate'>Completion date</Label>
                 <Input max={today} id='completionDate' type={'date'} required={true}></Input>
                 <p>Pin Code</p>
-                <Input id='digit1' placeholder='-'></Input>
-                <Input id='digit2' placeholder='-'></Input>
-                <Input id='digit3' placeholder='-'></Input>
-                <Input id='digit4' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit1' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit2' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit3' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit4' placeholder='-'></Input>
                 <Button type='submit'>Submit</Button>
+                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
         </Container>}
 
@@ -379,7 +399,7 @@ function Calendar(props) {
                 <Input defaultValue={buttonDate} min={today} id='date' type={'date'} required={true}></Input>
 
                 {templates.map(template => <Button style={{ backgroundColor: chosenTemplate === template.id ? 'red' : '' }} onClick={() => setChosenTemplate(template.id)} key={template.id} name='template' type='button' value={template.id}>
-                    {template.name}
+                    {template.name}{template.periodicity}
                 </Button>)}
 
                 <Button type='submit'>Submit</Button>

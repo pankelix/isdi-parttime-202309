@@ -33,6 +33,7 @@ import {
     changeProfileColorHandler,
     changePincodeHandler,
     uploadAvatarHandler,
+    materializeTaskHandler,
 } from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -71,6 +72,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.get('/tasks/:week', retrieveTasksHandler)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
+
+        server.post('/tasks/:taskId', jsonBodyParser, materializeTaskHandler)
 
         server.post('/tasks/:taskId/delete', deleteTaskHandler)
 

@@ -3,25 +3,25 @@ const { SystemError } = errors
 
 import session from './session'
 
-const completeTask = (taskId, pincode, date) => {
-    taskId = taskId.split('_')[0]
-    validate.id(taskId, 'task id')
-    validate.pincode(pincode)
-    validate.date(date)
+const materializeTask = (task, profileId) => {
+    if (profileId)
+        validate.id(profileId, 'profile id')
+
+    validate.object(task)
 
     const req = {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.profileToken}`
+            Authorization: `Bearer ${session.token}`
         },
-        body: JSON.stringify({ pincode, date })
+        body: JSON.stringify({ task })
     }
 
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/complete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -37,7 +37,14 @@ const completeTask = (taskId, pincode, date) => {
 
             throw new errors[body.error](body.message)
         }
+
+        try {
+            const materializedTaskId = await res.json()
+            return materializedTaskId
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
     })()
 }
 
-export default completeTask
+export default materializeTask

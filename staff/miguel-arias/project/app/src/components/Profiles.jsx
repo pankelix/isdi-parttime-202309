@@ -235,11 +235,12 @@ function Profiles(props) {
             <Form onSubmit={handleLoginProfileSubmit}>
                 <h3>{name}</h3>
                 <p>Pin code</p>
-                <Input id='digit1' placeholder='-'></Input>
-                <Input id='digit2' placeholder='-'></Input>
-                <Input id='digit3' placeholder='-'></Input>
-                <Input id='digit4' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit1' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit2' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit3' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='digit4' placeholder='-'></Input>
                 <Button type='submit'>Submit</Button>
+                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
         </Container>}
 
@@ -272,16 +273,16 @@ function Profiles(props) {
             <Form onSubmit={handleChangePincodeSubmit}>
                 <h3>{name}</h3>
                 <p>Old pin code</p>
-                <Input id='oldDigit1' placeholder='-'></Input>
-                <Input id='oldDigit2' placeholder='-'></Input>
-                <Input id='oldDigit3' placeholder='-'></Input>
-                <Input id='oldDigit4' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='oldDigit1' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='oldDigit2' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='oldDigit3' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='oldDigit4' placeholder='-'></Input>
 
                 <p>New pin code</p>
-                <Input id='newDigit1' placeholder='-'></Input>
-                <Input id='newDigit2' placeholder='-'></Input>
-                <Input id='newDigit3' placeholder='-'></Input>
-                <Input id='newDigit4' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='newDigit1' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='newDigit2' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='newDigit3' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='newDigit4' placeholder='-'></Input>
                 <Button type='submit'>Submit</Button>
             </Form>
         </Container>}
@@ -312,10 +313,10 @@ function Profiles(props) {
             <Form onSubmit={handleNewProfileSubmit}>
                 <Input id='name' type='text' placeholder='Name'></Input>
                 <p>Pin code</p>
-                <Input id='creationDigit1' placeholder='-'></Input>
-                <Input id='creationDigit2' placeholder='-'></Input>
-                <Input id='creationDigit3' placeholder='-'></Input>
-                <Input id='creationDigit4' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='creationDigit1' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='creationDigit2' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='creationDigit3' placeholder='-'></Input>
+                <Input type='number' min='0' max='9' id='creationDigit4' placeholder='-'></Input>
                 {palette.map(color => !usedColors.includes(color.code) ? <Button type='button' key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
                 <Button type='submit'>Submit</Button>
                 <Button type='button' onClick={handleCancelClick}>Cancel</Button>

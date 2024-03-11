@@ -17,10 +17,12 @@ function Task(props) {
     }
 
     return <Container>
-        <Button style={{ backgroundColor: profile ? profile.color.code : '' }} onClick={handleTaskClick}>
+        <Button style={{ backgroundColor: task.done === true ? 'green' : profile ? profile.color.code : '' }} onClick={handleTaskClick}>
             {helper.arrangeText(task.template.name)}
             {helper.arrangeDate(task.date)}
             {assigneeName}
+            {task.id}
+            {task.oldId}
             {task.delay ? `Delayed ${task.delay} times` : ''}
         </Button>
     </Container>

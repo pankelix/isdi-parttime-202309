@@ -17,6 +17,8 @@ export default async (req, res) => {
 
     try {
         await logic.editRole(sessionProfileId, profileId, role)
+
+        res.status(204).send()
     } catch (error) {
         let status = 500
 
@@ -33,6 +35,4 @@ export default async (req, res) => {
 
         res.status(status).json({ error: error.constructor.name, message: error.message })
     }
-
-    res.status(204).send()
 }

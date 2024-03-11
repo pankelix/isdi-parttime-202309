@@ -24,6 +24,7 @@ import registerProfile from './registerProfile.js'
 import changeProfileColor from './changeProfileColor.js'
 import changePincode from './changePincode.js'
 import uploadAvatar from './uploadAvatar.js'
+import materializeTask from './materializeTask.js'
 
 const logic = {
     registerHome,
@@ -52,6 +53,7 @@ const logic = {
     changeProfileColor,
     changePincode,
     uploadAvatar,
+    materializeTask,
 }
 
 export default logic
