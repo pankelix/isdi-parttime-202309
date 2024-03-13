@@ -25,7 +25,7 @@ function retrieveTemplates(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (!templates)
+        if (templates.length === 0)
             throw new NotFoundError('templates not found')
 
         templates.forEach(template => {

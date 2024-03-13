@@ -3,7 +3,8 @@ import bcrypt from 'bcryptjs'
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError, CredentialsError, PermissionError } = errors
 
-import { Profile, Task, Template } from '../data/models.js'
+import { Profile, Task } from '../data/models.js'
+import { ContentError } from 'com/errors.js'
 
 function completeTask(profileId, taskId, pincode, date) {
     validate.id(profileId, 'profile id')
@@ -24,7 +25,7 @@ function completeTask(profileId, taskId, pincode, date) {
             throw new NotFoundError('profile not found')
 
         if (profile.role !== 'admin')
-            throw new CredentialsError('profile is not admin')
+            throw new PermissionError('profile is not admin')
 
         let match
         try {
@@ -47,13 +48,13 @@ function completeTask(profileId, taskId, pincode, date) {
             throw new NotFoundError('task not found')
 
         if (task.done === true)
-            throw new PermissionError("this task is already done")
+            throw new ContentError('this task is already done')
 
         date = new Date(date)
 
         /* if (date < task.date)
             throw new ContentError("tasks can't be completed before their due date") */
-
+        debugger
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + task.template.periodicity)
 

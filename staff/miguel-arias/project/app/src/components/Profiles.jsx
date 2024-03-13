@@ -208,9 +208,9 @@ function Profiles(props) {
         }
     }
 
-    const handleChangePictureClick = () => {
+    /* const handleChangePictureClick = () => {
         setView('change-picture-view')
-    }
+    } */
 
     /* const handleImageSubmit = async (event) => {
         event.preventDefault()
@@ -250,7 +250,7 @@ function Profiles(props) {
         </Container>
 
         {view === 'edit-profile-view' && <Container>
-            <Button onClick={handleChangePictureClick}>Change picture</Button>
+            {/* <Button onClick={handleChangePictureClick}>Change picture</Button> */}
             <Button onClick={handleChangeColorClick}>Change profile color</Button>
             <Button onClick={handleChangePincodeClick}>Change pincode</Button>
             <Button onClick={handleDeleteOwnProfileClick}>Delete profile</Button>
@@ -289,7 +289,7 @@ function Profiles(props) {
 
         {view === 'manage-profiles-view' && <Container>
             {<Form onSubmit={handleManageProfileSubmit}>
-                {profiles.map(profile => profile.name !== name ? <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button> : '')}
+                {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button> : '')}
 
                 <Input list='roles'>New role</Input>
                 <datalist id='roles'>

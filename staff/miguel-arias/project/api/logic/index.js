@@ -2,6 +2,7 @@ import registerHome from './registerHome.js'
 import authenticateHome from './authenticateHome.js'
 import retrieveHome from './retrieveHome.js'
 import retrieveTasks from './retrieveTasks.js'
+import retrieveProfileTasks from './retrieveProfileTasks.js'
 import retrieveProfiles from './retrieveProfiles.js'
 import retrieveTemplates from './retrieveTemplates.js'
 import authenticateProfile from './authenticateProfile.js'
@@ -31,6 +32,7 @@ const logic = {
     authenticateHome,
     retrieveHome,
     retrieveTasks,
+    retrieveProfileTasks,
     retrieveProfiles,
     retrieveTemplates,
     authenticateProfile,

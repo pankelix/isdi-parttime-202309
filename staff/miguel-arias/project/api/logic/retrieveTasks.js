@@ -6,7 +6,7 @@ import { addDay, weekStart, weekEnd, dayEnd } from '@formkit/tempo'
 import { Home, Task } from '../data/models.js'
 
 function retrieveTasks(homeId, week) {
-    validate.id(homeId)
+    validate.id(homeId, 'home id')
 
     return (async () => {
         debugger
@@ -34,7 +34,7 @@ function retrieveTasks(homeId, week) {
             throw new SystemError(error.message)
         }
 
-        if (!tasks)
+        if (tasks.length === 0)
             throw new NotFoundError('task not found')
 
         let tasksAndEchoes = []

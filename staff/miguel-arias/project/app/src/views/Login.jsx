@@ -27,20 +27,22 @@ function Login(props) {
         props.onRegisterClick()
     }
 
-    return <Container>
-        <h1>Login</h1>
-        <Form onSubmit={handleSubmit}>
-            <Input id='email-input' type='email' placeholder='Email'>Email</Input>
+    return <Container className='centered-box'>
+        <div className='box-content'>
+            <h1>Login</h1>
+            <Form onSubmit={handleSubmit}>
+                <Input id='email-input' type='email' placeholder='Email'>Email</Input>
 
-            <Input id='password-input' type='password' placeholder='Password'>Password</Input>
+                <Input id='password-input' type='password' placeholder='Password'>Password</Input>
 
-            <Button type='submit'>Log In</Button>
-        </Form>
+                <Button type='submit'>Log In</Button>
+            </Form>
 
-        <nav>
-            <p>Don't have an account?</p>
-            <Link onClick={handleRegisterClick}>Sign up</Link>
-        </nav>
+            <nav>
+                <p>Don't have an account?</p>
+                <Link onClick={handleRegisterClick}>Sign up</Link>
+            </nav>
+        </div>
     </Container>
 }
 

@@ -10,7 +10,7 @@ import { errors } from 'com'
 const { DuplicityError } = errors
 
 describe('registerHome', () => {
-    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/test'))
+    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
     beforeEach(async () => await Home.deleteMany())
 

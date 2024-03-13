@@ -3,7 +3,7 @@ const { SystemError, NotFoundError } = errors
 
 import { dayStart } from '@formkit/tempo'
 
-import { Task, Home } from '../data/models.js'
+import { Home, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
 debugger
 
@@ -25,7 +25,7 @@ function materializeTask(homeId, task) {
         let date = new Date(task.date)
         const today = dayStart(new Date())
 
-        if (date < today)
+        if (today > date)
             throw new ContentError('date must be after today')
 
         try {

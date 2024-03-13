@@ -9,7 +9,7 @@ import helpers from '../logic/helpers'
 import { useContext } from '../hooks'
 
 import { useState, useEffect } from 'react'
-import { Container, Button, Form, Input, Label } from '../library'
+import { Container, Button, Form, Input, Label, Field } from '../library'
 
 import { Task, Template } from '.'
 
@@ -20,7 +20,6 @@ function Calendar(props) {
     const navigate = useNavigate()
 
     const [tasks, setTasks] = useState([])
-    const [filter, setFilter] = useState(null)
     const [reversed, setReversed] = useState(false)
     const [today, setToday] = useState(null)
     const [buttonDate, setButtonDate] = useState(null)
@@ -29,6 +28,7 @@ function Calendar(props) {
     const [profiles, setProfiles] = useState([])
     const [chosenTemplate, setChosenTemplate] = useState(null)
     const [templates, setTemplates] = useState([])
+    const [onlyMine, setOnlyMine] = useState(false)
     const [view, setView] = useState(null)
 
     const retrieveAssignee = async () => {
@@ -56,7 +56,12 @@ function Calendar(props) {
 
     const refreshTasks = async () => {
         try {
-            const tasks = await logic.retrieveTasks(week)
+            let tasks
+            if (onlyMine === false)
+                tasks = await logic.retrieveTasks(week)
+            else if (onlyMine === true)
+                tasks = await logic.retrieveProfileTasks(week)
+
             const tasks2 = []
 
             const currentDate = addDay(new Date(), week * 7)
@@ -116,10 +121,11 @@ function Calendar(props) {
         retrieveAssignee()
         refreshTasks()
         refreshTemplates()
-    }, [props.stamp, week])
+    }, [props.stamp, week, onlyMine])
 
     const handleOnTaskClick = (task) => {
-        /* task.id = task.id.split('_')[0] */
+        if (onlyMine === true || task.done === true)
+            return
 
         const dateString = task.date.split('T')[0]
         const dateParts = dateString.split('-')
@@ -259,62 +265,17 @@ function Calendar(props) {
         }
     }
 
-    const handleFilterClick = () => {
-        setView('filter-view')
-    }
-
-    const handleAscendTasksClick = () => {
+    const handleArrangeTasksClick = () => {
+        const reversedTasks = [...tasks].reverse()
+        setTasks(reversedTasks)
         if (reversed === false) {
-            const reversedTasks = [...tasks].reverse()
-            setTasks(reversedTasks)
             setReversed(true)
-        }
-    }
-
-    const handleDescendTasksClick = () => {
-        if (reversed === true) {
-            const reversedTasks = [...tasks].reverse()
-            setTasks(reversedTasks)
+        } else if (reversed === true)
             setReversed(false)
-        }
     }
 
-    /* const handleFilterByRoomClick = () => {
-        setFilter('room')
-        refreshTasks()
-    } */
-
-    /* const handleFilterByRoom = async (templateId) => {
-        try {
-            const tasks = await logic.retrieveTasksByRoom(templateId)
-            setTasks(tasks)
-            setView(null)
-            setFilter(null)
-        } catch (error) {
-            context.handleError(error)
-        }
-    } */
-
-    /* const handleFilterByAssigneeClick = () => {
-        setFilter('assignee')
-        refreshTasks()
-    } */
-
-    /* const handleFilterByAssignee = async (profileId) => {
-        try {
-            const tasks = await logic.retrieveTasksByAssignee(profileId)
-            setTasks(tasks)
-            setView(null)
-            setFilter(null)
-        } catch (error) {
-            context.handleError(error)
-        }
-    } */
-
-    const handleRestartFilters = () => {
-        setView(null)
-        setFilter(null)
-        refreshTasks()
+    const handleShowOnlyMine = () => {
+        setOnlyMine(!onlyMine)
     }
 
     const handleLastWeekClick = () => {
@@ -329,20 +290,18 @@ function Calendar(props) {
         <h1>Calendar</h1>
 
         <Container>
-            <Button onClick={handleFilterClick}>Filter</Button>
-            <Button onClick={handleRestartFilters}>Restart filters</Button>
+            <Button onClick={handleArrangeTasksClick}>{reversed ? '🔽' : '🔼'}</Button>
+            {session.profileRole !== null && <Label >
+                <Input type='checkbox' checked={onlyMine} onChange={handleShowOnlyMine}></Input>
+                Mine only
+            </Label>}
         </Container>
 
         {view === 'filter-view' && <Container>
             <Button onClick={handleAscendTasksClick}>🔼</Button>
             <Button onClick={handleDescendTasksClick}>🔽</Button>
-            <Button /* onClick={handleFilterByRoomClick} */>By Room</Button>
-            <Button /* onClick={handleFilterByAssigneeClick} */>By Assignee</Button>
         </Container>}
 
-        {/* {filter === 'room' && templates.map(template => template.rooms.map(room => <Container><Button key={room.id} onClick={() => handleFilterByRoom(template.id)}>{helpers.arrangeText(room.name)}</Button></Container>))} */}
-
-        {/* {filter === 'assignee' && profiles.map(profile => <Container><Button key={profile.id} onClick={() => handleFilterByAssignee(profile.id)}>{helpers.arrangeText(profile.name)}</Button></Container>)} */}
         <Container>
             <Button onClick={handleLastWeekClick}>⏫</Button>
 
@@ -364,7 +323,7 @@ function Calendar(props) {
         </Container>}
 
         {view === 'assign-task-view' && <Container>
-            {profiles.map(profile => <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button>)}
+            {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button> : '')}
         </Container>}
 
         {view === 'pin-code-view' && <Container>

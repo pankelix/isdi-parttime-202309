@@ -4,7 +4,7 @@ dotenv.config()
 import mongoose from 'mongoose'
 import express from 'express'
 import cors from 'cors'
-import multer from 'multer'
+/* import multer from 'multer' */
 
 import {
     registerHomeHandler,
@@ -15,6 +15,7 @@ import {
     authenticateProfileHandler,
     createTaskHandler,
     retrieveTasksHandler,
+    retrieveProfileTasksHandler,
     deleteTaskHandler,
     assignTaskHandler,
     delayTaskHandler,
@@ -40,8 +41,8 @@ mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         const server = express()
         const jsonBodyParser = express.json()
-        const storage = multer.memoryStorage()
-        const upload = multer({ storage: storage })
+        /* const storage = multer.memoryStorage()
+        const upload = multer({ storage: storage }) */
 
         server.use(cors())
 
@@ -61,7 +62,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/profiles/:profileId/delete', deleteProfileHandler)
 
-        server.patch('/profiles/:profileId/upload-avatar', upload.single('image'), uploadAvatarHandler)
+        /* server.patch('/profiles/:profileId/upload-avatar', upload.single('image'), uploadAvatarHandler) */
 
         server.patch('/profiles/:profileId/edit', jsonBodyParser, editRoleHandler)
 
@@ -70,6 +71,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.patch('/profiles/:profileId/pincode', jsonBodyParser, changePincodeHandler)
 
         server.get('/tasks/:week', retrieveTasksHandler)
+
+        server.get('/tasks/:profileId/:week', retrieveProfileTasksHandler)
 
         server.post('/tasks', jsonBodyParser, createTaskHandler)
 

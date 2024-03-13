@@ -58,12 +58,12 @@ const profile = new Schema({
     },
     role: {
         type: String,
-        default: 'User'
+        default: 'user'
     },
     points: {
         type: Number,
         default: 0
-    },
+    }/*,
     avatar: {
         name: {
             type: String,
@@ -72,8 +72,8 @@ const profile = new Schema({
         type: {
             type: String
         }
-    }
-    /* avatar: {
+    },
+     avatar: {
         data: Buffer,
         contentType: String
     } */

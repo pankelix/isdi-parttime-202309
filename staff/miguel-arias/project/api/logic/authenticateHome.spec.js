@@ -10,7 +10,7 @@ import authenticateHome from './authenticateHome.js'
 const { NotFoundError, CredentialsError } = errors
 
 describe('authenticateHome', () => {
-    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/test'))
+    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
     beforeEach(async () => await Home.deleteMany())
 
@@ -30,10 +30,12 @@ describe('authenticateHome', () => {
         expect(homeId).to.equal(home.id)
     })
 
-    it('fails on non correct email', async () => {
-        try {
-            await authenticateHome(random.email(), random.password())
+    it('fails on no home found', async () => {
+        const email = random.email()
+        const password = random.password()
 
+        try {
+            await authenticateHome(email, password)
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(NotFoundError)

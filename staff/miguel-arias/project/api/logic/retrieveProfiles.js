@@ -17,7 +17,7 @@ function retrieveProfiles(homeId) {
 
         if (!home)
             throw new NotFoundError('home not found')
-
+        debugger
         let profiles
         try {
             profiles = await Profile.find({ home: homeId }).select('-__v').lean()
@@ -25,12 +25,13 @@ function retrieveProfiles(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (!profiles)
+        if (profiles.length === 0)
             throw new NotFoundError('profile not found')
 
         profiles.forEach(profile => {
             profile.id = profile._id.toString()
             delete profile._id
+            delete profile.pincode
 
             /* if (profile.home._id) {
                 profile.home.id = profile.home._id.toString()

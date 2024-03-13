@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    * {
+        @apply font-['Inter']
+    }
+
+    body {
+        @apply bg-gradient-to-r from-slate-50 to-slate-200
+    }
+
+    .centered-box {
+        @apply min-h-screen flex items-center justify-center bg-gray-100
+    }
+
+    .box-content {
+        @apply max-w-md w-full bg-white p-8 rounded-lg shadow-md
+    }
+}

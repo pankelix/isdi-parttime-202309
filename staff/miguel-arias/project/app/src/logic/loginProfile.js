@@ -10,7 +10,8 @@ const loginProfile = (name, pincode) => {
     const req = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`
         },
         body: JSON.stringify({ name, pincode })
     }

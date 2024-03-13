@@ -9,9 +9,13 @@ const { NotFoundError, ContentError, CredentialsError } = errors
 export default async (req, res) => {
     const { name, pincode } = req.body
 
+    const token = req.headers.authorization.substring(7)
+    const payload = jwt.verify(token, process.env.JWT_SECRET)
+    const homeId = payload.sub
+
     let profileId
     try {
-        profileId = await logic.authenticateProfile(name, pincode)
+        profileId = await logic.authenticateProfile(homeId, name, pincode)
 
         const profileToken = jwt.sign({ sub: profileId }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPI })
 

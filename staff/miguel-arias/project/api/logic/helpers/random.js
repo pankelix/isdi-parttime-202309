@@ -24,13 +24,25 @@ function text() {
     return `text-${Math.random()}`
 }
 
+function pincode() {
+    const pincode = Math.random().toString().slice(2, 6)
+    pincode.replace(0, 1)
+    return pincode
+}
+
+function number() {
+    return Math.floor(Math.random() * 9) + 1
+}
+
 const random = {
     name,
     email,
     password,
     id,
     image,
-    text
+    text,
+    pincode,
+    number,
 }
 
 export default random

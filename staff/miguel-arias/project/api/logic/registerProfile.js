@@ -11,7 +11,8 @@ function registerProfile(homeId, name, pincode, color) {
     validate.id(homeId)
     validate.text(name, 'name')
     validate.pincode(pincode, 'pincode')
-    validate.object(color, 'color')
+    if (color)
+        validate.object(color, 'color')
 
     return (async () => {
         let home
@@ -24,9 +25,18 @@ function registerProfile(homeId, name, pincode, color) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        const usedColorCodes = await Profile.distinct('color.code')
+
+        let usedColorCodes
+        try {
+            usedColorCodes = await Profile.distinct('color.code')
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
 
         const unusedColors = colors.filter(color => !usedColorCodes.includes(color.code))
+
+        if (unusedColors.length === 0)
+            throw new NotFoundError('there are no more colors to pick')
 
         let profilesExist
         try {

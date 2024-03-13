@@ -8,7 +8,7 @@ import { errors } from 'com'
 const { NotFoundError } = errors
 
 describe('retrieveHome', () => {
-    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/test'))
+    before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
     beforeEach(async () => await Home.deleteMany())
 
@@ -23,7 +23,7 @@ describe('retrieveHome', () => {
 
         expect(retrievedHome.name).to.be.a('string')
         expect(retrievedHome.name).to.equal(name)
-        expect(retrievedHome.id).to.be.undefined
+        expect(retrievedHome._id).to.be.undefined
         expect(retrievedHome.email).to.be.undefined
         expect(retrievedHome.password).to.be.undefined
     })

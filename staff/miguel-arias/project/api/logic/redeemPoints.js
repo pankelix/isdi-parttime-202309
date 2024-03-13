@@ -1,9 +1,9 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError, PermissionError } = errors
 
-import { Task, Profile } from '../data/models.js'
+import { Profile } from '../data/models.js'
 
-function delayTask(sessionProfileId, profileId, points) {
+function redeemPoints(sessionProfileId, profileId, points) {
     validate.id(sessionProfileId, 'session profile id')
     validate.id(profileId, 'profile id')
     validate.number(points, 'points')
@@ -42,4 +42,4 @@ function delayTask(sessionProfileId, profileId, points) {
     })()
 }
 
-export default delayTask
+export default redeemPoints

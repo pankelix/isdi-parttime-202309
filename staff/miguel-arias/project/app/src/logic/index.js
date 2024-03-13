@@ -4,6 +4,7 @@ import retrieveHome from './retrieveHome.js'
 import isUserLoggedIn from './isUserLoggedIn.js'
 import logoutHome from './logoutHome.js'
 import retrieveTasks from './retrieveTasks.js'
+import retrieveProfileTasks from './retrieveProfileTasks.js'
 import retrieveProfiles from './retrieveProfiles.js'
 import retrieveTemplates from './retrieveTemplates.js'
 import loginProfile from './loginProfile.js'
@@ -36,6 +37,7 @@ const logic = {
     isUserLoggedIn,
     logoutHome,
     retrieveTasks,
+    retrieveProfileTasks,
     retrieveProfiles,
     retrieveTemplates,
     loginProfile,

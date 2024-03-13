@@ -35,9 +35,9 @@ function assignTask(sessionProfileId, taskId, profileId) {
             }
 
             if (!profile)
-                throw new NotFoundError('profile not found')
-
-            if (profile.role !== 'admin' && assignToSelf !== true)
+                throw new NotFoundError('session profile not found')
+            debugger
+            if (profile.role !== 'admin'/*  && assignToSelf !== true */)
                 throw new PermissionError('profile is not admin')
 
         } else if (profileId) {

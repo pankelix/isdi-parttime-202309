@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 
 import { validate, errors } from 'com'
-const { SystemError, NotFoundError, ContentError } = errors
+const { SystemError, NotFoundError, ContentError, CredentialsError } = errors
 
 import { Profile } from '../data/models.js'
 

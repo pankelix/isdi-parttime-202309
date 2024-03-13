@@ -3,7 +3,7 @@ const { SystemError, NotFoundError } = errors
 
 import { dayStart } from '@formkit/tempo'
 
-import { Task, Home } from '../data/models.js'
+import { Home, Template, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
 debugger
 
@@ -22,6 +22,16 @@ function createTask(homeId, templateId, date) {
 
         if (!home)
             throw new NotFoundError('home not found')
+
+        let template
+        try {
+            template = await Template.findById(templateId).lean()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!template)
+            throw new NotFoundError('template not found')
 
         date = new Date(date)
         const today = dayStart(new Date())

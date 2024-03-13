@@ -25,7 +25,7 @@ function retrieveRooms(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (!rooms)
+        if (rooms.length === 0)
             throw new NotFoundError('room not found')
 
         rooms.forEach(room => {

@@ -135,14 +135,14 @@ Profile
 * name (string)
 * pincode (string)
 * color (object)
-    - name(string)
-    - code(string)
+    - name (string)
+    - code (string)
 * role (string)
 * points (number)
 
 Template
 * id (string)
-* home(Home.id)
+* home (Home.id)
 * name (string)
 * rooms ([Room.id])
 * periodicity (string)
@@ -150,11 +150,12 @@ Template
 
 Task
 * id (string)
-* home(Home.id)
-* template(Template.id)
-* assignee(Profile.id)
+* home (Home.id)
+* template (Template.id)
+* assignee (Profile.id)
 * done (boolean)
-* date(Date)
+* date (Date)
+* oldId (String)
 
 ## Future versions will include:
 
