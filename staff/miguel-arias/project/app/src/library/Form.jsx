@@ -1,5 +1,5 @@
 function Form(props) {
-    return <form className="form" onSubmit={props.onSubmit}>{props.children}</form>
+    return <form id={props.id} className={`form ${props.className ? props.className : ''}`} onSubmit={props.onSubmit} {...props}>{props.children}</form>
 }
 
 export default Form

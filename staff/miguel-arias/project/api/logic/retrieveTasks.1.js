@@ -34,6 +34,9 @@ function retrieveTasks(homeId, week) {
             throw new SystemError(error.message)
         }
 
+        if (tasks.length === 0)
+            throw new NotFoundError('task not found')
+
         let tasksAndEchoes = []
 
         tasks.forEach(task => {
@@ -60,7 +63,7 @@ function retrieveTasks(homeId, week) {
                 while (currentDate <= endOfCurrentWeek) {
                     currentDate = addDay(currentDate, task.template.periodicity)
                     if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
-                        const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter, done: false }
+                        const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter }
 
                         if (newTask.date >= task.date) {
                             tasksAndEchoes.push(newTask)

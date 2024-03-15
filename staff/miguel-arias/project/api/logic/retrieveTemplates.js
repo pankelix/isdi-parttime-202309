@@ -25,9 +25,6 @@ function retrieveTemplates(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (templates.length === 0)
-            throw new NotFoundError('templates not found')
-
         templates.forEach(template => {
             template.id = template._id.toString()
             delete template._id

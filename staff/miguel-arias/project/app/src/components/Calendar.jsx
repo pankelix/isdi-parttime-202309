@@ -11,7 +11,7 @@ import { useContext } from '../hooks'
 import { useState, useEffect } from 'react'
 import { Container, Button, Form, Input, Label, Field } from '../library'
 
-import { Task, Template } from '.'
+import { Task, EmptyDate } from '.'
 
 function Calendar(props) {
     console.log('Calendar')
@@ -162,6 +162,9 @@ function Calendar(props) {
             const finalDate = formatDate.toISOString().split('T')[0]
 
             setButtonDate(finalDate)
+
+            if (finalDate < today)
+                return
         }
 
         setView('propose-task')
@@ -174,6 +177,7 @@ function Calendar(props) {
         try {
             await logic.createTask(chosenTemplate, date ? date : buttonDate)
             refreshTasks()
+            setChosenTemplate(null)
             setView(null)
         } catch (error) {
             context.handleError(error)
@@ -189,14 +193,14 @@ function Calendar(props) {
         let materializedTaskId
         if (task.id.includes('_')) {
             try {
-                materializedTaskId = await logic.materializeTask(task, profileId)
+                materializedTaskId = await logic.materializeTask(task/* , profileId */)
             } catch (error) {
                 context.handleError(error)
             }
         }
 
         try {
-            await logic.assignTask(materializedTaskId ? materializedTaskId : task.id, profileId)
+            await logic.assignTask(materializedTaskId ? materializedTaskId : task.id/* , profileId */)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -237,17 +241,17 @@ function Calendar(props) {
 
     const handleCompleteSubmit = async (event) => {
         event.preventDefault()
+        const date = event.target.completionDate.value
 
-        let materializedTaskId
+        /* let materializedTaskId
         if (task.id.includes('_')) {
             try {
-                materializedTaskId = await logic.materializeTask(task)
+                materializedTaskId = await logic.materializeTask(task, date)
             } catch (error) {
                 context.handleError(error)
             }
-        }
+        } */
 
-        const date = event.target.completionDate.value
 
         let digit1 = event.target.digit1.value
         let digit2 = event.target.digit2.value
@@ -257,7 +261,7 @@ function Calendar(props) {
         let pincode = digit1 + digit2 + digit3 + digit4
 
         try {
-            await logic.completeTask(materializedTaskId ? materializedTaskId : task.id, pincode, date)
+            await logic.completeTask(/* materializedTaskId ? materializedTaskId :  */task.id, pincode, date)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -286,93 +290,156 @@ function Calendar(props) {
         setWeek(week + 1)
     }
 
-    return <Container>
-        <h1>Calendar</h1>
+    return <Container className='px-[1rem] w-screen'>
+        <article className='flex mb-[1rem] ml-[0.2rem] mt-[1rem]'>
+            <Button onClick={handleArrangeTasksClick} className='text-2xl'>{reversed ? '▼' : '▲'}</Button>
 
-        <Container>
-            <Button onClick={handleArrangeTasksClick}>{reversed ? '🔽' : '🔼'}</Button>
-            {session.profileRole !== null && <Label >
-                <Input type='checkbox' checked={onlyMine} onChange={handleShowOnlyMine}></Input>
-                Mine only
-            </Label>}
-        </Container>
+            <aside className='ml-[14.5rem] mt-[0.3rem] gap-[1rem]'>
+                {session.profileRole !== null && <Button onClick={handleShowOnlyMine}>Show: {onlyMine ? 'Mine' : 'All'}</Button>}
+            </aside>
+        </article>
 
-        {view === 'filter-view' && <Container>
-            <Button onClick={handleAscendTasksClick}>🔼</Button>
-            <Button onClick={handleDescendTasksClick}>🔽</Button>
-        </Container>}
+        <article className='flex flex-col'>
+            <Button onClick={handleLastWeekClick} className='calendar-week-navigator'>▲</Button>
 
-        <Container>
-            <Button onClick={handleLastWeekClick}>⏫</Button>
+            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
 
-            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <Button onClick={() => handleProposeTaskClick(task.date)} key={task.date}>{task.date}</Button>)}
+            <Button onClick={handleNextWeekClick} className='calendar-week-navigator'>▼</Button>
+        </article>
 
-            <Button onClick={handleNextWeekClick}>⏬</Button>
-        </Container>
+        {view === 'react-to-task-view' && session.profileRole !== null && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='flex gap-[0.7rem] mb-[1rem]'>
+                    {session.profileRole === 'admin' && <h3 className='bg-amber-400 p-4 rounded-full font-bold text-lg'>{helpers.arrangeDate(task.date).split(' ')[0]}</h3>}
+                    <div className='flex flex-col'>
+                        {session.profileRole === 'admin' && <h3 className='font-bold text-lg'>{helpers.arrangeText(task.template.name)}</h3>}
 
-        {view === 'react-to-task-view' && <Container>
-            {session.profileRole === 'admin' && <h3>{helpers.arrangeText(task.template.name)}</h3>}
-            {session.profileRole === 'admin' && <h3>{helpers.arrangeDate(task.date)}</h3>}
-            {session.profileRole === 'admin' && <h3>{profiles.map(profile => profile.id === task.assignee ? profile.name : '')}</h3>}
-            {session.profileRole !== null && <Button onClick={() => handleAssignThisTask(null)}>Take this task</Button>}
-            {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskTo}>Assign this task to...</Button>}
-            {session.profileRole !== null && <Button onClick={handleCompleteTaskClick}>Complete this task</Button>}
-            {session.profileRole !== null && <Button onClick={handleDelayTaskClick}>Delay this task</Button>}
-            {session.profileRole === 'admin' && <Button onClick={handleDeleteClick}>Delete this task</Button>}
-            {session.profileRole !== null && <Button onClick={handleCancelClick}>Cancel</Button>}
-        </Container>}
+                        {session.profileRole === 'admin' && (
+                            <h3 className='text-lg' style={{ color: profiles.find(profile => profile.id === task.assignee)?.color?.code }}>
+                                {profiles.map(profile => profile.id === task.assignee && profile.name)}
+                            </h3>
+                        )}
+                    </div>
+                </div>
 
-        {view === 'assign-task-view' && <Container>
-            {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)}>{profile.name}</Button> : '')}
-        </Container>}
+                <div className='modal-border-button-container'>
+                    {session.profileRole !== null && <Button onClick={() => handleAssignThisTask(null)} className='modal-border-button'>Take this task</Button>}
 
-        {view === 'pin-code-view' && <Container>
-            <Form onSubmit={handleCompleteSubmit}>
-                <Label for='completionDate'>Completion date</Label>
-                <Input max={today} id='completionDate' type={'date'} required={true}></Input>
-                <p>Pin Code</p>
-                <Input type='number' min='0' max='9' id='digit1' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit2' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit3' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit4' placeholder='-'></Input>
-                <Button type='submit'>Submit</Button>
-                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
+                    {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskTo} className='modal-border-button'>Assign this task to...</Button>}
 
-        {view === 'delay-task-view' && <Container>
-            <Form onSubmit={handleDelaySubmit}>
-                <Input id='delayDate' defaultValue={buttonDate} type={'date'} required={true}></Input>
-                <Button type='submit' value={task}>Delay</Button>
-                <Button onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
+                    {session.profileRole !== null && <Button onClick={handleCompleteTaskClick} className='modal-border-button'>Complete this task</Button>}
 
-        {view === 'new-task-view' && <Container>
-            <Button onClick={handleNewTaskClick}>Create new task</Button>
-            {templates.length > 0 ? <Button onClick={handleProposeTaskClick}>Propose task</Button> : ''}
-        </Container>}
+                    {session.profileRole !== null && <Button onClick={handleDelayTaskClick} className='modal-border-button'>Delay this task</Button>}
 
-        {view === 'propose-task' && <Container>
-            {templates.length > 0 ? <Form onSubmit={handleProposeTaskSubmit}>
-                <Input defaultValue={buttonDate} min={today} id='date' type={'date'} required={true}></Input>
+                    {session.profileRole === 'admin' && <Button onClick={handleDeleteClick} className='modal-border-button'>Delete this task</Button>}
+                </div>
+                <div className='modal-close-button-container'>
+                    {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
+                </div>
+            </div>
+        </article>}
 
-                {templates.map(template => <Button style={{ backgroundColor: chosenTemplate === template.id ? 'red' : '' }} onClick={() => setChosenTemplate(template.id)} key={template.id} name='template' type='button' value={template.id}>
-                    {template.name}{template.periodicity}
-                </Button>)}
+        {view === 'assign-task-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container max-h-[15rem] overflow-y-auto'>
+                    {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)} className='flex flex-col text-xl p-[1rem] modal-border-button'>{profile.name}</Button> : '')}
+                </div>
+                <div className='modal-close-button-container'>
+                    {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
+                </div>
+            </div>
+        </article>}
 
-                <Button type='submit'>Submit</Button>
+        {view === 'pin-code-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleCompleteSubmit} id='complete-task-form'>
+                        <div className='flex flex-col gap-[1rem] mb-[2rem]'>
+                            <Label form='completionDate' className='font-bold'>Completion date</Label>
+                            <Input max={today} id='completionDate' type={'date'} required={true} className='border-2 border-amber-400'></Input>
+                        </div>
 
-                <Button onClick={handleCancelClick}>Cancel</Button>
-            </Form> : <h3>Please click on the + below to create a template</h3>}
+                        <div className='flex flex-col items-center mt-[2rem] gap-[1.5rem]'>
+                            <p className='text-xl font-bold'>Pin Code</p>
 
-        </Container>}
+                            <div className='flex gap-[1rem]'>
+                                <Input type='number' min='0' max='9' id='digit1' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit2' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit3' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit4' placeholder='-' className='pincode-digit'></Input>
+                            </div>
+                        </div>
+                    </Form>
+                </div>
 
-        {session.role !== null && <Container>
-            <Button onClick={handleNewProposalClick}>
+                <div className='close-submit-buttons-container'>
+                    <Button form='complete-task-form' type='submit' className='form-submit-button'>Submit</Button>
+
+                    {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
+                </div>
+            </div>
+        </article>}
+
+        {view === 'delay-task-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form id='delay-task-form' onSubmit={handleDelaySubmit}>
+                        <Input id='delayDate' defaultValue={buttonDate} type={'date'} required={true} className='border-2 border-amber-400'></Input>
+                    </Form>
+                </div>
+
+                <div className='close-submit-buttons-container'>
+                    <Button form='delay-task-form' type='submit' value={task} className='form-submit-button'>Delay</Button>
+
+                    {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
+                </div>
+            </div>
+        </article>}
+
+        {view === 'new-task-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container'>
+                    <Button onClick={handleNewTaskClick} className='modal-border-button'>Create new task</Button>
+
+                    {templates.length > 0 ? <Button onClick={handleProposeTaskClick} className='modal-border-button'>Propose task</Button> : ''}
+
+                </div>
+                <div className='close-submit-buttons-container'>
+                    <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
+
+        {view === 'propose-task' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container'>
+                    {templates.length > 0 ? <Form id='propose-task' onSubmit={handleProposeTaskSubmit} className='flex flex-col items-center'>
+                        <p className='text-xl mb-[2rem]'>Propose task</p>
+
+                        <Input defaultValue={buttonDate} min={today} id='date' type={'date'} required={true} className='border-2 border-amber-400 mb-[1rem]'></Input>
+
+                        <div className='modal-border-button-container max-h-[15rem] overflow-y-auto mb-[-1rem]'>
+                            {templates.map(template => <Button style={{ borderWidth: chosenTemplate === template.id ? '3px' : '1px' }} onClick={() => setChosenTemplate(template.id)} key={template.id} name='template' type='button' value={template.id} className='border-amber-400 border-[1px] w-[14rem] px-3 rounded-md mx-[0.5rem]'>
+                                {helpers.arrangeText(template.name)}
+                            </Button>)}
+                        </div>
+
+                    </Form> : <h3>Please click on the + below to create a template</h3>}
+                </div>
+
+                <div className='close-submit-buttons-container'>
+                    <Button form='propose-task' type='submit' className='form-submit-button'>Submit</Button>
+
+                    {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
+                </div>
+            </div>
+        </article>}
+
+        {session.profileRole !== null && <article>
+            <Button onClick={handleNewProposalClick} className='plus-button'>
                 ➕
             </Button>
-        </Container>}
+        </article>}
     </Container >
 }
 

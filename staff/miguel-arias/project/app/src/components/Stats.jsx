@@ -49,21 +49,23 @@ function Stats(props) {
     }, [props.stamp])
 
     return <Container>
-        <h1>Statistics</h1>
+        <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[40rem] overflow-y-auto'>
+            {profiles.map(profile => <article key={profile.id} className='grid grid-cols-3 gap-3 align-center'>
 
-        {profiles.map(profile => <Container key={profile.id}>
-            <p>{profile.name} {profile.points ? profile.points : '0'}</p>
+                <h5 className='text-md font-bold'>{profile.name}</h5>
+                <h5 className='text-md'>{profile.points ? `${profile.points} points` : '0 points'}</h5>
 
-            {session.profileRole === 'admin' && profile.points !== 0 && <Button onClick={() => handleRedeemPointsClick(profile.id)}>Redeem points</Button>}
-        </Container>)}
+                {session.profileRole === 'admin' && profile.points !== 0 && <Button onClick={() => handleRedeemPointsClick(profile.id)} className='form-submit-button py-1 w-[6rem] h-[2rem]'>Redeem</Button>}
+            </article>)}
+        </article>
 
-        {view === 'redeem-points-view' && <Container>
+        {view === 'redeem-points-view' && <article>
             <Form onSubmit={handleRedeemPointsSubmit}>
                 <Input id='points' type='number' placeholder={'Points to redeem'} required={true}></Input>
                 <Button type='submit'>Redeem!</Button>
                 <Button type='button' onClick={handleCancelClick}>Cancel</Button>
             </Form>
-        </Container>}
+        </article>}
     </Container>
 }
 

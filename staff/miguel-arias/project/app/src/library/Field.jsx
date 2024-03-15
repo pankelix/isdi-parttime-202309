@@ -3,8 +3,8 @@ import Input from "./Input"
 
 function Field(props) {
     return <>
-        <Label forId={props.id}>{props.children}</Label>
-        <Input id={props.id} type={props.type || "text"} placeholder={props.placeholder || ""} />
+        <Label forId={props.id} {...props}>{props.children}</Label>
+        <Input id={props.id} type={props.type || "text"} placeholder={props.placeholder || ""} {...props} />
     </>
 }
 

@@ -11,9 +11,9 @@ export default async (req, res) => {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     const homeId = payload.sub
 
-    const { task } = req.body
+    const { task, date } = req.body
     try {
-        const materializedTaskId = await logic.materializeTask(homeId, task)
+        const materializedTaskId = await logic.materializeTask(homeId, task, date)
 
         res.json(materializedTaskId)
     } catch (error) {

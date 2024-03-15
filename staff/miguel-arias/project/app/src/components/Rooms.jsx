@@ -58,25 +58,31 @@ function Rooms(props) {
     }
 
     return <Container>
-        <h1>Rooms</h1>
+        {/* {rooms.length === 0 ? <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3> : ''} */}
 
-        {rooms.length === 0 ? <h3>Please create a room clicking on the + below</h3> : ''}
+        <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
+            {rooms.length > 0 ? rooms.map(room => <article key={room.id} className='grid grid-cols-2 gap-3'><h5 className='text-xl font-bold'>{helper.arrangeText(room.name)}</h5><Button onClick={() => handleDeleteRoomClick(room.id)} className='form-submit-button py-1 w-[10rem]'>Delete</Button></article>) : <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3>}
+        </article>
 
-        {rooms.map(room => <Container key={room.id}><h5>{helper.arrangeText(room.name)}</h5><Button onClick={() => handleDeleteRoomClick(room.id)}>Delete</Button></Container>)}
+        {view === 'new-room-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleNewRoomSubmit} id='new-room-form'>
+                        <Input id='roomName' placeholder={'New room name'} required={true} className='entrance-input'></Input>
+                    </Form>
+                </div>
+                <div className='close-submit-buttons-container'>
+                    <Button form='new-room-form' type='submit' className='form-submit-button'>Create</Button>
+                    <Button type='button' onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
 
-        {view === 'new-room-view' && <Container>
-            <Form onSubmit={handleNewRoomSubmit}>
-                <Input id='roomName' placeholder={'New room name'} required={true}></Input>
-                <Button type='submit'>Create</Button>
-                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
-
-        <Container>
-            <Button onClick={handleNewRoomClick}>
+        <article>
+            <Button onClick={handleNewRoomClick} className='plus-button'>
                 ➕
             </Button>
-        </Container>
+        </article>
 
     </Container>
 }

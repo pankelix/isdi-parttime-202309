@@ -225,104 +225,178 @@ function Profiles(props) {
         }
     } */
 
-    return <Container>
-        <h1>Profiles</h1>
-        {profiles.length > 0 && !session.profileId && <h3>Please, click on your name to log in</h3>}
+    return <Container className='px-[1rem] w-screen'>
+        <article className='flex mb-[1rem] ml-[0.2rem]'>
+            {profiles.length > 0 && !session.profileId && <h3 className='font-bold text-xl mt-[2rem]'>Please, click on your name to log in</h3>}
+        </article>
 
-        {profiles.length > 0 ? profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />) : <h4>No profiles yet, create your profile clicking the + below</h4>}
+        <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
+            {profiles.length > 0 ? profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />) : <h4 className='text-xl font-bold'>No profiles yet, create your profile clicking the + below</h4>}
+        </article>
 
-        {view === 'login-profile-view' && <Container>
-            <Form onSubmit={handleLoginProfileSubmit}>
-                <h3>{name}</h3>
-                <p>Pin code</p>
-                <Input type='number' min='0' max='9' id='digit1' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit2' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit3' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='digit4' placeholder='-'></Input>
-                <Button type='submit'>Submit</Button>
-                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
+        {/* PROBAR OVERFLOW */}
 
-        <Container>
-            {session.profileRole === 'admin' ? <Button onClick={handleManageProfilesClick}>Manage profiles</Button> : ''}
-            {session.profileRole !== null ? <Button onClick={handleEditProfileClick}>Edit your profile</Button> : ''}
-        </Container>
+        {view === 'login-profile-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleLoginProfileSubmit} id='login-profile-form'>
+                        <div className='flex flex-col items-center mt-[1rem] gap-[1.5rem]'>
+                            <h3>Logging to {name}</h3>
 
-        {view === 'edit-profile-view' && <Container>
-            {/* <Button onClick={handleChangePictureClick}>Change picture</Button> */}
-            <Button onClick={handleChangeColorClick}>Change profile color</Button>
-            <Button onClick={handleChangePincodeClick}>Change pincode</Button>
-            <Button onClick={handleDeleteOwnProfileClick}>Delete profile</Button>
-        </Container>}
+                            <p className='text-xl font-bold'>Pin code</p>
 
-        {/* {view === 'change-picture-view' && <Container>
+                            <div className='flex gap-[1rem]'>
+                                <Input type='number' min='0' max='9' id='digit1' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit2' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit3' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='digit4' placeholder='-' className='pincode-digit'></Input>
+                            </div>
+                        </div>
+                    </Form>
+                </div>
+
+                <div className='close-submit-buttons-container'>
+                    <Button form='login-profile-form' type='submit' className='form-submit-button'>Submit</Button>
+
+                    <Button type='button' onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
+
+        <article className='flex justify-center gap-[2rem] mt-[0.5rem]'>
+            {session.profileRole === 'admin' && profiles.length > 1 ? <Button onClick={handleManageProfilesClick} className='form-submit-button'>Manage profiles</Button> : ''}
+            {session.profileRole !== null ? <Button onClick={handleEditProfileClick} className='form-submit-button'>Edit your profile</Button> : ''}
+        </article>
+
+        {view === 'edit-profile-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container'>
+                    {/* <Button onClick={handleChangePictureClick}>Change picture</Button> */}
+                    <Button onClick={handleChangeColorClick} className='modal-border-button'>Change profile color</Button>
+                    <Button onClick={handleChangePincodeClick} className='modal-border-button'>Change pincode</Button>
+                    <Button onClick={handleDeleteOwnProfileClick} className='modal-border-button'>Delete profile</Button>
+                </div>
+
+                <div className='close-submit-buttons-container'>
+                    <Button type='button' onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
+
+        {/* {view === 'change-picture-view' && <article>
             <Form onSubmit={handleImageSubmit}>
                 <Input name='image' type='file' accept='image/*'></Input>
                 <Button type='submit'>Upload image</Button>
             </Form>
-        </Container>} */}
+        </article>} */}
 
-        {view === 'change-color-view' && <Container>
-            {palette.map(color => !usedColors.includes(color.code) ? <Button key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
-            <Button onClick={handleChooseColorClick}>Choose color</Button>
-            <Button onClick={handleCancelClick}>Cancel</Button>
-        </Container>}
+        {view === 'change-color-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container grid grid-cols-3 gap-4'>
+                    {palette.map(color => !usedColors.includes(color.code) ? <Button key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: color.code, opacity: chosenColor === color ? 1 : 0.5 }} className='ml-[1.1rem] h-12 w-12'></Button> : '')}
+                </div>
 
-        {view === 'change-pincode-view' && <Container>
-            <Form onSubmit={handleChangePincodeSubmit}>
-                <h3>{name}</h3>
-                <p>Old pin code</p>
-                <Input type='number' min='0' max='9' id='oldDigit1' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='oldDigit2' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='oldDigit3' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='oldDigit4' placeholder='-'></Input>
+                <div className='close-submit-buttons-container'>
+                    <Button onClick={handleChooseColorClick} className='form-submit-button'>Choose color</Button>
+                    <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
 
-                <p>New pin code</p>
-                <Input type='number' min='0' max='9' id='newDigit1' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='newDigit2' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='newDigit3' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='newDigit4' placeholder='-'></Input>
-                <Button type='submit'>Submit</Button>
-            </Form>
-        </Container>}
+        {view === 'change-pincode-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleChangePincodeSubmit} id='change-pincode-form'>
+                        <div className='flex flex-col items-center mt-[2rem] gap-[1.5rem]'>
+                            <p className='text-xl font-bold'>Old pin code</p>
+                            <div className='flex gap-[1rem]'>
+                                <Input type='number' min='0' max='9' id='oldDigit1' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='oldDigit2' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='oldDigit3' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='oldDigit4' placeholder='-' className='pincode-digit'></Input>
+                            </div>
 
-        {view === 'manage-profiles-view' && <Container>
-            {<Form onSubmit={handleManageProfileSubmit}>
-                {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} type='button' style={{ backgroundColor: activeProfileId === profile.id ? 'red' : '' }} onClick={() => handleOnProfileClick(profile.id)}>{profile.name}</Button> : '')}
+                            <p className='text-xl font-bold'>New pin code</p>
+                            <div className='flex gap-[1rem]'>
+                                <Input type='number' min='0' max='9' id='newDigit1' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='newDigit2' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='newDigit3' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='newDigit4' placeholder='-' className='pincode-digit'></Input>
+                            </div>
+                        </div>
+                    </Form>
+                </div>
 
-                <Input list='roles'>New role</Input>
-                <datalist id='roles'>
-                    <option value='admin' />
-                    <option value='user' />
-                </datalist>
+                <div className='close-submit-buttons-container'>
+                    <Button form='change-pincode-form' type='submit' className='form-submit-button'>Submit</Button>
+                    <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
 
-                <Button type='submit'>Change Role</Button>
+        {view === 'manage-profiles-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg p-5'>
+                {<Form onSubmit={handleManageProfileSubmit} id='manage-profile-form'>
+                    <aside className='modal-border-button-container items-center max-h-[15rem] overflow-y-auto'>
+                        {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} type='button' style={{ borderWidth: activeProfileId === profile.id ? '3px' : '1px' }} onClick={() => handleOnProfileClick(profile.id)} className='modal-border-button'>{profile.name}</Button> : '')}
+                    </aside>
 
-                <Button type='button' onClick={handleDeleteProfileClick}>Delete profile</Button>
-            </Form>}
-        </Container>}
+                    <Input list='roles' placeholder='Choose new role' className='entrance-input mb-[2rem]'></Input>
+                    <datalist id='roles'>
+                        <option value='admin' />
+                        <option value='user' />
+                    </datalist>
+                </Form>}
 
-        <Container>
+                <div className='close-submit-buttons-container justify-between mb-[2rem]'>
+                    <Button form='manage-profile-form' type='submit' className='form-submit-button text-base'>Change Role</Button>
+                    <Button type='button' onClick={handleDeleteProfileClick} className='form-submit-button text-base'>Delete profile</Button>
+                </div>
+                <div className='close-submit-buttons-container'>
+                    <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
+
+        <article className='plus-button'>
             <Button onClick={handleNewProfileClick}>
                 ➕
             </Button>
-        </Container>
+        </article>
 
-        {view === 'new-profile-view' && <Container>
-            <Form onSubmit={handleNewProfileSubmit}>
-                <Input id='name' type='text' placeholder='Name'></Input>
-                <p>Pin code</p>
-                <Input type='number' min='0' max='9' id='creationDigit1' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='creationDigit2' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='creationDigit3' placeholder='-'></Input>
-                <Input type='number' min='0' max='9' id='creationDigit4' placeholder='-'></Input>
-                {palette.map(color => !usedColors.includes(color.code) ? <Button type='button' key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: chosenColor === color ? 'white' : color.code }}>{color.name}</Button> : '')}
-                <Button type='submit'>Submit</Button>
-                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
-    </Container>
+        {view === 'new-profile-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleNewProfileSubmit} id='new-profile-form'>
+
+                        <Input id='name' type='text' placeholder='Profile name' className='entrance-input'></Input>
+
+                        <div className='flex flex-col items-center mt-[2rem] gap-[1.5rem]'>
+                            <p className='text-xl font-bold'>Pin code</p>
+                            <div className='flex gap-[1rem]'>
+                                <Input type='number' min='0' max='9' id='creationDigit1' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='creationDigit2' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='creationDigit3' placeholder='-' className='pincode-digit'></Input>
+                                <Input type='number' min='0' max='9' id='creationDigit4' placeholder='-' className='pincode-digit'></Input>
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col items-center mt-[2rem] mb-[-3rem] '>
+                            <p className='text-xl font-bold'>Choose color</p>
+                            <div className='modal-border-button-container grid grid-cols-3 gap-4 max-h-[15rem] overflow-y-auto px-2'>
+                                {palette.map(color => !usedColors.includes(color.code) ? <Button type='button' key={color.code} onClick={() => handleColorClick(color)} style={{ backgroundColor: color.code, opacity: chosenColor === color ? 1 : 0.5 }} className='h-12 w-12'></Button> : '')}
+                            </div>
+                        </div>
+                    </Form>
+                </div>
+
+                <div className='close-submit-buttons-container'>
+                    <Button form='new-profile-form' type='submit' className='form-submit-button'>Submit</Button>
+                    <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
+    </Container >
 }
 
 export default Profiles

@@ -38,19 +38,5 @@ describe('retrieveRooms', () => {
         }
     })
 
-    it('fails on non-existing room', async () => {
-        const home = await Home.create({ name: random.name(), email: random.email(), password: random.password() })
-
-        const homeId = home._id.toString()
-
-        try {
-            await retrieveRooms(homeId)
-            throw new Error('should not reach this point')
-        } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('room not found')
-        }
-    })
-
     after(async () => await mongoose.disconnect())
 })

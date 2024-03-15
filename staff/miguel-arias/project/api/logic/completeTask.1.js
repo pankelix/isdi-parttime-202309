@@ -50,39 +50,24 @@ function completeTask(profileId, taskId, pincode, date) {
         if (task.done === true)
             throw new ContentError('this task is already done')
 
-        let completionDate = new Date(date)
+        date = new Date(date)
 
-        /* if (completionDate < task.completionDate)
-            throw new ContentError("tasks can't be completed before their due completionDate") */
+        /* if (date < task.date)
+            throw new ContentError("tasks can't be completed before their due date") */
+        debugger
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + task.template.periodicity)
 
-        let completedTask
-        try {
-            completedTask = await Task.create({home: task.home._id.toString(), template: task.template._id.toString(), assignee : task.assignee ? task.assignee._id.toString(): null, done: true, date: completionDate})
-        } catch (error) {
-            throw new SystemError(error.message)
-        }
+        task.date = newDate
 
-        const newCompletionDate = new Date(completionDate);
-        newCompletionDate.setDate(newCompletionDate.getDate() + task.template.periodicity)
+        task.done = true
 
-        let nextTask
-        try {
-            nextTask = await Task.create({home: task.home._id.toString(), template: task.template._id.toString(), assignee : task.assignee ? task.assignee._id.toString(): null, done: false, date: newCompletionDate})
-        } catch (error) {
-            throw new SystemError(error.message)
-        }
-
-        try {
-            await Task.findByIdAndDelete(taskId)
-        } catch (error) {
-            throw new SystemError(error.message)
-        }
+        task.assignee = undefined
 
         profile.points += task.template.points
 
         try {
-            await completedTask.save()
-            await nextTask.save()
+            await task.save()
             await profile.save()
         } catch (error) {
             throw new SystemError(error.message)

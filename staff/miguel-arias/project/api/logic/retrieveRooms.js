@@ -25,9 +25,6 @@ function retrieveRooms(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (rooms.length === 0)
-            throw new NotFoundError('room not found')
-
         rooms.forEach(room => {
             room.id = room._id.toString()
             delete room._id

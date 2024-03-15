@@ -9,7 +9,7 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
 
 (async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/project')
+        await mongoose.connect('mongodb://127.0.0.1:27017/test')
         await Home.deleteMany()
         await Room.deleteMany()
         await Profile.deleteMany()
@@ -65,10 +65,10 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let michael
         let john
         try {
-            peter = await registerProfile(mansion.id, 'Peter Pan', '1234', 'green', 'admin')
-            wendy = await registerProfile(mansion.id, 'Wendy Darling', '1234', 'blue', 'admin')
-            michael = await registerProfile(mansion.id, 'Michael Darling', '1234', 'white')
-            john = await registerProfile(mansion.id, 'John Darling', '1234', 'pink')
+            peter = await registerProfile(mansion.id, 'Peter Pan', '1234', { name: 'color1', code: 'code1' }, 'admin')
+            wendy = await registerProfile(mansion.id, 'Wendy Darling', '1234', { name: 'color2', code: 'code2' }, 'admin')
+            michael = await registerProfile(mansion.id, 'Michael Darling', '1234', { name: 'color3', code: 'code3' })
+            john = await registerProfile(mansion.id, 'John Darling', '1234', { name: 'color4', code: 'code4' })
         } catch (error) {
             console.log(error)
         }
@@ -82,26 +82,27 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let changeSheets2
         let cleanOven
         try {
-            cleanShower = await createTemplate(mansion.id, 'clean-shower', [kidsBathroom.id, adultsBathroom.id], 14, 15)
-            dust = await createTemplate(mansion.id, 'dust', [livingRoom.id, hall.id, office.id], 4, 5)
-            doDishes = await createTemplate(mansion.id, 'do-dishes', [kitchen.id], 1, 2)
-            lawnRaking = await createTemplate(mansion.id, 'lawn-raking', [terrace.id, yard.id], 28, 15)
-            changeSheets = await createTemplate(mansion.id, 'change-sheets', [kidsBedroom.id], 7, 2)
-            changeSheets2 = await createTemplate(mansion.id, 'change-sheets', [adultsBedroom.id], 7, 2)
-            cleanOven = await createTemplate(mansion.id, 'clean-oven', [kitchen.id], 21, 10)
+            //homeId, name, periodicityNumber, periodicityRange, rooms, points
+            cleanShower = await createTemplate(mansion.id, 'clean-shower', 1, 'week', [kidsBathroom.id, adultsBathroom.id], 15)
+            dust = await createTemplate(mansion.id, 'dust', 2, 'week', [livingRoom.id, hall.id, office.id], 5)
+            doDishes = await createTemplate(mansion.id, 'do-dishes', 6, 'day', [kitchen.id], 2)
+            lawnRaking = await createTemplate(mansion.id, 'lawn-raking', 4, 'week', [terrace.id, yard.id], 15)
+            changeSheets = await createTemplate(mansion.id, 'change-sheets', 3, 'day', [kidsBedroom.id], 2)
+            changeSheets2 = await createTemplate(mansion.id, 'change-sheets', 2, 'week', [adultsBedroom.id], 2)
+            cleanOven = await createTemplate(mansion.id, 'clean-oven', 3, 'week', [kitchen.id], 10)
         } catch (error) {
             console.log(error)
         }
 
         //Task
-
-        await createTask(mansion.id, cleanShower.id, peter.id)
-        await createTask(mansion.id, dust.id, wendy.id)
-        await createTask(mansion.id, doDishes.id, michael.id)
-        await createTask(mansion.id, lawnRaking.id, john.id)
-        await createTask(mansion.id, changeSheets.id, michael.id)
-        await createTask(mansion.id, changeSheets2.id, peter.id)
-        await createTask(mansion.id, cleanOven.id, wendy.id)
+        //homeId, templateId, date
+        await createTask(mansion.id, cleanShower.id, '2024-03-15')
+        await createTask(mansion.id, dust.id, '2024-03-16')
+        await createTask(mansion.id, doDishes.id, '2024-03-17')
+        await createTask(mansion.id, lawnRaking.id, '2024-03-18')
+        await createTask(mansion.id, changeSheets.id, '2024-03-19')
+        await createTask(mansion.id, changeSheets2.id, '2024-03-20')
+        await createTask(mansion.id, cleanOven.id, '2024-03-21')
 
         console.log('database populated')
 

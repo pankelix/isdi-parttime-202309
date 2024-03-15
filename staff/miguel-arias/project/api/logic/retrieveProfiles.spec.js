@@ -45,19 +45,5 @@ describe('retrieveProfiles', () => {
         }
     })
 
-    it('fails on non-existing profile', async () => {
-        const home = await Home.create({ name: random.name(), email: random.email(), password: random.password() })
-
-        const homeId = home._id.toString()
-
-        try {
-            await retrieveProfiles(homeId)
-            throw new Error('should not reach this point')
-        } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('profile not found')
-        }
-    })
-
     after(async () => await mongoose.disconnect())
 })

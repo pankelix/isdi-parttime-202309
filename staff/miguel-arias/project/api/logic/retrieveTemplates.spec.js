@@ -41,19 +41,5 @@ describe('retrieveTemplates', () => {
         }
     })
 
-    it('fails on non-existing templates', async () => {
-        const home = await Home.create({ name: random.name(), email: random.email(), password: random.password() })
-
-        const homeId = home._id.toString()
-
-        try {
-            await retrieveTemplates(homeId)
-            throw new Error('should not reach this point')
-        } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('templates not found')
-        }
-    })
-
     after(async () => await mongoose.disconnect())
 })

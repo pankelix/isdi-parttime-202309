@@ -48,19 +48,5 @@ describe('retrieveTasks', () => {
         }
     })
 
-    it('fails on non-existing task', async () => {
-        const home = await Home.create({ name: random.name(), email: random.email(), password: random.password() })
-
-        const homeId = home._id.toString()
-
-        try {
-            await retrieveTasks(homeId, 0)
-            throw new Error('should not reach this point')
-        } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('task not found')
-        }
-    })
-
     after(async () => await mongoose.disconnect())
 })

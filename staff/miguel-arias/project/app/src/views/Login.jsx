@@ -27,22 +27,24 @@ function Login(props) {
         props.onRegisterClick()
     }
 
-    return <Container className='centered-box'>
-        <div className='box-content'>
-            <h1>Login</h1>
-            <Form onSubmit={handleSubmit}>
-                <Input id='email-input' type='email' placeholder='Email'>Email</Input>
+    return <Container className='flex items-center justify-center gap-[25px] h-screen'>
+        <article className='box-border bg-white rounded-lg w-screen h-[760px] px-[30px] py-[70px] flex flex-col items-center gap-[10px] shadow-lg shadow-slate-200'>
+            <Form onSubmit={handleSubmit} className='select-none h-[38px] w-[360px] flex flex-col items-center gap-[10px] relative top-[10rem]'>
 
-                <Input id='password-input' type='password' placeholder='Password'>Password</Input>
+                <h1 className='text-4xl font-semibold mb-[1rem]'>Login</h1>
 
-                <Button type='submit'>Log In</Button>
+                <Input id='email-input' type='email' placeholder='Email' className='entrance-input'>Email</Input>
+
+                <Input id='password-input' type='password' placeholder='Password' className='entrance-input'>Password</Input>
+
+                <Button type='submit' className='cursor-pointer p-[1.8rem] border-none rounded-md text-lg text-white bg-amber-400 absolute top-[17rem] w-[216px] h-[30px] flex justify-center items-center'>Log In</Button>
             </Form>
 
-            <nav>
-                <p>Don't have an account?</p>
-                <Link onClick={handleRegisterClick}>Sign up</Link>
+            <nav className='text-sm flex justify-center gap-4 absolute bottom-[12rem] w-[100%]'>
+                <p>Don't have account?</p>
+                <Link onClick={handleRegisterClick}>Create new account</Link>
             </nav>
-        </div>
+        </article>
     </Container>
 }
 

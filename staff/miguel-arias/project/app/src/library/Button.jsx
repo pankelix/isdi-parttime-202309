@@ -1,5 +1,5 @@
-function Button({className, onClick, type, children, style, name, value}) {
-    return <button name={name} value={value} style={style} className={`button ${className ? className : ''}`} onClick={onClick} type={type}>{children}</button>
+function Button(props) {
+    return <button name={props.name} form={props.form} value={props.value} style={props.style} className={`button ${props.className ? props.className : ''}`} onClick={props.onClick} type={props.type} {...props}>{props.children}</button>
 }
 
 export default Button

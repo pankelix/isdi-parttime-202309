@@ -89,7 +89,7 @@ function Templates(props) {
         setChosenRooms([])
     }
 
-    const handleFilterClick = () => {
+    /* const handleFilterClick = () => {
         setView('filter-view')
     }
 
@@ -125,56 +125,70 @@ function Templates(props) {
         setView(null)
         setFilter(null)
         refreshTemplates()
-    }
+    } */
 
     return <Container>
-        <h1>Templates</h1>
-        {rooms.length === 0 ? <h3>Please create a room before creating a template</h3> : ''}
-        {rooms.length > 0 && templates.length === 0 ? <h3>Please click on the + below to create a template</h3> : ''}
+        {/* {rooms.length === 0 ? <h3 className='text-xl font-bold'>Please create a room before creating a template</h3> : ''}
 
-        {templates.length > 0 ? <Container>
+        {rooms.length > 0 && templates.length === 0 ? <h3 className='text-xl font-bold'>Please click on the + below to create a template</h3> : ''} */}
+
+        {/* {templates.length > 0 ? <article>
             <Button onClick={handleFilterClick}>Filter</Button>
             <Button onClick={handleRestartFilters}>Restart filters</Button>
-        </Container> : ''}
+        </article> : ''}
 
-        {view === 'filter-view' && <Container>
+        {view === 'filter-view' && <article>
             <Button onClick={handleAscendTemplatesClick}>🔼</Button>
             <Button onClick={handleDescendTemplatesClick}>🔽</Button>
             <Button onClick={handleFilterByRoomClick}>By Room</Button>
 
             {filter === 'room' && templates.map(template => template.rooms.map(room => <Button key={room.id} onClick={() => handleFilterByRoom(room._id)}>{helpers.arrangeText(room.name)}</Button>))}
 
-        </Container>}
+        </article>} */}
 
-        {templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} />)}
+        <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
+            {rooms.length < 1 ? <h3 className='text-xl font-bold'>Please create a room before creating a template</h3> : templates.length === 0 ? <h3 className='text-xl font-bold'>Please click on the + below to create a template</h3> : templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} />)}
+        </article>
 
-        <Container>
-            <Button onClick={handleNewTemplateView}>
+        <article>
+            <Button onClick={handleNewTemplateView} className='plus-button'>
                 ➕
             </Button>
-        </Container>
+        </article>
 
-        {view === 'new-template-view' && <Container>
-            <Form onSubmit={handleNewTemplateSubmit}>
-                <Input id='taskName' type='text' required={true} placeholder={'Task name'}></Input>
+        {view === 'new-template-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center '>
+                    <Form onSubmit={handleNewTemplateSubmit} id='new-template-form'>
+                        <p className='mt-[-1rem]'>Template name</p>
 
-                <p>It repeats every</p>
-                <Input type='number' min='1' id='periodicityNumber' placeholder='Number' required={true}></Input>
+                        <Input id='taskName' type='text' required={true} placeholder={'Name'} className='entrance-input mb-[1rem]'></Input>
 
-                <Button type='button' id='day' onClick={handleSetDay} style={{ backgroundColor: dayOrWeek === 'day' ? 'red' : '' }}>'Days'</Button>
+                        <p>It repeats every</p>
+                        <div className='flex mb-[1rem] gap-[1rem]'>
+                            <Input type='number' min='1' id='periodicityNumber' placeholder='Number' required={true} className='entrance-input w-[6rem]'></Input>
 
-                <Button type='button' id='week' onClick={handleSetWeek} style={{ backgroundColor: dayOrWeek === 'week' ? 'red' : '' }}>'Weeks'</Button>
+                            <Button type='button' id='day' onClick={handleSetDay} style={{ borderWidth: dayOrWeek === 'day' ? '3px' : '1px' }} className='modal-border-button w-[6rem]'>Days</Button>
 
-                <Input id='points' placeholder={'Points (optional)'}>Points(optional)</Input>
+                            <Button type='button' id='week' onClick={handleSetWeek} style={{ borderWidth: dayOrWeek === 'week' ? '3px' : '1px' }} className='modal-border-button w-[6rem]'>Weeks</Button>
+                        </div>
 
-                <p>Rooms</p>
-                {rooms.map(room => <Button type='button' key={room.id} style={{ backgroundColor: chosenRooms.includes(room.id) ? 'red' : '' }} onClick={() => handleTaskClick(room.id)}>{room.name}</Button>)}
+                        <p>Points</p>
+                        <Input id='points' placeholder={'Points (optional)'} className='entrance-input mb-[1rem]'>Points(optional)</Input>
 
-                <Button type='submit'>Create</Button>
+                        <p className='text-xl font-bold  mb-[-1rem]'>Choose rooms</p>
+                        <article className='flex flex-col gap-[2rem] m-[1.5rem] h-[10rem] overflow-y-auto'>
+                            {rooms.map(room => <Button type='button' key={room.id} style={{ borderWidth: chosenRooms.includes(room.id) ? '3px' : '1px' }} onClick={() => handleTaskClick(room.id)} className='modal-border-button mb-[-1rem]'>{helpers.arrangeText(room.name)}</Button>)}
+                        </article>
+                    </Form>
+                </div>
 
-                <Button onClick={handleCancelClick}>Cancel</Button>
-            </Form>
-        </Container>}
+                <div className='close-submit-buttons-container mt-[-4.5rem]'>
+                    <Button type='submit' form='new-template-form' className='form-submit-button'>Create</Button>
+                    <Button type='button' onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
+        </article>}
     </Container>
 }
 

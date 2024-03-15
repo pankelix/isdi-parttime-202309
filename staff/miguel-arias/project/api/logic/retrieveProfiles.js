@@ -25,9 +25,6 @@ function retrieveProfiles(homeId) {
             throw new SystemError(error.message)
         }
 
-        if (profiles.length === 0)
-            throw new NotFoundError('profile not found')
-
         profiles.forEach(profile => {
             profile.id = profile._id.toString()
             delete profile._id

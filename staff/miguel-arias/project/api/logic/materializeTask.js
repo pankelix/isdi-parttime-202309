@@ -7,9 +7,10 @@ import { Home, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
 debugger
 
-function materializeTask(homeId, task) {
+function materializeTask(homeId, task, date) {
     validate.id(homeId, 'home id')
     validate.object(task)
+    validate.date(date)
 
     return (async () => {
         let home
@@ -22,14 +23,14 @@ function materializeTask(homeId, task) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        let date = new Date(task.date)
+        let materializationDate = new Date(date)
         const today = dayStart(new Date())
 
-        if (today > date)
+        if (today > materializationDate)
             throw new ContentError('date must be after today')
 
         try {
-            const materializedTask = await Task.create({ home: homeId, template: task.template._id, date: date, oldId: task.id })
+            const materializedTask = await Task.create({ home: homeId, template: task.template._id, date: materializationDate, oldId: task.id })
 
             return materializedTask._id.toString()
         } catch (error) {
