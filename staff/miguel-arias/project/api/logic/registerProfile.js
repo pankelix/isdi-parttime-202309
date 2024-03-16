@@ -5,7 +5,7 @@ import colors from 'com/defaultColors.js'
 const { SystemError, DuplicityError, NotFoundError } = errors
 
 import { Profile, Home } from '../data/models.js'
-debugger
+
 
 function registerProfile(homeId, name, pincode, color) {
     validate.id(homeId)

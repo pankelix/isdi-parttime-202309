@@ -5,7 +5,7 @@ import { dayStart } from '@formkit/tempo'
 
 import { Home, Template, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
-debugger
+
 
 function createTask(homeId, templateId, date) {
     validate.id(homeId, 'home id')

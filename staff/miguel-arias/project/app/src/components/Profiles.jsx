@@ -231,10 +231,10 @@ function Profiles(props) {
         </article>
 
         <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
-            {profiles.length > 0 ? profiles.map(profile => <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} />) : <h4 className='text-xl font-bold'>No profiles yet, create your profile clicking the + below</h4>}
+            {session.profileId && profiles.map(profile => session.profileId === profile.id ? <aside className='flex gap-[1rem]'><h4 onProfileClick={handleProfileClick} key={profile.id} profile={profile} className='font-bold text-xl mb-[2rem]'>Hello {profile.name}</h4> <Button style={{ backgroundColor: profile.color.code }} className={'w-7 h-7 rounded-full'}></Button></aside> : '')}
+            {session.profileId && <h4 className='text-xl font-bold'>Click to log in to another profile</h4>}
+            {profiles.length > 0 ? profiles.map(profile => session.profileId !== profile.id ? <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} /> : '') : <h4 className='text-xl font-bold'>No profiles yet, create your profile clicking the + below</h4>}
         </article>
-
-        {/* PROBAR OVERFLOW */}
 
         {view === 'login-profile-view' && <article className='modal-black-bg'>
             <div className='modal-white-bg'>

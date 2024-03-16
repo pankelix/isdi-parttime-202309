@@ -23,7 +23,7 @@ describe('changeProfileColor', () => {
         await changeProfileColor(profileId, color)
 
         const foundProfile = await Profile.findById(profileId)
-        debugger
+
         expect(foundProfile._doc.color.name).to.equal(color.name)
         expect(foundProfile._doc.color.code).to.equal(color.code)
     })

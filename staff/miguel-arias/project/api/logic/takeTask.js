@@ -3,10 +3,9 @@ const { SystemError, NotFoundError, PermissionError } = errors
 
 import { Task, Profile } from '../data/models.js'
 
-function assignTask(sessionProfileId, taskId, profileId) {
+function takeTask(sessionProfileId, taskId) {
     validate.id(sessionProfileId, 'session profile id')
     validate.id(taskId, 'task id')
-    validate.id(profileId, 'profile id')
 
     return (async () => {
         let task
@@ -29,20 +28,7 @@ function assignTask(sessionProfileId, taskId, profileId) {
         if (!sessionProfile)
             throw new NotFoundError('session profile not found')
 
-        if (sessionProfile.role !== 'admin')
-            throw new PermissionError('session profile is not admin')
-
-        let assignedProfile
-        try {
-            assignedProfile = await Profile.findById(profileId).lean()
-        } catch (error) {
-            throw new SystemError(error.message)
-        }
-
-        if (!assignedProfile)
-            throw new NotFoundError('profile not found')
-
-        task.assignee = profileId
+        task.assignee = sessionProfileId
 
         try {
             await task.save()
@@ -52,4 +38,4 @@ function assignTask(sessionProfileId, taskId, profileId) {
     })()
 }
 
-export default assignTask
+export default takeTask

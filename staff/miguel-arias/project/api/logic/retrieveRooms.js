@@ -7,7 +7,7 @@ function retrieveRooms(homeId) {
     validate.id(homeId)
 
     return (async () => {
-        debugger
+
         let home
         try {
             home = await Home.findById(homeId).lean()

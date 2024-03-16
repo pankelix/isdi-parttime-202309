@@ -13,7 +13,7 @@ function completeTask(profileId, taskId, pincode, date) {
     validate.date(date)
 
     return (async () => {
-        debugger
+
         let profile
         try {
             profile = await Profile.findById(profileId)
@@ -54,7 +54,7 @@ function completeTask(profileId, taskId, pincode, date) {
 
         /* if (date < task.date)
             throw new ContentError("tasks can't be completed before their due date") */
-        debugger
+
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + task.template.periodicity)
 

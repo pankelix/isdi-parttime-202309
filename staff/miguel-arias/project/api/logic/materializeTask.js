@@ -5,7 +5,7 @@ import { dayStart } from '@formkit/tempo'
 
 import { Home, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
-debugger
+
 
 function materializeTask(homeId, task, date) {
     validate.id(homeId, 'home id')

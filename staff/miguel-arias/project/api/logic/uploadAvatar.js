@@ -2,7 +2,7 @@ import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
 import { Home, Profile } from '../data/models.js'
-debugger
+
 function uploadAvatar(homeId, profileId, originalname, mimetype, oldPath) {
     validate.id(homeId, 'home id')
     validate.id(profileId, 'profile id')

@@ -8,7 +8,7 @@ import { Home, Profile } from '../data/models.js'
 import { errors } from 'com'
 import authenticateProfile from './authenticateProfile.js'
 const { NotFoundError, CredentialsError } = errors
-debugger
+
 describe('authenticateProfile', () => {
     before(async () => await mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 

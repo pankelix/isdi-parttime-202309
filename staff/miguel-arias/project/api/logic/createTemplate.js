@@ -2,7 +2,7 @@ import { validate, errors } from 'com'
 const { SystemError, NotFoundError, ContentError } = errors
 
 import { Home, Room, Template } from '../data/models.js'
-debugger
+
 
 function createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms, points) {
     validate.id(homeId, 'home id')

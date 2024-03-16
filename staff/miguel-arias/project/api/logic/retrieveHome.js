@@ -7,7 +7,7 @@ function retrieveHome(homeId) {
     validate.id(homeId)
 
     return (async () => {
-        debugger
+
         let home
         try {
             home = await Home.findById(homeId, 'name').lean()

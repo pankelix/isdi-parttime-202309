@@ -18,6 +18,7 @@ import {
     retrieveProfileTasksHandler,
     deleteTaskHandler,
     assignTaskHandler,
+    takeTaskHandler,
     delayTaskHandler,
     completeTaskHandler,
     retrieveTemplatesHandler,
@@ -80,7 +81,9 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/tasks/:taskId/delete', deleteTaskHandler)
 
-        server.patch('/tasks/:taskId/assign', jsonBodyParser, assignTaskHandler)
+        server.patch('/tasks/:taskId/take', takeTaskHandler)
+
+        server.patch('/tasks/:taskId/assign/:profileId', assignTaskHandler)
 
         server.patch('/tasks/:taskId/delay', jsonBodyParser, delayTaskHandler)
 

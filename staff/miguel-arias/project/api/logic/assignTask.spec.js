@@ -10,7 +10,7 @@ import { Profile, Template, Task } from '../data/models.js'
 
 import { errors } from 'com'
 const { NotFoundError, PermissionError } = errors
-debugger
+
 describe('assignTask', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
@@ -33,7 +33,7 @@ describe('assignTask', () => {
         await assignTask(sessionProfileId, taskId, profileId)
 
         const taskFound = await Task.findById(taskId)
-        debugger
+
         expect(taskFound.assignee._id.toString()).to.equal(profileId)
     })
 

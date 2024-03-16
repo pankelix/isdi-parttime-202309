@@ -9,6 +9,7 @@ import authenticateProfile from './authenticateProfile.js'
 import retrieveRole from './retrieveRole.js'
 import createTask from './createTask.js'
 import assignTask from './assignTask.js'
+import takeTask from './takeTask.js'
 import delayTask from './delayTask.js'
 import deleteTask from './deleteTask.js'
 import retrieveRooms from './retrieveRooms.js'
@@ -39,6 +40,7 @@ const logic = {
     retrieveRole,
     createTask,
     assignTask,
+    takeTask,
     delayTask,
     deleteTask,
     retrieveRooms,

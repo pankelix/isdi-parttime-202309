@@ -3,9 +3,8 @@ const { SystemError } = errors
 
 import session from './session'
 
-const assignTask = (taskId, profileId) => {
+const takeTask = (taskId) => {
     validate.id(taskId, 'task id')
-    validate.id(profileId, 'profile id')
 
     const req = {
         method: 'PATCH',
@@ -18,7 +17,7 @@ const assignTask = (taskId, profileId) => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/assign/${profileId}`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}/take`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -37,4 +36,4 @@ const assignTask = (taskId, profileId) => {
     })()
 }
 
-export default assignTask
+export default takeTask

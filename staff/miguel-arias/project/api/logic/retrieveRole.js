@@ -7,7 +7,7 @@ function retrieveRole(profileId) {
     validate.id(profileId)
 
     return (async () => {
-        debugger
+
         let profile
         try {
             profile = await Profile.findById(profileId).lean()

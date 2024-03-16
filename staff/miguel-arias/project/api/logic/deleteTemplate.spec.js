@@ -12,7 +12,7 @@ import { Profile, Template, Task } from '../data/models.js'
 
 import { errors } from 'com'
 const { NotFoundError, PermissionError } = errors
-debugger
+
 describe('deleteTemplate', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 

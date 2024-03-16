@@ -11,10 +11,10 @@ export default async (req, res) => {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     const sessionProfileId = payload.sub
 
-    const { taskId, profileId } = req.params
+    const { taskId } = req.params
 
     try {
-        await logic.assignTask(sessionProfileId, taskId, profileId)
+        await logic.takeTask(sessionProfileId, taskId)
     } catch (error) {
         let status = 500
 

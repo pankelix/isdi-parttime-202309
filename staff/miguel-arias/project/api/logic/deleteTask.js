@@ -1,7 +1,7 @@
 import { Profile, Task } from '../data/models.js'
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError, PermissionError } = errors
-debugger
+
 function deleteTask(profileId, taskId) {
     validate.id(profileId, 'profile id')
     validate.id(taskId, 'task id')

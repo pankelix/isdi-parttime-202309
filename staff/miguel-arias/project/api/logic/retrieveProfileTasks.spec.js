@@ -30,7 +30,7 @@ describe('retrieveProfileTasks', () => {
         const task = await Task.create({ home: homeId, template: templateId, assignee: profileId })
 
         const retrievedTasks = await retrieveProfileTasks(homeId, profileId, 0)
-        debugger
+
         expect(retrievedTasks.length).to.equal(3)
         expect(retrievedTasks).to.deep.equal(retrievedTasks.sort((a, b) => a.date - b.date))
         expect(retrievedTasks[0].home.toString()).to.equal(homeId)

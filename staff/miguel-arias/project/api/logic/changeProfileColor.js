@@ -2,7 +2,7 @@ import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
 import { Profile } from '../data/models.js'
-debugger
+
 function changeProfileColor(profileId, color) {
     validate.id(profileId, 'profile id')
     validate.object(color, 'color')

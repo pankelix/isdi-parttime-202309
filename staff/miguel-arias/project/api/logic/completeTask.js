@@ -13,7 +13,7 @@ function completeTask(profileId, taskId, pincode, date) {
     validate.date(date)
 
     return (async () => {
-        debugger
+
         let profile
         try {
             profile = await Profile.findById(profileId)
@@ -57,7 +57,7 @@ function completeTask(profileId, taskId, pincode, date) {
 
         let completedTask
         try {
-            completedTask = await Task.create({home: task.home._id.toString(), template: task.template._id.toString(), assignee : task.assignee ? task.assignee._id.toString(): null, done: true, date: completionDate})
+            completedTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : null, done: true, date: completionDate, delay: task.delay })
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -67,7 +67,7 @@ function completeTask(profileId, taskId, pincode, date) {
 
         let nextTask
         try {
-            nextTask = await Task.create({home: task.home._id.toString(), template: task.template._id.toString(), assignee : task.assignee ? task.assignee._id.toString(): null, done: false, date: newCompletionDate})
+            nextTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : null, done: false, date: newCompletionDate })
         } catch (error) {
             throw new SystemError(error.message)
         }

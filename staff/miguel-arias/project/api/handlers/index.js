@@ -9,6 +9,7 @@ import authenticateProfileHandler from './authenticateProfileHandler.js'
 import retrieveRoleHandler from './retrieveRoleHandler.js'
 import createTaskHandler from './createTaskHandler.js'
 import assignTaskHandler from './assignTaskHandler.js'
+import takeTaskHandler from './takeTaskHandler.js'
 import delayTaskHandler from './delayTaskHandler.js'
 import deleteTaskHandler from './deleteTaskHandler.js'
 import completeTaskHandler from './completeTaskHandler.js'
@@ -39,6 +40,7 @@ export {
     retrieveRoleHandler,
     createTaskHandler,
     assignTaskHandler,
+    takeTaskHandler,
     delayTaskHandler,
     deleteTaskHandler,
     completeTaskHandler,

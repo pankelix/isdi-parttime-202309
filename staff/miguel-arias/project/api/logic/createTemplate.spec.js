@@ -33,7 +33,7 @@ describe('createTemplate', async () => {
         points = Number(points.replace(0, 1))
 
         await createTemplate(homeId, name, periodicityNumber, periodicityRange, rooms, points)
-        debugger
+
         try {
             const template = await Template.findOne({ home: homeId })
 

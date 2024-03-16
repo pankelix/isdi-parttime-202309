@@ -22,7 +22,7 @@ describe('retrieveTemplates', () => {
         const template = await Template.create({ home: homeId, name: name, rooms: [random.id(), random.id()] })
 
         const retrievedTemplates = await retrieveTemplates(homeId)
-        debugger
+
         expect(retrievedTemplates[0].home.toString()).to.equal(homeId)
         expect(retrievedTemplates[0].name).to.be.a('string')
         expect(retrievedTemplates[0].name).to.equal(name)

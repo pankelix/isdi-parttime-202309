@@ -26,6 +26,7 @@ function Calendar(props) {
     const [week, setWeek] = useState(0)
     const [task, setTask] = useState(null)
     const [profiles, setProfiles] = useState([])
+    const [assignedId, setAssignedId] = useState(null)
     const [chosenTemplate, setChosenTemplate] = useState(null)
     const [templates, setTemplates] = useState([])
     const [onlyMine, setOnlyMine] = useState(false)
@@ -185,22 +186,45 @@ function Calendar(props) {
 
     }
 
-    const handleAssignThisTaskTo = () => {
-        setView('assign-task-view')
-    }
-
-    const handleAssignThisTask = async (profileId) => {
+    const handleTakeThisTask = async () => {
         let materializedTaskId
         if (task.id.includes('_')) {
             try {
-                materializedTaskId = await logic.materializeTask(task/* , profileId */)
+                materializedTaskId = await logic.materializeTask(task)
             } catch (error) {
                 context.handleError(error)
             }
         }
 
         try {
-            await logic.assignTask(materializedTaskId ? materializedTaskId : task.id/* , profileId */)
+            await logic.takeTask(materializedTaskId ? materializedTaskId : task.id)
+            refreshTasks()
+            setView(null)
+        } catch (error) {
+            context.handleError(error)
+        }
+    }
+
+    const handleAssignThisTaskClick = () => {
+        setView('assign-task-view')
+    }
+
+    const handleAssignedClick = (profileId) => {
+        setAssignedId(profileId)
+    }
+
+    const handleAssignThisTask = async () => {
+        let materializedTaskId
+        if (task.id.includes('_')) {
+            try {
+                materializedTaskId = await logic.materializeTask(task)
+            } catch (error) {
+                context.handleError(error)
+            }
+        }
+
+        try {
+            await logic.assignTask(materializedTaskId ? materializedTaskId : task.id, assignedId)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -252,7 +276,6 @@ function Calendar(props) {
             }
         } */
 
-
         let digit1 = event.target.digit1.value
         let digit2 = event.target.digit2.value
         let digit3 = event.target.digit3.value
@@ -299,7 +322,7 @@ function Calendar(props) {
             </aside>
         </article>
 
-        <article className='flex flex-col'>
+        <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
             <Button onClick={handleLastWeekClick} className='calendar-week-navigator'>▲</Button>
 
             {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
@@ -323,9 +346,9 @@ function Calendar(props) {
                 </div>
 
                 <div className='modal-border-button-container'>
-                    {session.profileRole !== null && <Button onClick={() => handleAssignThisTask(null)} className='modal-border-button'>Take this task</Button>}
+                    {session.profileRole !== null && <Button onClick={handleTakeThisTask} className='modal-border-button'>Take this task</Button>}
 
-                    {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskTo} className='modal-border-button'>Assign this task to...</Button>}
+                    {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskClick} className='modal-border-button'>Assign this task to...</Button>}
 
                     {session.profileRole !== null && <Button onClick={handleCompleteTaskClick} className='modal-border-button'>Complete this task</Button>}
 
@@ -342,9 +365,12 @@ function Calendar(props) {
         {view === 'assign-task-view' && <article className='modal-black-bg'>
             <div className='modal-white-bg'>
                 <div className='modal-border-button-container max-h-[15rem] overflow-y-auto'>
-                    {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} onClick={() => handleAssignThisTask(profile.id)} className='flex flex-col text-xl p-[1rem] modal-border-button'>{profile.name}</Button> : '')}
+                    {profiles.map(profile => profile.id !== session.profileId ? <Form id='assign-task-form' key={profile.id} onSubmit={handleAssignThisTask}>
+                        <Button type='button' style={{ borderWidth: assignedId === profile.id ? '3px' : '1px' }} onClick={() => handleAssignedClick(profile.id)} className='flex flex-col text-xl p-[1rem] modal-border-button'>{profile.name}</Button>
+                    </Form> : '')}
                 </div>
-                <div className='modal-close-button-container'>
+                <div className='close-submit-buttons-container'>
+                    <Button form='assign-task-form' type='submit' className='form-submit-button'>Submit</Button>
                     {session.profileRole !== null && <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>}
                 </div>
             </div>

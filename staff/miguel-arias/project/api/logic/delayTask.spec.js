@@ -12,13 +12,13 @@ import { Profile, Template, Task } from '../data/models.js'
 
 import { errors } from 'com'
 const { NotFoundError, PermissionError } = errors
-debugger
+
 describe('delayTask', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
     beforeEach(() => Promise.all([Profile.deleteMany(), Task.deleteMany()]))
 
-    it.skip('succeeds on existing profile and template', async () => {
+    it('succeeds on existing profile and template', async () => {
         const profile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode() })
 
         const profileId = profile._id.toString()
@@ -30,17 +30,17 @@ describe('delayTask', () => {
         const task = await Task.create({ home: random.id(), template: templateId, assignee: random.id() })
 
         const taskId = task._id.toString()
-        debugger
-        expect(task.date).to.equal(new Date())
+
+        expect(task.date.toLocaleDateString('en-CA')).to.equal(new Date().toLocaleDateString('en-CA'))
         expect(task.delay).to.equal(0)
 
         const date = (addDay(new Date(), 1))
 
         await delayTask(profileId, taskId, date)
 
-        const taskFound = await Template.findById(templateId)
+        const taskFound = await Task.findById(taskId)
 
-        expect(taskFound.date).to.equal(date)
+        expect(taskFound.date.toLocaleDateString('en-CA')).to.equal(date.toLocaleDateString('en-CA'))
         expect(taskFound.delay).to.equal(1)
     })
 

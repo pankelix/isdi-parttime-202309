@@ -43,7 +43,7 @@ import { Home, Room, Profile, Template, Task } from '../data/models.js'
         let adultsBedroom
         let office
         try {
-            debugger
+
             kidsBathroom = await createRoom(mansion.id, 'kids-bathroom')
             adultsBathroom = await createRoom(mansion.id, 'adults-bathroom')
             livingRoom = await createRoom(mansion.id, 'living-room')

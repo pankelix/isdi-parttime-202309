@@ -66,7 +66,7 @@ describe('changePincode', () => {
             expect(error.message).to.equal('profile not found')
         }
     })
-    debugger
+
     it('fails on wrong pincode', async () => {
         const pincode = random.pincode()
 

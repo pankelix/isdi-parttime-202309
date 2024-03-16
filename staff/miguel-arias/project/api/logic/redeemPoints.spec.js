@@ -12,7 +12,7 @@ import { Profile } from '../data/models.js'
 
 import { errors } from 'com'
 const { NotFoundError, PermissionError, ContentError } = errors
-debugger
+
 describe('redeemPoints', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 

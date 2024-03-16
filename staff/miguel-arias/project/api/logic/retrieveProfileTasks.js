@@ -10,7 +10,7 @@ function retrieveProfileTasks(homeId, profileId, week) {
     validate.id(profileId, 'profile id')
 
     return (async () => {
-        debugger
+
         let home
         try {
             home = await Home.findById(homeId).lean()

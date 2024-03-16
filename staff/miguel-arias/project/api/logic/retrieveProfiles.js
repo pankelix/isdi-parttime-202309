@@ -7,7 +7,7 @@ function retrieveProfiles(homeId) {
     validate.id(homeId)
 
     return (async () => {
-        debugger
+
         let home
         try {
             home = await Home.findById(homeId).lean()
@@ -17,7 +17,7 @@ function retrieveProfiles(homeId) {
 
         if (!home)
             throw new NotFoundError('home not found')
-        debugger
+
         let profiles
         try {
             profiles = await Profile.find({ home: homeId }).select('-__v').lean()

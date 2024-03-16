@@ -9,7 +9,7 @@ function retrieveTasks(homeId, week) {
     validate.id(homeId, 'home id')
 
     return (async () => {
-        debugger
+
         let home
         try {
             home = await Home.findById(homeId).lean()
