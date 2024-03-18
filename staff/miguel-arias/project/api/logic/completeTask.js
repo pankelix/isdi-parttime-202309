@@ -51,23 +51,31 @@ function completeTask(profileId, taskId, pincode, date) {
             throw new ContentError('this task is already done')
 
         let completionDate = new Date(date)
+        completionDate.setHours(0, 0, 0, 0)
+
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        if (completionDate < today)
+            throw new ContentError('date must be after today')
 
         /* if (completionDate < task.completionDate)
             throw new ContentError("tasks can't be completed before their due completionDate") */
 
         let completedTask
         try {
-            completedTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : null, done: true, date: completionDate, delay: task.delay })
+            completedTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : undefined, done: true, date: completionDate, delay: task.delay })
         } catch (error) {
             throw new SystemError(error.message)
         }
 
         const newCompletionDate = new Date(completionDate);
         newCompletionDate.setDate(newCompletionDate.getDate() + task.template.periodicity)
+        newCompletionDate.setHours(0, 0, 0, 0)
 
         let nextTask
         try {
-            nextTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : null, done: false, date: newCompletionDate })
+            nextTask = await Task.create({ home: task.home._id.toString(), template: task.template._id.toString(), assignee: task.assignee ? task.assignee._id.toString() : undefined, done: false, date: newCompletionDate })
         } catch (error) {
             throw new SystemError(error.message)
         }

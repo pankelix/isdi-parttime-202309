@@ -1,8 +1,6 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
-import { dayStart } from '@formkit/tempo'
-
 import { Home, Template, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
 
@@ -33,14 +31,17 @@ function createTask(homeId, templateId, date) {
         if (!template)
             throw new NotFoundError('template not found')
 
-        date = new Date(date)
-        const today = dayStart(new Date())
+        let creationDate = new Date(date)
+        creationDate.setHours(0, 0, 0, 0)
 
-        if (date < today)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        if (creationDate < today)
             throw new ContentError('date must be after today')
 
         try {
-            const task = await Task.create({ home: homeId, template: templateId, date: date })
+            const task = await Task.create({ home: homeId, template: templateId, date: creationDate })
 
             return task
         } catch (error) {

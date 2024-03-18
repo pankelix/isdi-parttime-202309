@@ -37,13 +37,13 @@ function retrieveTasks(homeId, week) {
         let tasksAndEchoes = []
 
         tasks.forEach(task => {
-            if (task.done === true && task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
-                tasksAndEchoes.push({ ...task })
+            if (task.done === true) {
+                if (task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek) {
+                    tasksAndEchoes.push({ ...task })
+                }
+            }
 
-            if (task.oldId && task.date >= startOfCurrentWeek && task.date <= endOfCurrentWeek)
-                tasksAndEchoes.push({ ...task })
-
-            if (task.done === false && !task.oldId) {
+            if (task.done === false) {
                 const existingEcho = tasksAndEchoes.find(echo => echo._id ? echo._id === task.oldId : null)
 
                 if (existingEcho) {

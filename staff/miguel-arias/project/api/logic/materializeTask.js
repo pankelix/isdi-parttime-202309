@@ -1,16 +1,13 @@
 import { validate, errors } from 'com'
 const { SystemError, NotFoundError } = errors
 
-import { dayStart } from '@formkit/tempo'
-
 import { Home, Task } from '../data/models.js'
 import { ContentError } from 'com/errors.js'
 
 
-function materializeTask(homeId, task, date) {
+function materializeTask(homeId, task) {
     validate.id(homeId, 'home id')
     validate.object(task)
-    validate.date(date)
 
     return (async () => {
         let home
@@ -23,10 +20,13 @@ function materializeTask(homeId, task, date) {
         if (!home)
             throw new NotFoundError('home not found')
 
-        let materializationDate = new Date(date)
-        const today = dayStart(new Date())
+        let materializationDate = new Date(task.date)
+        materializationDate.setHours(0, 0, 0, 0)
 
-        if (today > materializationDate)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        if (materializationDate < today)
             throw new ContentError('date must be after today')
 
         try {

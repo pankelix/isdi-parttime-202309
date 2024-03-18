@@ -3,10 +3,9 @@ const { SystemError } = errors
 
 import session from './session'
 
-const materializeTask = (task, date/* , profileId */) => {
+const materializeTask = (task/* , profileId */) => {
     /* if (profileId)
         validate.id(profileId, 'profile id') */
-    validate.date(date)
     validate.object(task)
 
     const req = {
@@ -15,7 +14,7 @@ const materializeTask = (task, date/* , profileId */) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.token}`
         },
-        body: JSON.stringify({ task, date })
+        body: JSON.stringify({ task })
     }
 
     return (async () => {

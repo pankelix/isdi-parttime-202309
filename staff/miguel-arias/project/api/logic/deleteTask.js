@@ -31,10 +31,17 @@ function deleteTask(profileId, taskId) {
             throw new NotFoundError('task not found')
 
         try {
-            task = await Task.findByIdAndDelete(taskId)
+            await Task.findByIdAndDelete(taskId)
         } catch (error) {
             throw new SystemError(error.message)
         }
+
+        if (task.oldId)
+            try {
+                await Task.findByIdAndDelete(task.oldId.split('_')[0])
+            } catch (error) {
+                throw new SystemError(error.message)
+            }
     })()
 }
 

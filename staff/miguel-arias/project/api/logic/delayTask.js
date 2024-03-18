@@ -6,6 +6,7 @@ import { Task, Profile } from '../data/models.js'
 function delayTask(profileId, taskId, date) {
     validate.id(profileId, 'profile id')
     validate.id(taskId, 'task id')
+    validate.date(date)
 
     return (async () => {
         let profile
@@ -28,9 +29,15 @@ function delayTask(profileId, taskId, date) {
         if (!task)
             throw new NotFoundError('task not found')
 
-        date = new Date(date)
+        let delayDate = new Date(date)
 
-        task.date = date
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        if (delayDate < today)
+            throw new ContentError('date must be after today')
+
+        task.date = delayDate
         task.delay = task.delay + 1
 
         try {

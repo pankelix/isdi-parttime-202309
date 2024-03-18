@@ -121,7 +121,6 @@ describe('createTask', async () => {
             expect(error).to.be.instanceOf(ContentError)
             expect(error.message).to.equal('date must be after today')
         }
-
     })
 
     after(async () => await mongoose.disconnect())

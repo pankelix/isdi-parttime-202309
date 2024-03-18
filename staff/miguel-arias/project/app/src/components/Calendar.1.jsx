@@ -44,6 +44,7 @@ function Calendar(props) {
     const refreshTemplates = async () => {
         try {
             const templates = await logic.retrieveTemplates()
+
             setTemplates(templates)
         } catch (error) {
             context.handleError(error)
@@ -51,7 +52,7 @@ function Calendar(props) {
     }
 
     const refreshToday = () => {
-        setToday(format(new Date(), 'YYYY-MM-DD'))
+        setToday(new Date().toISOString().split('T')[0])
     }
 
     const refreshTasks = async () => {
@@ -69,32 +70,27 @@ function Calendar(props) {
 
             if (tasks.length === 0) {
                 for (let j = 0; j < 7; j++) {
-                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'YYYY-MM-DD') })
+                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
                 }
 
             } else {
                 const firstTaskDate = new Date(tasks[0].date)
-                const firstPartOfWeekInMs = firstTaskDate - startOfCurrentWeek
-                const firstPartOfWeekInDays = Math.ceil(firstPartOfWeekInMs / (1000 * 60 * 60 * 24))
+                const firstPartOfWeekInms = firstTaskDate - startOfCurrentWeek
+                const firstPartOfWeek = Math.ceil(firstPartOfWeekInms / (1000 * 60 * 60 * 24))
 
-                for (let j = 0; j < firstPartOfWeekInDays; j++) {
-                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'YYYY-MM-DD') })
+                for (let j = 0; j < firstPartOfWeek; j++) {
+                    tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
                 }
 
                 for (let i = 0; i < tasks.length - 1; i++) {
                     const startDate = new Date(tasks[i].date)
                     const endDate = new Date(tasks[i + 1].date)
-                    const differenceInMs = endDate - startDate
-                    const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24))
+                    const msDifference = endDate - startDate
+                    const daysDifference = Math.floor(msDifference / (1000 * 60 * 60 * 24))
 
-                    if (tasks[i].oldId || tasks[i].delay > 0) {
-                        tasks2.splice(tasks2.length - 1, 1, tasks[i])
-                    } else {
-                        tasks2.push(tasks[i])
-                    }
-                    /* tasks2.push(tasks[i]) */
-                    for (let j = 0; j < differenceInDays - 1; j++) {
-                        tasks2.push({ date: format(addDay(tasks[i].date, j + 1), 'YYYY-MM-DD') })
+                    tasks2.push(tasks[i])
+                    for (let j = 0; j < daysDifference - 1; j++) {
+                        tasks2.push({ date: format(addDay(tasks[i].date, j + 1), 'DD-MM-YYYY')/* .slice(5).replace('-', ' ') */ })
                         /* const originalDate = tasks[i].date
                         const objectDate = new Date(originalDate)
                         objectDate.setDate(objectDate.getDate() + j)
@@ -102,22 +98,15 @@ function Calendar(props) {
                         tasks2.push({ date: newDate }) */
                     }
                 }
-
-                if (tasks[tasks.length - 1].oldId || tasks[tasks.length -1].delay > 0) {
-                    tasks2.splice(tasks2.length - 1, 1, tasks[tasks.length - 1])
-                } else {
-                    tasks2.push(tasks[tasks.length - 1])
-                }
-
-                /* tasks2.push(tasks[tasks.length - 1]) */
+                tasks2.push(tasks[tasks.length - 1])
 
                 const endOfCurrentWeek = dayEnd(weekEnd(currentDate, 1))
                 const lastTaskDate = new Date(tasks[tasks.length - 1].date)
-                const lastPartOfWeekInMs = endOfCurrentWeek - lastTaskDate
-                const lastPartOfWeekInDays = Math.ceil(lastPartOfWeekInMs / (1000 * 60 * 60 * 24))
+                const lastPartOfWeekInms = endOfCurrentWeek - lastTaskDate
+                const lastPartOfWeek = Math.ceil(lastPartOfWeekInms / (1000 * 60 * 60 * 24))
 
-                for (let k = 0; k < lastPartOfWeekInDays; k++) {
-                    tasks2.push({ date: format(addDay(lastTaskDate, k + 1), 'YYYY-MM-DD') })
+                for (let k = 0; k < lastPartOfWeek; k++) {
+                    tasks2.push({ date: format(addDay(lastTaskDate, k + 1), 'DD-MM-YYYY')/* .slice(0, 5).replace('-', ' ') */ })
                 }
             }
             setTasks(tasks2)
@@ -139,9 +128,12 @@ function Calendar(props) {
         if (onlyMine === true || task.done === true)
             return
 
-        const taskDate = format(task.date, 'YYYY-MM-DD')
+        const dateString = task.date.split('T')[0]
+        const dateParts = dateString.split('-')
+        const formatDate = new Date(`${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`)
+        const finalDate = formatDate.toISOString().split('T')[0]
 
-        setButtonDate(taskDate)
+        setButtonDate(finalDate)
 
         setTask(task)
         setView('react-to-task-view')
@@ -158,7 +150,7 @@ function Calendar(props) {
     }
 
     const handleNewTaskClick = () => {
-        props.onCreateNewTask()
+        navigate('/templates')
     }
 
     const handleProposeTaskClick = (taskDate) => {
@@ -166,9 +158,13 @@ function Calendar(props) {
             return
 
         if (typeof taskDate === 'string') {
-            setButtonDate(taskDate)
+            const dateParts = taskDate.split('-')
+            const formatDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`)
+            const finalDate = formatDate.toISOString().split('T')[0]
 
-            if (taskDate < today)
+            setButtonDate(finalDate)
+
+            if (finalDate < today)
                 return
         }
 
@@ -178,7 +174,7 @@ function Calendar(props) {
     const handleProposeTaskSubmit = async (event) => {
         event.preventDefault()
         const date = event.target.date.value
-
+        /* const dateObject = date ? new Date(date) : null */
         try {
             await logic.createTask(chosenTemplate, date ? date : buttonDate)
             refreshTasks()
@@ -217,8 +213,7 @@ function Calendar(props) {
         setAssignedId(profileId)
     }
 
-    const handleAssignThisTask = async (event) => {
-        event.preventDefault()
+    const handleAssignThisTask = async () => {
         let materializedTaskId
         if (task.id.includes('_')) {
             try {
@@ -243,19 +238,9 @@ function Calendar(props) {
 
     const handleDelaySubmit = async (event) => {
         event.preventDefault()
-
-        let materializedTaskId
-        if (task.id.includes('_')) {
-            try {
-                materializedTaskId = await logic.materializeTask(task)
-            } catch (error) {
-                context.handleError(error)
-            }
-        }
-
         const date = event.target.delayDate.value
         try {
-            await logic.delayTask(materializedTaskId ? materializedTaskId : task.id, date)
+            await logic.delayTask(task.id, date)
             refreshTasks()
             setView(null)
         } catch (error) {
@@ -275,9 +260,6 @@ function Calendar(props) {
     }
 
     const handleCompleteTaskClick = () => {
-        if (format(task.date, 'YYYY-MM-DD') > today)
-            return
-
         setView('pin-code-view')
     }
 
@@ -343,7 +325,7 @@ function Calendar(props) {
         <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
             <Button onClick={handleLastWeekClick} className='calendar-week-navigator'>▲</Button>
 
-            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={(task) => handleOnTaskClick(task)} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
+            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={handleOnTaskClick} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
 
             <Button onClick={handleNextWeekClick} className='calendar-week-navigator'>▼</Button>
         </article>
@@ -368,7 +350,7 @@ function Calendar(props) {
 
                     {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskClick} className='modal-border-button'>Assign this task to...</Button>}
 
-                    {session.profileRole !== null && <Button onClick={handleCompleteTaskClick} style={{ color: format(task.date, 'YYYY-MM-DD') > today ? 'grey' : '', borderColor: format(task.date, 'YYYY-MM-DD') > today ? 'grey' : '' }} className='modal-border-button'>Complete this task</Button>}
+                    {session.profileRole !== null && <Button onClick={handleCompleteTaskClick} className='modal-border-button'>Complete this task</Button>}
 
                     {session.profileRole !== null && <Button onClick={handleDelayTaskClick} className='modal-border-button'>Delay this task</Button>}
 
@@ -428,7 +410,7 @@ function Calendar(props) {
             <div className='modal-white-bg'>
                 <div className='modal-border-button-container items-center'>
                     <Form id='delay-task-form' onSubmit={handleDelaySubmit}>
-                        <Input id='delayDate' min={buttonDate} defaultValue={buttonDate} type={'date'} required={true} className='border-2 border-amber-400'></Input>
+                        <Input id='delayDate' defaultValue={buttonDate} type={'date'} required={true} className='border-2 border-amber-400'></Input>
                     </Form>
                 </div>
 
@@ -460,7 +442,7 @@ function Calendar(props) {
                     {templates.length > 0 ? <Form id='propose-task' onSubmit={handleProposeTaskSubmit} className='flex flex-col items-center'>
                         <p className='text-xl mb-[2rem]'>Propose task</p>
 
-                        <Input defaultValue={buttonDate} min={buttonDate} id='date' type={'date'} required={true} className='border-2 border-amber-400 mb-[1rem]'></Input>
+                        <Input defaultValue={buttonDate} min={today} id='date' type={'date'} required={true} className='border-2 border-amber-400 mb-[1rem]'></Input>
 
                         <div className='modal-border-button-container max-h-[15rem] overflow-y-auto mb-[-1rem]'>
                             {templates.map(template => <Button style={{ borderWidth: chosenTemplate === template.id ? '3px' : '1px' }} onClick={() => setChosenTemplate(template.id)} key={template.id} name='template' type='button' value={template.id} className='border-amber-400 border-[1px] w-[14rem] px-3 rounded-md mx-[0.5rem]'>

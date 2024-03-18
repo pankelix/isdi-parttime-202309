@@ -76,7 +76,7 @@ function Profiles(props) {
                     context.handleRole('admin')
                 else
                     context.handleRole('user')
-                navigate('/')
+                props.onLogin('home')
                 setView(null)
             } catch (error) {
                 context.handleError(error)

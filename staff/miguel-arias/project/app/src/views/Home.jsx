@@ -80,8 +80,8 @@ function Home(props) {
         </header>
 
         <Routes>
-            <Route path='/' element={<Calendar stamp={stamp} role={props.role} />} />
-            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} />} />
+            <Route path='/' element={<Calendar stamp={stamp} role={props.role} onCreateNewTask={handleTasksClick} />} />
+            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} onLogin={handleHomeClick} />} />
             <Route path='/templates' element={<Templates stamp={stamp} role={props.role} />} />
             {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
             {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} />} />}

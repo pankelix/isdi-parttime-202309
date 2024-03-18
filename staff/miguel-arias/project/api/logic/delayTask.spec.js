@@ -4,7 +4,7 @@ dotenv.config()
 import mongoose from 'mongoose'
 import { expect } from 'chai'
 
-import { addDay } from '@formkit/tempo'
+import { addDay, format } from '@formkit/tempo'
 
 import random from './helpers/random.js'
 import delayTask from './delayTask.js'
@@ -66,7 +66,28 @@ describe('delayTask', () => {
             expect(error).to.be.instanceOf(NotFoundError)
             expect(error.message).to.equal('task not found')
         }
+    })
 
+    it('fails on date later than today', async () => {
+        const profile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode() })
+
+        const profileId = profile._id.toString()
+
+        const task = await Task.create({ home: random.id(), template: random.id(), assignee: random.id() })
+
+        const taskId = task._id.toString()
+
+        let wrongDate = new Date()
+        wrongDate.setDate(wrongDate.getDate() - 1) //tomorrow
+        const finalWrongDate = format(wrongDate, 'YYYY-MM-DD')
+
+        try {
+            await delayTask(profileId, taskId, finalWrongDate)
+            throw new Error('should not reach this point')
+        } catch (error) {
+            expect(error).to.be.instanceOf(ContentError)
+            expect(error.message).to.equal('date must be after today')
+        }
     })
 
     after(async () => await mongoose.disconnect())
