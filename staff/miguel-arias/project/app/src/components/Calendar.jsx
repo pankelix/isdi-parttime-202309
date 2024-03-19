@@ -103,7 +103,7 @@ function Calendar(props) {
                     }
                 }
 
-                if (tasks[tasks.length - 1].oldId || tasks[tasks.length -1].delay > 0) {
+                if (tasks[tasks.length - 1].oldId || tasks[tasks.length - 1].delay > 0) {
                     tasks2.splice(tasks2.length - 1, 1, tasks[tasks.length - 1])
                 } else {
                     tasks2.push(tasks[tasks.length - 1])
@@ -264,15 +264,25 @@ function Calendar(props) {
     }
 
     const handleDeleteClick = async () => {
-        if (confirm("Are you sure you want to delete this task? You'll delete all tasks like this one"))
+        context.handleConfirm("Are you sure you want to delete this task? You'll delete all tasks like this one", 'deleteTask')
+    }
+
+    useEffect(() => {
+        const deleteTask = async () => {
             try {
-                await logic.deleteTask(task.id)
-                refreshTasks()
-                setView(null)
+                if (props.confirm && props.confirmAction === 'deleteTask') {
+                    await logic.deleteTask(task.id)
+                    refreshTasks()
+                    setView(null)
+                    props.onDeletionSuccess()
+                }
             } catch (error) {
                 context.handleError(error)
             }
-    }
+        }
+
+        deleteTask()
+    }, [props.confirm])
 
     const handleCompleteTaskClick = () => {
         if (format(task.date, 'YYYY-MM-DD') > today)

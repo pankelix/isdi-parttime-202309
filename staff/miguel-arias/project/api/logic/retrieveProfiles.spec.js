@@ -21,8 +21,9 @@ describe('retrieveProfiles', () => {
 
         const profile = await Profile.create({ home: homeId, name: name, pincode: random.pincode(), color: { name: random.name(), code: random.name() } })
 
+        const profileId = profile._id.toString()
 
-        const retrievedProfile = await retrieveProfiles(homeId)
+        const retrievedProfile = await retrieveProfiles(homeId, profileId, 1)
 
         expect(retrievedProfile[0].home.toString()).to.equal(homeId)
         expect(retrievedProfile[0].name).to.be.a('string')

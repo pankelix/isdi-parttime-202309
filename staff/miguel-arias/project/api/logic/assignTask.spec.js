@@ -17,7 +17,6 @@ describe('assignTask', () => {
     beforeEach(() => Promise.all([Profile.deleteMany(), Template.deleteMany(), Task.deleteMany()]))
 
     it('succeeds on existing session profile, profile and task', async () => {
-
         const sessionProfile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode(), role: 'admin' })
 
         const sessionProfileId = sessionProfile._id.toString()
@@ -37,27 +36,6 @@ describe('assignTask', () => {
         expect(taskFound.assignee._id.toString()).to.equal(profileId)
     })
 
-    it('succeeds on only existing session profile and task', async () => {
-
-        const sessionProfile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode(), role: 'admin' })
-
-        const sessionProfileId = sessionProfile._id.toString()
-
-        const profile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode(), role: 'admin', color: { name: random.name(), code: random.name() } })
-
-        const profileId = profile._id.toString()
-
-        const task = await Task.create({ home: random.id(), template: random.id(), assignee: random.id() })
-
-        const taskId = task._id.toString()
-
-        await assignTask(sessionProfileId, taskId, null)
-
-        const taskFound = await Task.findById(taskId)
-
-        expect(taskFound.assignee._id.toString()).to.equal(sessionProfileId)
-    })
-
     it('fails on non existing task', async () => {
         try {
             await assignTask(random.id(), random.id(), random.id())
@@ -73,7 +51,7 @@ describe('assignTask', () => {
 
         const taskId = task._id.toString()
         try {
-            await assignTask(random.id(), taskId, null)
+            await assignTask(random.id(), taskId, random.id())
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(NotFoundError)
@@ -90,20 +68,24 @@ describe('assignTask', () => {
 
         const taskId = task._id.toString()
         try {
-            await assignTask(sessionProfileId, taskId, null)
+            await assignTask(sessionProfileId, taskId, random.id())
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(PermissionError)
-            expect(error.message).to.equal('profile is not admin')
+            expect(error.message).to.equal('session profile is not admin')
         }
     })
 
     it('fails on non existing profile', async () => {
+        const sessionProfile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.id(), role: 'admin' })
+
+        const sessionProfileId = sessionProfile._id.toString()
+
         const task = await Task.create({ home: random.id(), template: random.id(), assignee: random.id() })
 
         const taskId = task._id.toString()
         try {
-            await assignTask(random.id(), taskId, random.id())
+            await assignTask(sessionProfileId, taskId, random.id())
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(NotFoundError)

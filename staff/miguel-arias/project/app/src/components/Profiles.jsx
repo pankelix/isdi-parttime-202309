@@ -7,6 +7,7 @@ import defaultColors from 'com/defaultColors'
 
 import session from '../logic/session'
 import logic from '../logic'
+import deleteProfile from '../logic/deleteProfile'
 
 function Profiles(props) {
     const context = useContext()
@@ -111,27 +112,47 @@ function Profiles(props) {
     }
 
     const handleDeleteProfileClick = async () => {
-        if (confirm('Are you sure you want to delete this profile?'))
-            try {
-                await logic.deleteProfile(activeProfileId)
-                refreshProfiles()
-                setView(null)
-            } catch (error) {
-                context.handleError(error)
-            }
+        context.handleConfirm('Are you sure you want to delete this profile?', 'deleteProfile')
     }
 
-    const handleDeleteOwnProfileClick = async () => {
-        if (confirm('Are you sure you want to delete your profile?'))
+    useEffect(() => {
+        const deleteProfile = async () => {
             try {
-                await logic.deleteProfile()
-                refreshProfiles()
-                setView(null)
-                context.handleRole(null)
+                if (props.confirm && props.confirmAction === 'deleteProfile') {
+                    await logic.deleteProfile(activeProfileId)
+                    refreshProfiles()
+                    setView(null)
+                    props.onDeletionSuccess()
+                }
             } catch (error) {
                 context.handleError(error)
             }
+        }
+        deleteProfile()
+    }, [props.confirm])
+
+    const handleDeleteOwnProfileClick = async () => {
+        context.handleConfirm('Are you sure you want to delete your profile?', 'deleteOwnProfile')
     }
+
+    useEffect(() => {
+        const deleteOwnProfile = async () => {
+            try {
+                if (props.confirm && props.confirmAction === 'deleteOwnProfile') {
+                    await logic.deleteOwnProfile()
+                    refreshProfiles()
+                    setView(null)
+                    session.profileId = null
+                    context.handleRole(null)
+                    props.onDeletionSuccess()
+                }
+            } catch (error) {
+                context.handleError(error)
+            }
+        }
+
+        deleteOwnProfile()
+    }, [props.confirm])
 
     const handleNewProfileClick = () => {
         setView('new-profile-view')

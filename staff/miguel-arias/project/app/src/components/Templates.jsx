@@ -89,6 +89,10 @@ function Templates(props) {
         setChosenRooms([])
     }
 
+    const handleDeletionSuccess = () => {
+        props.onDeletionSuccess()
+    }
+
     /* const handleFilterClick = () => {
         setView('filter-view')
     }
@@ -147,7 +151,7 @@ function Templates(props) {
         </article>} */}
 
         <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
-            {rooms.length < 1 ? <h3 className='text-xl font-bold'>Please create a room before creating a template</h3> : templates.length === 0 ? <h3 className='text-xl font-bold'>Please click on the + below to create a template</h3> : templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} />)}
+            {rooms.length < 1 ? <h3 className='text-xl font-bold'>Please create a room before creating a template</h3> : templates.length === 0 ? <h3 className='text-xl font-bold'>Please click on the + below to create a template</h3> : templates.map(template => <Template key={template.id} template={template} rooms={rooms} role={props.role} onDeleteSuccess={refreshTemplates} dayOrWeek={dayOrWeek} onSetDay={handleSetDay} onSetWeek={handleSetWeek} onEditSuccess={refreshTemplates} onRefreshRooms={refreshRooms} chosenRooms={chosenRooms} onChosenRoom={handleTaskClick} onCancelClick={handleCancelClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess}/>)}
         </article>
 
         <article>

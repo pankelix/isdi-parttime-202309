@@ -11,14 +11,14 @@ import delayTask from './delayTask.js'
 import { Profile, Template, Task } from '../data/models.js'
 
 import { errors } from 'com'
-const { NotFoundError, PermissionError } = errors
+const { NotFoundError, ContentError } = errors
 
 describe('delayTask', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/spec'))
 
     beforeEach(() => Promise.all([Profile.deleteMany(), Task.deleteMany()]))
 
-    it('succeeds on existing profile and template', async () => {
+    it('succeeds on existing profile and task', async () => {
         const profile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode() })
 
         const profileId = profile._id.toString()
@@ -34,19 +34,19 @@ describe('delayTask', () => {
         expect(task.date.toLocaleDateString('en-CA')).to.equal(new Date().toLocaleDateString('en-CA'))
         expect(task.delay).to.equal(0)
 
-        const date = (addDay(new Date(), 1))
+        const date = format(addDay(new Date(), 1), 'YYYY-MM-DD')
 
         await delayTask(profileId, taskId, date)
 
         const taskFound = await Task.findById(taskId)
 
-        expect(taskFound.date.toLocaleDateString('en-CA')).to.equal(date.toLocaleDateString('en-CA'))
+        expect(taskFound.date.toLocaleDateString('en-CA')).to.equal(date)
         expect(taskFound.delay).to.equal(1)
     })
 
     it('fails on non existing profile', async () => {
         try {
-            await delayTask(random.id(), random.id())
+            await delayTask(random.id(), random.id(), format(new Date(), 'YYYY-MM-DD'))
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(NotFoundError)
@@ -60,7 +60,7 @@ describe('delayTask', () => {
         const profileId = profile._id.toString()
 
         try {
-            await delayTask(profileId, random.id())
+            await delayTask(profileId, random.id(), format(new Date(), 'YYYY-MM-DD'))
             throw new Error('should not reach this point')
         } catch (error) {
             expect(error).to.be.instanceOf(NotFoundError)

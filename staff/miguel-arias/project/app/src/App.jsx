@@ -7,7 +7,7 @@ import Context from './Context'
 import { errors } from 'com'
 const { ContentError, DuplicityError, NotFoundError, TokenError } = errors
 
-import { Feedback } from './components'
+import { Feedback, Confirm } from './components'
 import session from './logic/session'
 import logic from './logic'
 
@@ -16,6 +16,9 @@ function App() {
 
   const [level, setLevel] = useState(null)
   const [message, setMessage] = useState(null)
+  const [confirmMessage, setConfirmMessage] = useState(null)
+  const [confirmAction, setConfirmAction] = useState(null)
+  const [confirm, setConfirm] = useState(false)
   const [role, setRole] = useState(logic.getProfileRole)
 
   const navigate = useNavigate()
@@ -61,17 +64,37 @@ function App() {
     setLevel(null)
   }
 
+  const handleConfirm = (message, action) => {
+    setConfirmMessage(message)
+    setConfirmAction(action)
+  }
+
+  const handleConfirmAccepted = () => {
+    setConfirmMessage(null)
+    setConfirm(true)
+  }
+
+  const handleConfirmCanceled = () => {
+    setConfirmMessage(null)
+    setConfirmAction(null)
+  }
+
+  const handleConfirmToFalse = () => {
+    setConfirm(false)
+  }
+
   const handleRole = role => {
     session.profileRole = role
   }
 
   return <>
-    <Context.Provider value={{ handleError, handleRole }}>
+    <Context.Provider value={{ handleError, handleRole, handleConfirm }}>
       {message && <Feedback level={level} message={message} onAccepted={handleFeedbackAccepted} />}
+      {confirmMessage && <Confirm confirmMessage={confirmMessage} onAccepted={handleConfirmAccepted} onCanceled={handleConfirmCanceled} />}
       <Routes>
         <Route path='/register' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
         <Route path='/login' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
-        <Route path='/*' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} role={role} /> : <Navigate to='/login' />} />
+        <Route path='/*' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} role={role} confirm={confirm} confirmAction={confirmAction} onDeletionSuccess={handleConfirmToFalse} /> : <Navigate to='/login' />} />
       </Routes>
     </Context.Provider>
   </>

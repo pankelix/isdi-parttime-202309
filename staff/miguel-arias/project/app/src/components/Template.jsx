@@ -15,14 +15,24 @@ function Template(props) {
     const [view, setView] = useState()
 
     const handleDeleteClick = async () => {
-        if (confirm('Are you sure you want to delete this template? All tasks related to this will be deleted too'))
+        context.handleConfirm('Are you sure you want to delete this template? All tasks related to this will be deleted too', 'deleteTemplate')
+    }
+
+    useEffect(() => {
+        const deleteTemplate = async () => {
             try {
-                await logic.deleteTemplate(template.id)
-                props.onDeleteSuccess()
+                if (props.confirm && props.confirmAction === 'deleteTemplate') {
+                    await logic.deleteTemplate(template.id)
+                    props.onDeleteSuccess()
+                    props.onDeletionSuccess()
+                }
             } catch (error) {
                 context.handleError(error)
             }
-    }
+        }
+
+        deleteTemplate()
+    }, [props.confirm])
 
     const handleEditClick = () => {
         setView('edit-click-view')

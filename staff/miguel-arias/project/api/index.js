@@ -31,6 +31,7 @@ import {
     deleteRoomHandler,
     editRoleHandler,
     deleteProfileHandler,
+    deleteOwnProfileHandler,
     registerProfileHandler,
     changeProfileColorHandler,
     changePincodeHandler,
@@ -62,6 +63,8 @@ mongoose.connect(process.env.MONGODB_URL)
         server.post('/profiles/auth', jsonBodyParser, authenticateProfileHandler)
 
         server.post('/profiles/:profileId/delete', deleteProfileHandler)
+
+        server.post('/profiles/:profileId/delete-own', deleteOwnProfileHandler)
 
         /* server.patch('/profiles/:profileId/upload-avatar', upload.single('image'), uploadAvatarHandler) */
 

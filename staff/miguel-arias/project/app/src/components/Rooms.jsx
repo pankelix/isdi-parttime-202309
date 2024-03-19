@@ -9,6 +9,7 @@ function Rooms(props) {
     const context = useContext()
 
     const [rooms, setRooms] = useState([])
+    const [chosenRoomId, setChosenRoomId] = useState([])
     const [view, setView] = useState(null)
 
     const refreshRooms = async () => {
@@ -47,21 +48,32 @@ function Rooms(props) {
     }
 
     const handleDeleteRoomClick = async (roomId) => {
-        if (confirm('Are you sure you want to delete this room?'))
+        setChosenRoomId(roomId)
+        context.handleConfirm('Are you sure you want to delete this room?', 'deleteRoom')
+    }
+
+    useEffect(() => {
+        const deleteRoom = async () => {
             try {
-                await logic.deleteRoom(roomId)
-                refreshRooms()
-                setView(null)
+                if (props.confirm && props.confirmAction === 'deleteRoom') {
+                    await logic.deleteRoom(chosenRoomId)
+                    refreshRooms()
+                    setView(null)
+                    props.onDeletionSuccess()
+                }
             } catch (error) {
                 context.handleError(error)
             }
-    }
+        }
+
+        deleteRoom()
+    }, [props.confirm])
 
     return <Container>
         {/* {rooms.length === 0 ? <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3> : ''} */}
 
         <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
-            {rooms.length > 0 ? rooms.map(room => <article key={room.id} className='grid grid-cols-2 gap-3'><h5 className='text-xl font-bold'>{helper.arrangeText(room.name)}</h5><Button onClick={() => handleDeleteRoomClick(room.id)} className='form-submit-button py-1 w-[10rem]'>Delete</Button></article>) : <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3>}
+            {rooms.length > 0 ? rooms.map(room => <article key={room.id} className='grid grid-cols-2 gap-3'><h5 className='text-xl font-bold'>{helper.arrangeText(room.name)}</h5><Button type='button' onClick={() => handleDeleteRoomClick(room.id)} className='form-submit-button py-1 w-[10rem]'>Delete</Button></article>) : <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3>}
         </article>
 
         {view === 'new-room-view' && <article className='modal-black-bg'>

@@ -73,6 +73,10 @@ function Home(props) {
         })()
     }, [session.profileId])
 
+    const handleDeletionSuccess = () => {
+        props.onDeletionSuccess()
+    }
+
     return <Container className='w-screen max-w-screen'>
         <header className='flex justify-between p-5 w-screen bg-amber-400 shadow-lg mb-[0.3rem]'>
             <h1 className='text-3xl text-white'>{homeName}</h1>
@@ -80,11 +84,11 @@ function Home(props) {
         </header>
 
         <Routes>
-            <Route path='/' element={<Calendar stamp={stamp} role={props.role} onCreateNewTask={handleTasksClick} />} />
-            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} onLogin={handleHomeClick} />} />
-            <Route path='/templates' element={<Templates stamp={stamp} role={props.role} />} />
+            <Route path='/' element={<Calendar stamp={stamp} role={props.role} onCreateNewTask={handleTasksClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
+            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} onLogin={handleHomeClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
+            <Route path='/templates' element={<Templates stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
             {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
-            {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} />} />}
+            {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />}
         </Routes>
 
         <footer className='flex absolute bottom-0 bg-amber-400 h-[4rem] w-screen items-center justify-evenly px-[10px] shadow-lg'>

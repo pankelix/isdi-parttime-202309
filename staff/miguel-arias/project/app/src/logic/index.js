@@ -24,6 +24,7 @@ import createRoom from './createRoom.js'
 import deleteRoom from './deleteRoom.js'
 import editRole from './editRole.js'
 import deleteProfile from './deleteProfile.js'
+import deleteOwnProfile from './deleteOwnProfile.js'
 import registerProfile from './registerProfile.js'
 import changeProfileColor from './changeProfileColor.js'
 import changePincode from './changePincode.js'
@@ -58,6 +59,7 @@ const logic = {
     deleteRoom,
     editRole,
     deleteProfile,
+    deleteOwnProfile,
     registerProfile,
     changeProfileColor,
     changePincode,

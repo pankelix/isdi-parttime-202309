@@ -1,5 +1,5 @@
 import { validate, errors } from 'com'
-const { SystemError, NotFoundError } = errors
+const { SystemError, NotFoundError, ContentError } = errors
 
 import { Task, Profile } from '../data/models.js'
 

@@ -3,8 +3,7 @@ const { SystemError } = errors
 
 import session from './session'
 
-const deleteProfile = (profileId) => {
-    validate.id(profileId, 'profile id')
+const deleteOwnProfile = () => {
 
     const req = {
         method: 'POST',
@@ -16,7 +15,7 @@ const deleteProfile = (profileId) => {
     return (async () => {
         let res
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${profileId}/delete`, req)
+            res = await fetch(`${import.meta.env.VITE_API_URL}/profiles/${session.profileId}/delete-own`, req)
         } catch (error) {
             throw new SystemError(error.message)
         }
@@ -35,4 +34,4 @@ const deleteProfile = (profileId) => {
     })()
 }
 
-export default deleteProfile
+export default deleteOwnProfile

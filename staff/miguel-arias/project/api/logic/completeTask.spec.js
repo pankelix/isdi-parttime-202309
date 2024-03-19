@@ -12,6 +12,7 @@ import { Profile, Template, Task } from '../data/models.js'
 
 import { errors } from 'com'
 import { ContentError } from 'com/errors.js'
+import { addDay, format } from '@formkit/tempo'
 const { NotFoundError, CredentialsError, PermissionError } = errors
 
 describe('completeTask', () => {
@@ -36,13 +37,17 @@ describe('completeTask', () => {
 
         const taskId = task._id.toString()
 
-        await completeTask(profileId, taskId, pincode, '2024-03-04')
+        debugger
+        await completeTask(profileId, taskId, pincode, format(addDay(new Date(), -1), 'YYYY-MM-DD'))
 
-        const taskFound = await Task.findById(taskId)
+        const taskdeleted = await Task.findById(taskId)
+        const newTask = await Task.find({ done: true })
         const profileFound = await Profile.findById(profileId)
 
-        expect(taskFound.done).to.be.true
-        expect(taskFound.assignee).to.be.undefined
+        expect(taskdeleted).to.not.exist
+        expect(newTask).to.exist
+        expect(newTask.assignee).to.be.undefined
+
         expect(profileFound.points).to.equal(100)
     })
 

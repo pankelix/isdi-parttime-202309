@@ -56,8 +56,8 @@ function completeTask(profileId, taskId, pincode, date) {
         const today = new Date()
         today.setHours(0, 0, 0, 0)
 
-        if (completionDate < today)
-            throw new ContentError('date must be after today')
+        if (completionDate > today)
+            throw new ContentError('date must be before today')
 
         /* if (completionDate < task.completionDate)
             throw new ContentError("tasks can't be completed before their due completionDate") */

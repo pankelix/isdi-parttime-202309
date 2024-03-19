@@ -8,6 +8,7 @@ import Template from './Template.jsx'
 import Stats from './Stats.jsx'
 import Rooms from './Rooms.jsx'
 import EmptyDate from './EmptyDate.jsx'
+import Confirm from './Confirm.jsx'
 
 export {
     Calendar,
@@ -20,4 +21,5 @@ export {
     Stats,
     Rooms,
     EmptyDate,
+    Confirm,
 }
