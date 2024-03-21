@@ -37,7 +37,7 @@ describe('completeTask', () => {
 
         const taskId = task._id.toString()
 
-        debugger
+
         await completeTask(profileId, taskId, pincode, format(addDay(new Date(), -1), 'YYYY-MM-DD'))
 
         const taskdeleted = await Task.findById(taskId)

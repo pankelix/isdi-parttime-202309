@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useContext } from '../hooks'
 import { Button, Container, Input, Form } from '../library'
 
+import session from '../logic/session'
 import logic from '../logic'
 import helper from '../logic/helpers'
 
@@ -22,7 +23,7 @@ function Rooms(props) {
     }
 
     useEffect(() => {
-        console.log('Rooms effect')
+        /* console.log('Rooms effect') */
 
         refreshRooms()
     }, [props.stamp])
@@ -59,11 +60,12 @@ function Rooms(props) {
                     await logic.deleteRoom(chosenRoomId)
                     refreshRooms()
                     setView(null)
-                    props.onDeletionSuccess()
+
                 }
             } catch (error) {
                 context.handleError(error)
             }
+            props.onDeletion()
         }
 
         deleteRoom()
@@ -73,8 +75,16 @@ function Rooms(props) {
         {/* {rooms.length === 0 ? <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3> : ''} */}
 
         <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
-            {rooms.length > 0 ? rooms.map(room => <article key={room.id} className='grid grid-cols-2 gap-3'><h5 className='text-xl font-bold'>{helper.arrangeText(room.name)}</h5><Button type='button' onClick={() => handleDeleteRoomClick(room.id)} className='form-submit-button py-1 w-[10rem]'>Delete</Button></article>) : <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3>}
+            {rooms.map(room => <article key={room.id} className='grid grid-cols-2 gap-3'>
+                <h5 className='text-xl font-bold'>{helper.arrangeText(room.name)}</h5>
+                {session.profileRole === 'admin' && <Button type='button' onClick={() => handleDeleteRoomClick(room.id)} className='form-submit-button py-1 w-[10rem]'>Delete</Button>}
+            </article>)}
         </article>
+
+        {rooms.length === 0 && <article className='flex flex-col gap-[2rem] m-[1.5rem] max-h-[35rem] overflow-y-auto'>
+            {session.profileRole === 'admin' && <h3 className='text-xl font-bold'>Please create a room clicking on the + below</h3>}
+            {session.profileRole === 'user' && <h3 className='text-xl font-bold'>You must be admin to create a new room</h3>}
+        </article>}
 
         {view === 'new-room-view' && <article className='modal-black-bg'>
             <div className='modal-white-bg'>
@@ -91,12 +101,10 @@ function Rooms(props) {
         </article>}
 
         <article>
-            <Button onClick={handleNewRoomClick} className='plus-button'>
-                ➕
-            </Button>
+            {session.profileRole === 'admin' && <Button onClick={handleNewRoomClick} className='plus-button'>➕</Button>}
         </article>
 
-    </Container>
+    </Container >
 }
 
 export default Rooms

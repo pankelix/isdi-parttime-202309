@@ -9,8 +9,20 @@ function Profile(props) {
         props.onProfileClick(profileName)
     }
 
+    const handleDeleteProfileClick = (profileId) => {
+        props.onProfileDeleteClick(profileId)
+    }
+
     return <Container className='flex flex-col items-center'>
-        <ul><li><Button style={{ backgroundColor: profile.id === session.profileId ? profile.color.code : '' }} onClick={handleProfileClick} className='modal-border-button my-[1rem] max-h-[15rem] overflow-y-auto'>{profile.name}</Button></li></ul>
+        <article key={profile.id} className={`${session.profileRole === 'admin' ? 'grid grid-cols-2 gap-3': 'grid grid-cols-1 gap-3'}`}>
+            <ul>
+                <li>
+                    <Button style={{ backgroundColor: profile.id === session.profileId ? profile.color.code : '' }} onClick={handleProfileClick} className='modal-border-button w-[10rem] my-[1rem]'>{profile.name}</Button>
+                </li>
+            </ul>
+
+            {session.profileRole === 'admin' && <Button type='button' onClick={() => handleDeleteProfileClick(profile.id)} className='form-submit-button my-[1rem] p-0 w-[10rem]'>Delete</Button>}
+        </article>
     </Container>
 }
 

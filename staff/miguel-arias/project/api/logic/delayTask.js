@@ -30,6 +30,7 @@ function delayTask(profileId, taskId, date) {
             throw new NotFoundError('task not found')
 
         let delayDate = new Date(date)
+        delayDate.setHours(0, 0, 0, 0)
 
         const today = new Date()
         today.setHours(0, 0, 0, 0)

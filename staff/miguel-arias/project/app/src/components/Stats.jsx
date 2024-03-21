@@ -43,7 +43,7 @@ function Stats(props) {
     }
 
     useEffect(() => {
-        console.log('Stats effect')
+        /* console.log('Stats effect') */
 
         refreshProfiles()
     }, [props.stamp])
@@ -59,12 +59,18 @@ function Stats(props) {
             </article>)}
         </article>
 
-        {view === 'redeem-points-view' && <article>
-            <Form onSubmit={handleRedeemPointsSubmit}>
-                <Input id='points' type='number' placeholder={'Points to redeem'} required={true}></Input>
-                <Button type='submit'>Redeem!</Button>
-                <Button type='button' onClick={handleCancelClick}>Cancel</Button>
-            </Form>
+        {view === 'redeem-points-view' && <article className='modal-black-bg'>
+            <div className='modal-white-bg'>
+                <div className='modal-border-button-container items-center'>
+                    <Form onSubmit={handleRedeemPointsSubmit} id='redeem-points-form'>
+                        <Input id='points' type='number' placeholder={'Points to redeem'} required={true}></Input>
+                    </Form>
+                </div>
+                <div className='close-submit-buttons-container'>
+                    <Button form='redeem-points-form' type='submit' className='form-submit-button'>Redeem!</Button>
+                    <Button type='button' onClick={handleCancelClick} className='modal-close-button'>X</Button>
+                </div>
+            </div>
         </article>}
     </Container>
 }

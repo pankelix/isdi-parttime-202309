@@ -73,8 +73,8 @@ function Home(props) {
         })()
     }, [session.profileId])
 
-    const handleDeletionSuccess = () => {
-        props.onDeletionSuccess()
+    const handleDeletion = () => {
+        props.onDeletion()
     }
 
     return <Container className='w-screen max-w-screen'>
@@ -84,11 +84,11 @@ function Home(props) {
         </header>
 
         <Routes>
-            <Route path='/' element={<Calendar stamp={stamp} role={props.role} onCreateNewTask={handleTasksClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
-            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} onLogin={handleHomeClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
-            <Route path='/templates' element={<Templates stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />
+            <Route path='/' element={<Calendar stamp={stamp} role={props.role} onCreateNewTask={handleTasksClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletion={handleDeletion} />} />
+            <Route path='/profiles' element={<Profiles stamp={stamp} role={props.role} onLogin={handleHomeClick} confirm={props.confirm} confirmAction={props.confirmAction} onDeletion={handleDeletion} />} />
+            <Route path='/templates' element={<Templates stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletion={handleDeletion} />} />
             {<Route path='/stats' element={<Stats stamp={stamp} role={props.role} />} />}
-            {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletionSuccess={handleDeletionSuccess} />} />}
+            {<Route path='/rooms' element={<Rooms stamp={stamp} role={props.role} confirm={props.confirm} confirmAction={props.confirmAction} onDeletion={handleDeletion} />} />}
         </Routes>
 
         <footer className='flex absolute bottom-0 bg-amber-400 h-[4rem] w-screen items-center justify-evenly px-[10px] shadow-lg'>

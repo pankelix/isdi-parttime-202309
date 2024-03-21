@@ -14,7 +14,7 @@ import { Container, Button, Form, Input, Label } from '../library'
 import { Task, EmptyDate } from '.'
 
 function Calendar(props) {
-    console.log('Calendar')
+    /* console.log('Calendar') */
 
     const context = useContext()
     const navigate = useNavigate()
@@ -116,7 +116,7 @@ function Calendar(props) {
     }
 
     useEffect(() => {
-        console.log('Tasks/Profiles effect')
+        /* console.log('Tasks/Profiles effect') */
 
         refreshToday()
         retrieveAssignee()

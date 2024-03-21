@@ -36,7 +36,7 @@ function Profiles(props) {
     }
 
     useEffect(() => {
-        console.log('Profiles effect')
+        /* console.log('Profiles effect') */
 
         refreshColors()
         refreshProfiles()
@@ -107,11 +107,12 @@ function Profiles(props) {
         }
     }
 
-    const handleOnProfileClick = (profileId) => {
+    const handleActiveProfileClick = (profileId) => {
         setActiveProfileId(profileId)
     }
 
-    const handleDeleteProfileClick = async () => {
+    const handleDeleteProfileClick = async (profileId) => {
+        setActiveProfileId(profileId)
         context.handleConfirm('Are you sure you want to delete this profile?', 'deleteProfile')
     }
 
@@ -122,11 +123,11 @@ function Profiles(props) {
                     await logic.deleteProfile(activeProfileId)
                     refreshProfiles()
                     setView(null)
-                    props.onDeletionSuccess()
                 }
             } catch (error) {
                 context.handleError(error)
             }
+            props.onDeletion()
         }
         deleteProfile()
     }, [props.confirm])
@@ -141,14 +142,14 @@ function Profiles(props) {
                 if (props.confirm && props.confirmAction === 'deleteOwnProfile') {
                     await logic.deleteOwnProfile()
                     refreshProfiles()
-                    setView(null)
                     session.profileId = null
                     context.handleRole(null)
-                    props.onDeletionSuccess()
                 }
             } catch (error) {
                 context.handleError(error)
             }
+            props.onDeletion()
+            setView(null)
         }
 
         deleteOwnProfile()
@@ -248,14 +249,21 @@ function Profiles(props) {
 
     return <Container className='px-[1rem] w-screen'>
         <article className='flex mb-[1rem] ml-[0.2rem]'>
-            {profiles.length > 0 && !session.profileId && <h3 className='font-bold text-xl mt-[2rem]'>Please, click on your name to log in</h3>}
+            {profiles.length > 0 && !session.profileId && <h3 key={'login-message'} className='font-bold text-xl mt-[2rem]'>Please, click on your name to log in</h3>}
         </article>
 
         <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
-            {session.profileId && profiles.map(profile => session.profileId === profile.id ? <aside className='flex gap-[1rem]'><h4 onProfileClick={handleProfileClick} key={profile.id} profile={profile} className='font-bold text-xl mb-[2rem]'>Hello {profile.name}</h4> <Button style={{ backgroundColor: profile.color.code }} className={'w-7 h-7 rounded-full'}></Button></aside> : '')}
-            {session.profileId && <h4 className='text-xl font-bold'>Click to log in to another profile</h4>}
-            {profiles.length > 0 ? profiles.map(profile => session.profileId !== profile.id ? <Profile onProfileClick={handleProfileClick} key={profile.id} profile={profile} /> : '') : <h4 className='text-xl font-bold'>No profiles yet, create your profile clicking the + below</h4>}
+            {session.profileId && profiles.map(profile => session.profileId === profile.id ? <aside key={profile.id} className='flex gap-[1rem]'><Button onClick={handleProfileClick}><h4 profile={profile} className='font-bold text-xl mb-[2rem]'>Hello {profile.name}</h4></Button> <Button style={{ backgroundColor: profile.color.code }} className={'w-7 h-7 rounded-full'}></Button></aside> : '')}
+            <article className='flex justify-center gap-[2rem] mb-[2rem]'>
+                {session.profileRole === 'admin' && profiles.length > 1 ? <Button onClick={handleManageProfilesClick} className='form-submit-button'>Manage profiles</Button> : ''}
+                {session.profileRole !== null ? <Button onClick={handleEditProfileClick} className='form-submit-button'>Edit your profile</Button> : ''}
+            </article>
+
+            {session.profileId && profiles.length > 1 ? <h4 className='text-xl font-bold'>Click to log in to another profile</h4> : ''}
+            {profiles.length > 0 ? profiles.map(profile => session.profileId !== profile.id ? <Profile onProfileClick={handleProfileClick} onProfileDeleteClick={(profileId) => handleDeleteProfileClick(profileId)} key={profile.id} profile={profile} /> : '') : <h4 className='text-xl font-bold'>No profiles yet, create your profile clicking the + below</h4>}
         </article>
+
+
 
         {view === 'login-profile-view' && <article className='modal-black-bg'>
             <div className='modal-white-bg'>
@@ -283,11 +291,6 @@ function Profiles(props) {
                 </div>
             </div>
         </article>}
-
-        <article className='flex justify-center gap-[2rem] mt-[0.5rem]'>
-            {session.profileRole === 'admin' && profiles.length > 1 ? <Button onClick={handleManageProfilesClick} className='form-submit-button'>Manage profiles</Button> : ''}
-            {session.profileRole !== null ? <Button onClick={handleEditProfileClick} className='form-submit-button'>Edit your profile</Button> : ''}
-        </article>
 
         {view === 'edit-profile-view' && <article className='modal-black-bg'>
             <div className='modal-white-bg'>
@@ -359,7 +362,7 @@ function Profiles(props) {
             <div className='modal-white-bg p-5'>
                 {<Form onSubmit={handleManageProfileSubmit} id='manage-profile-form'>
                     <aside className='modal-border-button-container items-center max-h-[15rem] overflow-y-auto'>
-                        {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} type='button' style={{ borderWidth: activeProfileId === profile.id ? '3px' : '1px' }} onClick={() => handleOnProfileClick(profile.id)} className='modal-border-button'>{profile.name}</Button> : '')}
+                        {profiles.map(profile => profile.id !== session.profileId ? <Button key={profile.id} type='button' style={{ borderWidth: activeProfileId === profile.id ? '3px' : '1px' }} onClick={() => handleActiveProfileClick(profile.id)} className='modal-border-button'>{profile.name}</Button> : '')}
                     </aside>
 
                     <Input list='roles' placeholder='Choose new role' className='entrance-input mb-[2rem]'></Input>
@@ -369,9 +372,8 @@ function Profiles(props) {
                     </datalist>
                 </Form>}
 
-                <div className='close-submit-buttons-container justify-between mb-[2rem]'>
+                <div className='close-submit-buttons-container justify-center mb-[2rem]'>
                     <Button form='manage-profile-form' type='submit' className='form-submit-button text-base'>Change Role</Button>
-                    <Button type='button' onClick={handleDeleteProfileClick} className='form-submit-button text-base'>Delete profile</Button>
                 </div>
                 <div className='close-submit-buttons-container'>
                     <Button onClick={handleCancelClick} className='modal-close-button'>X</Button>

@@ -12,7 +12,7 @@ import session from './logic/session'
 import logic from './logic'
 
 function App() {
-  console.log('App')
+  /* console.log('App') */
 
   const [level, setLevel] = useState(null)
   const [message, setMessage] = useState(null)
@@ -94,7 +94,7 @@ function App() {
       <Routes>
         <Route path='/register' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
         <Route path='/login' element={logic.isUserLoggedIn() ? <Navigate to='/' /> : <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
-        <Route path='/*' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} role={role} confirm={confirm} confirmAction={confirmAction} onDeletionSuccess={handleConfirmToFalse} /> : <Navigate to='/login' />} />
+        <Route path='/*' element={logic.isUserLoggedIn() ? <Home onLogoutClick={handleLoginShow} role={role} confirm={confirm} confirmAction={confirmAction} onDeletion={handleConfirmToFalse} /> : <Navigate to='/login' />} />
       </Routes>
     </Context.Provider>
   </>

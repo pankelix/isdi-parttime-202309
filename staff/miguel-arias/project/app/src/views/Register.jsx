@@ -5,7 +5,7 @@ import { Container, Form, Link, Input, Button } from '../library'
 import logic from '../logic'
 
 function Register(props) {
-    console.log('register')
+    /* console.log('register') */
 
     const context = useContext()
 
@@ -19,7 +19,7 @@ function Register(props) {
         try {
             await logic.registerHome(name, email, password)
             props.onSuccess()
-            alert('user registered')
+            context.handleConfirm('Home registered', null)
         } catch (error) {
             context.handleError(error)
         }

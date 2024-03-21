@@ -66,10 +66,10 @@ function retrieveProfileTasks(homeId, profileId, week) {
                 while (currentDate <= endOfCurrentWeek) {
                     currentDate = addDay(currentDate, task.template.periodicity)
                     if (currentDate >= startOfCurrentWeek && currentDate <= endOfCurrentWeek) {
-                        const newTask = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter, done: false }
+                        const taskEcho = { ...task, date: new Date(currentDate), assignee: '', _id: task._id + '_' + idCounter, done: false, delay: 0 }
 
-                        if (newTask.date >= task.date) {
-                            tasksAndEchoes.push(newTask)
+                        if (taskEcho.date >= task.date) {
+                            tasksAndEchoes.push(taskEcho)
                             idCounter++
                         }
                     }

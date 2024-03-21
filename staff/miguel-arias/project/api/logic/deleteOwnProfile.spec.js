@@ -26,6 +26,8 @@ describe('deleteOwnProfile', () => {
 
         const profileId = profile._id.toString()
 
+        await Profile.create({ home: random.id(), name: random.name(), pincode: hash, role: 'admin', color: { name: random.name(), code: random.name() } })
+
         const homeId = random.id()
         const templateId = random.id()
 
@@ -60,6 +62,23 @@ describe('deleteOwnProfile', () => {
             expect(error.message).to.equal('profile not found')
         }
     })
+
+    it('fails on being the only admin', async () => {
+        const adminProfile = await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode(), role: 'admin', color: { name: random.name(), code: random.name() } })
+
+        const adminProfileId = adminProfile._id.toString()
+
+        await Profile.create({ home: random.id(), name: random.name(), pincode: random.pincode(), color: { name: random.name(), code: random.name() } })
+
+        try {
+            await deleteOwnProfile(adminProfileId)
+            throw new Error('should not reach this point')
+        } catch (error) {
+            expect(error).to.be.instanceOf(PermissionError)
+            expect(error.message).to.equal("this profile is the only admin and can't be deleted")
+        }
+    })
+
 
     after(async () => await mongoose.disconnect())
 })

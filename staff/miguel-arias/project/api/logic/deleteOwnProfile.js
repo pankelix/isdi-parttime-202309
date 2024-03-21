@@ -17,6 +17,16 @@ function deleteOwnProfile(profileId) {
         if (!profile)
             throw new NotFoundError('profile not found')
 
+        let adminProfile
+        try {
+            adminProfile = await Profile.findOne({ _id: { $ne: profile._id }, role: 'admin' }).lean()
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!adminProfile)
+            throw new PermissionError("this profile is the only admin and can't be deleted")
+
         try {
             await Task.updateMany({ assignee: profileId }, { $unset: { assignee: 1 } })
         } catch (error) {

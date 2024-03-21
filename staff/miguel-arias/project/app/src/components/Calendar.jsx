@@ -14,7 +14,7 @@ import { Container, Button, Form, Input, Label } from '../library'
 import { Task, EmptyDate } from '.'
 
 function Calendar(props) {
-    console.log('Calendar')
+    /* console.log('Calendar') */
 
     const context = useContext()
     const navigate = useNavigate()
@@ -56,6 +56,7 @@ function Calendar(props) {
 
     const refreshTasks = async () => {
         try {
+            // Elegir entre mostrar todas las tareas o solo las del profile activo
             let tasks
             if (onlyMine === false)
                 tasks = await logic.retrieveTasks(week)
@@ -64,15 +65,18 @@ function Calendar(props) {
 
             const tasks2 = []
 
+            // Calcular el principio de la semana
             const currentDate = addDay(new Date(), week * 7)
             const startOfCurrentWeek = dayEnd(weekStart(currentDate, 1))
 
+            // En caso de no encontrar ninguna tarea en la semana
             if (tasks.length === 0) {
                 for (let j = 0; j < 7; j++) {
                     tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'YYYY-MM-DD') })
                 }
 
             } else {
+                // Desde el inicio de la semana hasta la primera task
                 const firstTaskDate = new Date(tasks[0].date)
                 const firstPartOfWeekInMs = firstTaskDate - startOfCurrentWeek
                 const firstPartOfWeekInDays = Math.ceil(firstPartOfWeekInMs / (1000 * 60 * 60 * 24))
@@ -81,18 +85,21 @@ function Calendar(props) {
                     tasks2.push({ date: format(addDay(startOfCurrentWeek, j), 'YYYY-MM-DD') })
                 }
 
+                // Desde la primera task hasta la última task
                 for (let i = 0; i < tasks.length - 1; i++) {
                     const startDate = new Date(tasks[i].date)
-                    const endDate = new Date(tasks[i + 1].date)
-                    const differenceInMs = endDate - startDate
+                    const nextDate = new Date(tasks[i + 1].date)
+                    const differenceInMs = nextDate - startDate
                     const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24))
 
-                    if (tasks[i].oldId || tasks[i].delay > 0) {
+                    // Control de materializaciones. Si una misma tarea tiene un oldId que coincide con su id actual O si una tarea está atrasada y tasks2 no es una fecha vacía
+                    if ((tasks[i].oldId && tasks[i].oldId.split('_')[0] === tasks[i].id) || (tasks[i].delay > 0 && tasks2[i + 1] && tasks2[i + 1].home)) {
                         tasks2.splice(tasks2.length - 1, 1, tasks[i])
                     } else {
                         tasks2.push(tasks[i])
                     }
-                    /* tasks2.push(tasks[i]) */
+
+                    // Fechas vacías entre la primera y la última task
                     for (let j = 0; j < differenceInDays - 1; j++) {
                         tasks2.push({ date: format(addDay(tasks[i].date, j + 1), 'YYYY-MM-DD') })
                         /* const originalDate = tasks[i].date
@@ -103,14 +110,21 @@ function Calendar(props) {
                     }
                 }
 
-                if (tasks[tasks.length - 1].oldId || tasks[tasks.length - 1].delay > 0) {
+                // Si la tarea tiene delay, busco la misma tarea que ya esté esa semana y la sustituyo por fecha vacía, para evitar duplicaciones
+                if (tasks[tasks.length - 1].delay > 0) {
+                    const lastIndexOfEcho = tasks2.findLastIndex(task => task.home ? task.template._id === tasks[tasks.length - 1].template._id : 1 === 2)
+                    if (lastIndexOfEcho >= 0)
+                        tasks2.splice(lastIndexOfEcho, 1, { date: format(addDay(tasks2[tasks2.length - 1].date, 0), 'YYYY-MM-DD') })
+                }
+
+                // Mismo control de antes de materializaciones. Si una misma tarea tiene un oldId que coincide con su id actual O si una tarea está atrasada y tasks2 no es una fecha vacía
+                if ((tasks[tasks.length - 1].oldId && tasks[tasks.length - 1].oldId.split('_')[0] === tasks[tasks.length - 1].id) || (tasks[tasks.length - 1].delay > 0 && tasks2[tasks.length - 1] && tasks2[tasks.length - 1].home)) {
                     tasks2.splice(tasks2.length - 1, 1, tasks[tasks.length - 1])
                 } else {
                     tasks2.push(tasks[tasks.length - 1])
                 }
 
-                /* tasks2.push(tasks[tasks.length - 1]) */
-
+                // Fechas vacías entre la última tarea y el final de la semana
                 const endOfCurrentWeek = dayEnd(weekEnd(currentDate, 1))
                 const lastTaskDate = new Date(tasks[tasks.length - 1].date)
                 const lastPartOfWeekInMs = endOfCurrentWeek - lastTaskDate
@@ -120,6 +134,20 @@ function Calendar(props) {
                     tasks2.push({ date: format(addDay(lastTaskDate, k + 1), 'YYYY-MM-DD') })
                 }
             }
+
+            // Para evitar duplicidades en la asignación de tareas. Si dos tareas tienen el mismo oldId, eliminar el primero de ellos
+            for (let i = 0; i < tasks2.length; i++) {
+                if (tasks2[i].id) {
+                    const currentId = tasks2[i].id
+                    for (let j = i + 1; j < tasks2.length; j++) {
+                        if (tasks2[j].oldId === currentId) {
+                            // Eliminar el primer objeto duplicado
+                            tasks2.splice(i, 1)
+                        }
+                    }
+                }
+            }
+
             setTasks(tasks2)
         } catch (error) {
             context.handleError(error)
@@ -127,7 +155,7 @@ function Calendar(props) {
     }
 
     useEffect(() => {
-        console.log('Tasks/Profiles effect')
+        /* console.log('Tasks/Profiles effect') */
 
         refreshToday()
         retrieveAssignee()
@@ -137,6 +165,9 @@ function Calendar(props) {
 
     const handleOnTaskClick = (task) => {
         if (onlyMine === true || task.done === true)
+            return
+
+        if (task.date < today)
             return
 
         const taskDate = format(task.date, 'YYYY-MM-DD')
@@ -163,6 +194,9 @@ function Calendar(props) {
 
     const handleProposeTaskClick = (taskDate) => {
         if (session.profileRole === null)
+            return
+
+        if (templates.length < 1)
             return
 
         if (typeof taskDate === 'string') {
@@ -210,6 +244,9 @@ function Calendar(props) {
     }
 
     const handleAssignThisTaskClick = () => {
+        if (profiles.length <= 1)
+            return
+
         setView('assign-task-view')
     }
 
@@ -274,11 +311,12 @@ function Calendar(props) {
                     await logic.deleteTask(task.id)
                     refreshTasks()
                     setView(null)
-                    props.onDeletionSuccess()
+
                 }
             } catch (error) {
                 context.handleError(error)
             }
+            props.onDeletion()
         }
 
         deleteTask()
@@ -353,9 +391,13 @@ function Calendar(props) {
         <article className='flex flex-col max-h-[33rem] overflow-y-auto'>
             <Button onClick={handleLastWeekClick} className='calendar-week-navigator'>▲</Button>
 
-            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={(task) => handleOnTaskClick(task)} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
+            {tasks.map(task => task.id ? <Task key={task.id} task={task} profile={profiles.find(profile => task.assignee === profile.id)} profileName={profiles.map(profile => task.assignee === profile.id ? profile.name : '')} onTaskClick={(task) => handleOnTaskClick(task)} today={today} /> : <EmptyDate key={task.date} task={task} onTaskClick={(taskDate) => handleProposeTaskClick(taskDate)} today={today} />)}
 
             <Button onClick={handleNextWeekClick} className='calendar-week-navigator'>▼</Button>
+        </article>
+
+        <article className='flex mb-[1rem] ml-[0.2rem]'>
+            {templates.length < 1 && <h3 key={'calendar-message'} className='font-bold text-xl mt-[2rem]'>Please, create a template before creating a task</h3>}
         </article>
 
         {view === 'react-to-task-view' && session.profileRole !== null && <article className='modal-black-bg'>
@@ -376,7 +418,7 @@ function Calendar(props) {
                 <div className='modal-border-button-container'>
                     {session.profileRole !== null && <Button onClick={handleTakeThisTask} className='modal-border-button'>Take this task</Button>}
 
-                    {session.profileRole === 'admin' && <Button onClick={handleAssignThisTaskClick} className='modal-border-button'>Assign this task to...</Button>}
+                    {session.profileRole === 'admin' && <Button style={{ borderColor: profiles.length <= 1 ? 'grey' : '', color: profiles.length <= 1 ? 'grey' : '' }} onClick={handleAssignThisTaskClick} className='modal-border-button'>Assign this task to...</Button>}
 
                     {session.profileRole !== null && <Button onClick={handleCompleteTaskClick} style={{ color: format(task.date, 'YYYY-MM-DD') > today ? 'grey' : '', borderColor: format(task.date, 'YYYY-MM-DD') > today ? 'grey' : '' }} className='modal-border-button'>Complete this task</Button>}
 

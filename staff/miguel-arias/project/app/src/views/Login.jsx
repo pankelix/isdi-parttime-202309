@@ -4,7 +4,7 @@ import { Container, Form, Input, Button, Link } from '../library'
 import { useContext } from '../hooks'
 
 function Login(props) {
-    console.log('login')
+    /* console.log('login') */
 
     const context = useContext()
 
@@ -40,8 +40,8 @@ function Login(props) {
                 <Button type='submit' className='cursor-pointer p-[1.8rem] border-none rounded-md text-lg text-white bg-amber-400 absolute top-[17rem] w-[216px] h-[30px] flex justify-center items-center'>Log In</Button>
             </Form>
 
-            <nav className='text-sm flex justify-center gap-4 absolute bottom-[12rem] w-[100%]'>
-                <p>Don't have account?</p>
+            <nav className='text-sm flex justify-center gap-4 absolute bottom-[12rem] w-[100%] font-'>
+                <p>Don't have an account?</p>
                 <Link onClick={handleRegisterClick}>Create new account</Link>
             </nav>
         </article>

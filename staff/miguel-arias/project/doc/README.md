@@ -8,44 +8,37 @@ An app to help with the organization of the house chores
 
 Create a Home group, with several users that live inside the same house
 
-Different profiles with different permissions (admin/user/home/child)
+Different profiles with different permissions (admin/user)
 
 ## Functional Description
 
 ### Use Cases
 
-* Register House (all house members share account)
+* Register House (all house members share the same account)
 * Manage House
     - Create profile (basic role by default)
         - Assign name & pincode
+        - First profile always admin
     - Manage profiles
         - Assign role to profile (admin)
-        - Delete own profile (admin can all profiles)
-        - Change picture (gallery/photo)
+        - Delete other profiles (admin)
+    - Edit profile
+        - Change pincode
         - Change color
+        - Delete own profile
 * Manage tasks
     - See and filter tasks
     - Create new tasks
     - React to tasks
-        - Assign this task (user to self, admin to all) (pincode needed)
+        - Assign task (user to self, admin to all)
         - Complete this task (pincode needed)
-        - Delay this task (pincode needed)
-        - Edit task (admin) (pincode needed)
-        - Delete task (admin) (pincode needed)
-<!-- Cosas que el usuario podrá hacer en la aplicación (cosas que aporten valor, cosas tipo Login, Register... sobran)
-* search socks
-* add socks to cart
-* view cart
-* add / remove items
-* checkout cart
-* view orders
-* view order status
-* ...
-* ... -->
+        - Delay this task
+        - Edit task (admin)
+        - Delete task (admin)
 
 ### Views
 
-#### House registration
+#### House registration & Login
 
 * House creation
     - Name
@@ -55,40 +48,37 @@ Different profiles with different permissions (admin/user/home/child)
 #### Home view
 
 * Tasks feed
-    - Default: Calendar since actual day (vertical infinite scroll)
+    - Default: Calendar of current week (buttons to prev and next week)
     - Filter
-        - Date range (canceled)
-        - Room
-        - Assigned person
-        - Points granted (canceled)
-    - Tasks (go to **Task templates**)
+        - Assigned to me / all
+    - Templates (go to **Templates**)
     - Stats (go to **Stats**)
     - Profile (go to **Profile views**)
-    - Click on task (go to **Task reaction**)
+    - Click on task (modal **Task reaction**)
+    - Click on empty date (modal **Propose task**)
     - New task (+)
-        - Create new task (goto **Task templates**)
-        - Propose task (status active)
+        - Create new task (go to **Templates**)
+        - Propose task (modal **Propose task**)
 
 #### Profile views
 
 * Profile creation
     - Admin
-        - Change profile role
-        - Delete all profiles
+        - Change other users profile role
+        - Delete other users profile
     - User
         - Change picture
         - Change color
-        - Delete profile
+        - Delete own profile
 
 #### Task reaction
 
 * Assign this task
-    - Pincode needed
     - To self (user), to another users (admin)
 * Complete this task
     - Pincode needed
     - Completion date (today by default)
-    - If it's a periodic task, it renovates automatically
+    - It renovates automatically, according to periodicity
     - Points assignation
 * Delay task (delay counter)
 * Edit this task (admin)
@@ -97,22 +87,18 @@ Different profiles with different permissions (admin/user/home/child)
 #### Task templates
 
 * See all task templates
-* Filter task templates
-    - By room
-    - By points awarded (canceled)
 * Edit task
-* Store task
 * Delete task
-* Create task (status unactive)
+* Create template
     - Task name
-    - Temporality: punctual, daily, weekly (every wednesday), monthly (every day 23) or choose (every x days)
-    - Room
+    - Periodicity: daily, weekly (every wednesday)
+    - Room/s
     - Points awarded for completion (optional)
 
 #### Stats
 
 * Ranking of points
-* Stats about cleaning
+* Points redeem
 
 ## Technical Description
 
@@ -145,7 +131,7 @@ Template
 * home (Home.id)
 * name (string)
 * rooms ([Room.id])
-* periodicity (string)
+* periodicity (number)
 * points (number)
 
 Task
@@ -155,18 +141,21 @@ Task
 * assignee (Profile.id)
 * done (boolean)
 * date (Date)
-* oldId (String)
+* delay (number)
+* oldId (string)
 
 ## Future versions will include:
 
 ##### Store tasks (instead of deletion)
 
-##### Alternatives to pincode (version 2)
+##### List of redeemable rewards
+
+##### Alternatives to pincode
 
 * Fingerprint
 * Face scan
 
-##### Shopping list (version 2)
+##### Shopping list
 
 * See different shopping lists
 
@@ -184,12 +173,12 @@ Task
         - Lógica para el orden en que se hace check (las próximas veces se propondrá este orden para facilitar la compra)
         - Finalize (and add a picture of the ticket)
 
-##### Push notifications (version 2)
+##### Push notifications
 
 * Today's assigned to me tasks
 * Today's free tasks
 
-##### Quality of life (version 2)
+##### Quality of life
 
 * Compatibility with assistants like Siri, Google assistant o Alexa
 * Transform a picture of the ticket to text, this way budgets can be done
@@ -200,4 +189,4 @@ Task
 * Pre-made tasks according to the appointment (for example if there's a dinner at home clean living room / do groceries / clean kitchen ...)
 * Ticket adding
 * Notificaciones push diarias:
-    - citas de hoy
+    - today's appointments
